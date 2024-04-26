@@ -8,8 +8,7 @@
 Agent::Agent(QObject *parent)
     : QObject{parent}
 {
-    m_defaultAgentInstance = new AgentInstance(this);
-    m_agentInstances.append(m_defaultAgentInstance);
+    m_defaultAgentInstance = addAgentInstance();
 
     m_brain = new Brain(this);
     Channel::ChannelDefaults trans_defaults;
@@ -31,6 +30,26 @@ Agent::Agent(QObject *parent)
     addInputChannel(QString("tx"), trans_defaults, 1);
     addInputChannel(QString("ty"), trans_defaults, 2);
     addInputChannel(QString("tz"), trans_defaults, 3);
+}
+
+AgentInstance *Agent::addAgentInstance()
+{
+    AgentInstance *newAgentInstance = new AgentInstance(this);
+    m_agentInstances.append(newAgentInstance);
+    return newAgentInstance;
+}
+
+QString Agent::name() const
+{
+    return m_name;
+}
+
+void Agent::setName(const QString &newName)
+{
+    if (m_name == newName)
+        return;
+    m_name = newName;
+    emit nameChanged();
 }
 
 AgentInstance *Agent::defaultAgentInstance() const
@@ -56,6 +75,33 @@ QList<AgentInstance *> Agent::agentInstances() const
 QHash<BrainiacGlobals::BrainiacId, Channel::ChannelDefaults> Agent::inputChannelDefaults() const
 {
     return m_inputChannelDefaults;
+}
+
+QString Agent::fileName() const
+{
+    return m_fileName;
+}
+
+bool Agent::load()
+{
+    return false;
+}
+
+bool Agent::save()
+{
+    return false;
+}
+
+QJsonObject Agent::toJson() const
+{
+    QJsonObject obj;
+    obj["name"] = m_name;
+    return obj;
+}
+
+void Agent::setFileName(const QString &newFileName)
+{
+    m_fileName = newFileName;
 }
 
 BrainiacGlobals::BrainiacId Agent::addInputChannel(const QString channelName,
@@ -102,7 +148,9 @@ BrainiacGlobals::BrainiacId Agent::addInputChannel(const QString channelName,
     foreach (AgentInstance *agentInstance, m_agentInstances) {
         agentInstance->addInputChannel(returnId, &defaults);
     }
-    Q_ASSERT(m_inputChannels.count() == m_defaultAgentInstance->inputChannels().count());
+    if (m_defaultAgentInstance) {
+        Q_ASSERT(m_inputChannels.count() == m_defaultAgentInstance->inputChannels().count());
+    }
     Q_ASSERT(m_inputChannels.count() == m_inputChannelDefaults.count());
     return returnId;
 }

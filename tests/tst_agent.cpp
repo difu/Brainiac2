@@ -16,7 +16,7 @@ public:
 private slots:
     void initTestCase();
     void cleanupTestCase();
-    void test_case1();
+    void test_loadSave();
     void test_outputChannels();
     void test_inputChannels();
 };
@@ -29,7 +29,12 @@ void AgentTest::initTestCase() {}
 
 void AgentTest::cleanupTestCase() {}
 
-void AgentTest::test_case1() {}
+void AgentTest::test_loadSave()
+{
+    Agent agent;
+    agent.setName("myName");
+    qDebug() << agent.toJson();
+}
 
 void AgentTest::test_outputChannels()
 {

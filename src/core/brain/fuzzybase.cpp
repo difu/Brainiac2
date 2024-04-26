@@ -1,8 +1,12 @@
 #include "fuzzybase.h"
 
+#include <QGraphicsItem>
+
 FuzzyBase::FuzzyBase(QObject *parent)
     : QObject{parent}
-{}
+{
+    m_graphicsItem = new QGraphicsRectItem(0, 0, 0, 0);
+}
 
 qreal FuzzyBase::minValue() const
 {
@@ -41,4 +45,32 @@ void FuzzyBase::addParent(FuzzyBase *parent, bool isInverted)
     par.parent = parent;
     par.inverted = isInverted;
     m_parents.append(par);
+}
+
+QString FuzzyBase::name() const
+{
+    return m_name;
+}
+
+void FuzzyBase::setName(const QString &newName)
+{
+    if (m_name == newName)
+        return;
+    m_name = newName;
+    emit nameChanged();
+}
+
+QPointF FuzzyBase::editorPos() const
+{
+    return m_graphicsItem->pos();
+}
+
+void FuzzyBase::setEditorPos(qreal x, qreal y)
+{
+    m_graphicsItem->setPos(x, y);
+}
+
+FuzzyBase::~FuzzyBase()
+{
+    delete m_graphicsItem;
 }

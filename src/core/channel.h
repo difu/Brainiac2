@@ -14,9 +14,9 @@ class Channel : public QObject
 public:
     struct ChannelDefaults
     {
-        qreal min;
-        qreal max;
-        qreal value;
+        qreal min;   //!< the min value
+        qreal max;   //!< the max value
+        qreal value; //!< the default value of this channel
     };
     explicit Channel(AgentInstance *parent, Channel::ChannelDefaults *defaults);
 
@@ -28,12 +28,9 @@ signals:
 private:
     AgentInstance *m_agentInstance;
     ChannelDefaults *m_defaults;
-    qreal m_defaultValue; //!< the default value of this channel
     qreal m_value;        //!< Current value of this channel
     bool m_inherited;     //!< true, if this channel is inherited
     qreal m_oldValue;     //!< the old value of the channel
-    qreal m_max;          //!< the max value
-    qreal m_min;          //!< the min value
 };
 
 #endif // CHANNEL_H

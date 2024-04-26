@@ -29,6 +29,9 @@ public:
 
     QHash<BrainiacGlobals::BrainiacId, Channel *> outputChannels() const;
 
+    QVector3D initialTranslation() const;
+    void setInitialTranslation(const QVector3D &newInitialTranslation);
+
 private:
     QVector3D m_initialTranslation;
     QVector3D m_initialRotation;

@@ -44,3 +44,13 @@ QHash<BrainiacGlobals::BrainiacId, Channel *> AgentInstance::outputChannels() co
 {
     return m_outputChannels;
 }
+
+QVector3D AgentInstance::initialTranslation() const
+{
+    return m_initialTranslation;
+}
+
+void AgentInstance::setInitialTranslation(const QVector3D &newInitialTranslation)
+{
+    m_initialTranslation = newInitialTranslation;
+}

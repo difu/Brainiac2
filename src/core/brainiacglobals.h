@@ -12,6 +12,23 @@ public:
 
     typedef quint32 BrainiacId;
 
+    enum ItemType {
+        AND,
+        OR,
+        FUZZ,
+        DEFUZZ,
+        OUTPUT,
+        INPUT,
+        NOISE,
+        TIMER,
+        SPHERE,
+        CUBE,
+        TUBE,
+        GROUP,
+        AGENT,
+        ACTION,
+        TRANSITION
+    };
     enum RotTrans { RX, RY, RZ, TX, TY, TZ };
     enum AnimationType { STATIC, LOCOMOTION, RAMP, TURNING, NOTYPE };
 };

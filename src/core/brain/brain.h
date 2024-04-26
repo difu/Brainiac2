@@ -8,6 +8,7 @@
 #include "../brainiacglobals.h"
 
 class Agent;
+class FuzzyBase;
 
 class Brain: public QObject
 {
@@ -17,6 +18,7 @@ public:
 
 private:
     Agent *m_agent;
+    QHash<BrainiacGlobals::BrainiacId, FuzzyBase *> m_fuzzies;
 };
 
 #endif // BRAIN_H
