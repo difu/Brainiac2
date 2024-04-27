@@ -7,6 +7,7 @@
 #include <QQuickView>
 #include <QtQuick3D/qquick3d.h>
 #include "agent.h"
+#include "agentinstance.h"
 
 int main(int argc, char *argv[])
 {
@@ -41,6 +42,15 @@ int main(int argc, char *argv[])
                                   "debugMsg",
                                   Q_RETURN_ARG(QVariant, receive),
                                   Q_ARG(QString, message));
+        qDebug() << receive;
+    }
+
+    foreach (QObject *obj, viewer->findChildren<QObject *>("AgentInstaceGeometry")) {
+        qDebug() << "Child: " << obj->metaObject()->className() << context.nameForObject(obj);
+        QString message = "Hello from main.cpp";
+        AgentInstance *inst = new AgentInstance();
+        QVariant receive;
+        QMetaObject::invokeMethod(obj, "setAgentInstance", Q_ARG(AgentInstance *, inst));
         qDebug() << receive;
     }
 

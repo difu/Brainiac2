@@ -6,7 +6,6 @@
 AgentInstaceGeometryQuick3D::AgentInstaceGeometryQuick3D()
 {
     updateData();
-    m_agentInstance = new AgentInstance();
 }
 
 void AgentInstaceGeometryQuick3D::updateData()
@@ -35,4 +34,17 @@ void AgentInstaceGeometryQuick3D::updateData()
     addAttribute(QQuick3DGeometry::Attribute::PositionSemantic,
                  0,
                  QQuick3DGeometry::Attribute::F32Type);
+}
+
+AgentInstance *AgentInstaceGeometryQuick3D::agentInstance() const
+{
+    return m_agentInstance;
+}
+
+void AgentInstaceGeometryQuick3D::setAgentInstance(AgentInstance *newAgentInstance)
+{
+    if (m_agentInstance == newAgentInstance)
+        return;
+    m_agentInstance = newAgentInstance;
+    emit agentInstanceChanged();
 }

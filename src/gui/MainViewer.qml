@@ -28,6 +28,9 @@ ApplicationWindow {
             id: env
             backgroundMode: SceneEnvironment.Color
             clearColor: "#002b36"
+            InfiniteGrid {
+                gridInterval: 100
+            }
         }
 
         Node {

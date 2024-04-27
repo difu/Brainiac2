@@ -16,6 +16,7 @@ Node {
         visible: true
         scale: Qt.vector3d(100, 100, 100)
         geometry: AgentInstaceGeometry {
+            objectName: "AgentInstaceGeometry"
         }
         materials: [
             DefaultMaterial {
