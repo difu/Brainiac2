@@ -63,3 +63,8 @@ void AgentInstaceGeometryQuick3D::setAgentInstance(QVariant newAgentInstance)
         qWarning() << "newAgentInstance is nullpointer!";
     }
 }
+
+QVector3D AgentInstaceGeometryQuick3D::translation() const
+{
+    return m_agentInstance->translation();
+}

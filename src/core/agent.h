@@ -13,6 +13,7 @@
 
 class AgentInstance;
 class Brain;
+class Locator;
 
 class Agent : public QObject
 {
@@ -22,7 +23,7 @@ public:
 
     QString m_name;
 
-    AgentInstance *addAgentInstance();
+    AgentInstance *addAgentInstance(Locator *locator);
 
     AgentInstance *defaultAgentInstance() const;
     void setDefaultAgentInstance(AgentInstance *newDefaultAgentInstance);

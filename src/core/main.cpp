@@ -8,14 +8,13 @@
 #include <QtQuick3D/qquick3d.h>
 #include "agent.h"
 #include "agentinstance.h"
+#include "generator/generatormanual.h"
+#include "generator/locator.h"
+#include "scene.h"
 
 int main(int argc, char *argv[])
 {
     qSetMessagePattern("%{file}:%{line} %{function} -> %{if-category}%{category}: %{endif}%{message}");
-    //    QApplication a(argc, argv);
-    //    MainWindow w;
-    //    w.show();
-    // Agent agent;
 
     QGuiApplication app(argc, argv);
 
@@ -51,17 +50,30 @@ int main(int argc, char *argv[])
     //     QMetaObject::invokeMethod(obj, "setAgentInstance", Q_ARG(AgentInstance *, inst));
     // }
 
+    Scene *scene = new Scene;
+    GeneratorManual *gen = new GeneratorManual(scene);
+    Agent *agent = new Agent();
+
     qDebug() << viewer->metaObject()->className() << "#Children" << viewer->children().count();
     foreach (QObject *obj, viewer->findChildren<QObject *>("agentInstanceSpawner")) {
         qDebug() << "Child: " << obj->metaObject()->className() << "  "
                  << context.nameForObject(obj);
-        for (int i = 0; i < 4; i++) {
-            AgentInstance *inst = new AgentInstance();
-            QPointer<AgentInstance> qp(inst);
-            QVariant qv = QVariant::fromValue(qp);
-            QMetaObject::invokeMethod(obj, "addAgentInstance", Q_ARG(QVariant, qv));
-            qDebug() << "QVariant from main.cpp " << qv;
-        }
+        // for (int i = 0; i < 4; i++) {
+        //     AgentInstance *inst = new AgentInstance();
+        //     QPointer<AgentInstance> qp(inst);
+        //     QVariant qv = QVariant::fromValue(qp);
+        //     QMetaObject::invokeMethod(obj, "addAgentInstance", Q_ARG(QVariant, qv));
+        //     qDebug() << "QVariant from main.cpp " << qv;
+        // }
+
+        Locator *loc1 = gen->addLocator(agent);
+        loc1->setLocation(QVector3D(10, 0, 10));
+        gen->apply();
+
+        QPointer<AgentInstance> qp(loc1->agentInstance());
+        QVariant qv = QVariant::fromValue(qp);
+        qDebug() << "QVariant from main.cpp " << qv;
+        QMetaObject::invokeMethod(obj, "addAgentInstance", Q_ARG(QVariant, qv));
     }
 
     // Debug

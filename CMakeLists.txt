@@ -20,6 +20,9 @@ qt_add_executable(Brainiac
     src/core/brain/fuzzyoutput.h src/core/brain/fuzzyoutput.cpp
     src/core/brainiacglobals.h src/core/brainiacglobals.cpp
     src/core/channel.h src/core/channel.cpp
+    src/core/generator/generatorbase.h src/core/generator/generatorbase.cpp
+    src/core/generator/generatormanual.h src/core/generator/generatormanual.cpp
+    src/core/generator/locator.h src/core/generator/locator.cpp
 )
 
 set_target_properties(Brainiac PROPERTIES

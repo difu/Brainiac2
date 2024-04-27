@@ -16,11 +16,15 @@ Node {
         id: agentInstanceModel
         visible: true
         //scale: Qt.vector3d(100, 100, 100)
+        //x: instanceGeom.translation
 
         geometry: AgentInstaceGeometry {
+            id: instanceGeom
             objectName: "AgentInstanceGeometry"
             agentInstance: agentInstanceNode.agentInstance
-            // parent: setY(100)
+            //parent: setX(AgentInstaceGeometry.translation.x)
+            //parent: setPosition(instanceGeom.translation)
+
         }
         materials: [
             DefaultMaterial {

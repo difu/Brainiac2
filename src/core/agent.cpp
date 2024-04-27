@@ -8,7 +8,7 @@
 Agent::Agent(QObject *parent)
     : QObject{parent}
 {
-    m_defaultAgentInstance = addAgentInstance();
+    m_defaultAgentInstance = nullptr;
 
     m_brain = new Brain(this);
     Channel::ChannelDefaults trans_defaults;
@@ -32,9 +32,9 @@ Agent::Agent(QObject *parent)
     addInputChannel(QString("tz"), trans_defaults, 3);
 }
 
-AgentInstance *Agent::addAgentInstance()
+AgentInstance *Agent::addAgentInstance(Locator *locator)
 {
-    AgentInstance *newAgentInstance = new AgentInstance(this);
+    AgentInstance *newAgentInstance = new AgentInstance(locator, this);
     m_agentInstances.append(newAgentInstance);
     return newAgentInstance;
 }
@@ -199,7 +199,9 @@ BrainiacGlobals::BrainiacId Agent::addOutputChannel(const QString channelName,
     foreach (AgentInstance *agentInstance, m_agentInstances) {
         agentInstance->addOutputChannel(returnId, &defaults);
     }
-    Q_ASSERT(m_outputChannels.count() == m_defaultAgentInstance->outputChannels().count());
+
+    if (m_defaultAgentInstance)
+        Q_ASSERT(m_outputChannels.count() == m_defaultAgentInstance->outputChannels().count());
     Q_ASSERT(m_outputChannels.count() == m_outputChannelDefaults.count());
 
     return returnId;
