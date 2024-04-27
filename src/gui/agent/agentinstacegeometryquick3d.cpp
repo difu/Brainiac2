@@ -16,18 +16,18 @@ void AgentInstaceGeometryQuick3D::updateData()
     QByteArray vertexData(3 * stride, Qt::Initialization::Uninitialized);
     float *p = reinterpret_cast<float *>(vertexData.data());
     *p++ = -1.0f;
+    *p++ = .0f;
     *p++ = -1.0f;
-    *p++ = 0.0f;
-    *p++ = 1.0f;
-    *p++ = -1.0f;
-    *p++ = 0.0f;
-    *p++ = 0.0f;
     *p++ = 1.0f;
     *p++ = 0.0f;
+    *p++ = -1.0f;
+    *p++ = 0.0f;
+    *p++ = 0.0f;
+    *p++ = 1.0f;
 
     setVertexData(vertexData);
     setStride(stride);
-    setBounds(QVector3D(-1.0f, -1.0f, 0.0f), QVector3D(+1.0f, +1.0f, 0.0f));
+    setBounds(QVector3D(-1.0f, 0.0f, -1.0f), QVector3D(+1.0f, 0.0f, +1.0f));
 
     setPrimitiveType(QQuick3DGeometry::PrimitiveType::Triangles);
 
@@ -36,9 +36,11 @@ void AgentInstaceGeometryQuick3D::updateData()
                  QQuick3DGeometry::Attribute::F32Type);
 }
 
-AgentInstance *AgentInstaceGeometryQuick3D::agentInstance() const
+QVariant AgentInstaceGeometryQuick3D::agentInstance() const
 {
-    return m_agentInstance;
+    QPointer<AgentInstance> qp(m_agentInstance);
+    QVariant qv = QVariant::fromValue(qp);
+    return qv;
 }
 
 void AgentInstaceGeometryQuick3D::setAgentInstance(AgentInstance *newAgentInstance)
@@ -46,5 +48,18 @@ void AgentInstaceGeometryQuick3D::setAgentInstance(AgentInstance *newAgentInstan
     if (m_agentInstance == newAgentInstance)
         return;
     m_agentInstance = newAgentInstance;
+    m_agentInstance->setGeometryQuick3DNode(this);
     emit agentInstanceChanged();
+}
+
+void AgentInstaceGeometryQuick3D::setAgentInstance(QVariant newAgentInstance)
+{
+    qDebug() << newAgentInstance;
+    QPointer newAgentInstanceQP = newAgentInstance.value<QPointer<AgentInstance> >();
+    AgentInstance *inst = newAgentInstanceQP.data();
+    if (inst) {
+        this->setAgentInstance(inst);
+    } else {
+        qWarning() << "newAgentInstance is nullpointer!";
+    }
 }

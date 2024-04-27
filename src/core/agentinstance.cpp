@@ -54,3 +54,16 @@ void AgentInstance::setInitialTranslation(const QVector3D &newInitialTranslation
 {
     m_initialTranslation = newInitialTranslation;
 }
+
+AgentInstaceGeometryQuick3D *AgentInstance::geometryQuick3DNode() const
+{
+    return m_geometryQuick3DNode;
+}
+
+void AgentInstance::setGeometryQuick3DNode(AgentInstaceGeometryQuick3D *newGeometryQuick3DNode)
+{
+    if (m_geometryQuick3DNode == newGeometryQuick3DNode)
+        return;
+    m_geometryQuick3DNode = newGeometryQuick3DNode;
+    emit geometryQuick3DNodeChanged();
+}

@@ -38,6 +38,7 @@ ApplicationWindow {
             PerspectiveCamera {
                 id: cameraNode
                 z: 600
+                y: 200
             }
         }
 
@@ -56,25 +57,12 @@ ApplicationWindow {
 
         Model {
             id: gridModel
-            visible: true
+            visible: false
             scale: Qt.vector3d(100, 100, 100)
             geometry: GridGeometry {
                 id: grid
                 horizontalLines: 20
                 verticalLines: 20
-            }
-            materials: [
-                DefaultMaterial {
-                    lineWidth: 1
-                }
-            ]
-        }
-
-        Model {
-            id: triangleModel
-            visible: true
-            scale: Qt.vector3d(100, 100, 100)
-            geometry: AgentInstaceGeometry {
             }
             materials: [
                 DefaultMaterial {
@@ -96,27 +84,25 @@ ApplicationWindow {
                 return "Hello from agentSpawner"
             }
 
-            function addAgentInstance()
-            {
+            function addAgentInstance(agentInstance) {
                 var xPos = (2 * Math.random() * range) - range;
-                var yPos = (2 * Math.random() * range) - range;
+                var yPos = 0;
                 var zPos = (2 * Math.random() * range) - range;
                 var shapeComponent = Qt.createComponent("AgentInstance.qml");
-
                 if( shapeComponent.status !== Component.Ready ) {
                     if(shapeComponent.status === Component.Error) {
                         console.debug("ERROR while spawning AgentInstance: "+ shapeComponent.errorString());
                     }
                 }
-
+                console.debug("Creating QML from QV Parameter (Pointer): " + agentInstance);
                 let instance = shapeComponent.createObject(agentInstanceSpawner,
-                    { "x": xPos, "y": yPos, "z": zPos, "scale": Qt.vector3d(0.25, 0.25, 0.25)});
+                    { "agentInstance": agentInstance ,"x": xPos, "y": yPos, "z": zPos, "scale": Qt.vector3d(0.25, 0.25, 0.25)});
                 instances.push(instance);
                 count = instances.length
             }
             Component.onCompleted: {
-                for (var i = 0; i < 10; ++i)
-                    agentInstanceSpawner.addAgentInstance()
+                // for (var i = 0; i < 10; ++i)
+                //     agentInstanceSpawner.addAgentInstance()
             }
         }
 

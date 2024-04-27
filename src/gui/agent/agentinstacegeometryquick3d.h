@@ -11,15 +11,16 @@ class AgentInstaceGeometryQuick3D : public QQuick3DGeometry
     QML_NAMED_ELEMENT(AgentInstaceGeometry)
 public:
     AgentInstaceGeometryQuick3D();
-    Q_PROPERTY(AgentInstance *agentInstance READ agentInstance WRITE setAgentInstance NOTIFY
+    Q_PROPERTY(QVariant agentInstance READ agentInstance WRITE setAgentInstance NOTIFY
                    agentInstanceChanged FINAL)
-    AgentInstance *agentInstance() const;
-    Q_INVOKABLE void setAgentInstance(AgentInstance *newAgentInstance);
+    QVariant agentInstance() const;
+    Q_INVOKABLE void setAgentInstance(QVariant newAgentInstance);
 
 signals:
     void agentInstanceChanged();
 
 private:
+    void setAgentInstance(AgentInstance *newAgentInstance);
     void updateData();
     AgentInstance *m_agentInstance;
 };
