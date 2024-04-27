@@ -29,7 +29,7 @@ ApplicationWindow {
             backgroundMode: SceneEnvironment.Color
             clearColor: "#002b36"
             InfiniteGrid {
-                gridInterval: 100
+                gridInterval: 10
             }
         }
 
@@ -96,7 +96,7 @@ ApplicationWindow {
                 }
                 console.debug("Creating QML from QV Parameter (Pointer): " + agentInstance);
                 let instance = shapeComponent.createObject(agentInstanceSpawner,
-                    { "agentInstance": agentInstance ,"x": xPos, "y": yPos, "z": zPos, "scale": Qt.vector3d(0.25, 0.25, 0.25)});
+                    { "agentInstance": agentInstance ,"x": xPos, "y": yPos, "z": zPos});
                 instances.push(instance);
                 count = instances.length
             }

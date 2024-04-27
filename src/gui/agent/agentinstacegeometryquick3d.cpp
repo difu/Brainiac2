@@ -15,19 +15,19 @@ void AgentInstaceGeometryQuick3D::updateData()
 
     QByteArray vertexData(3 * stride, Qt::Initialization::Uninitialized);
     float *p = reinterpret_cast<float *>(vertexData.data());
-    *p++ = -1.0f;
+    *p++ = -10.0f;
     *p++ = .0f;
-    *p++ = -1.0f;
-    *p++ = 1.0f;
+    *p++ = -10.0f;
+    *p++ = 10.0f;
     *p++ = 0.0f;
-    *p++ = -1.0f;
+    *p++ = -10.0f;
     *p++ = 0.0f;
     *p++ = 0.0f;
-    *p++ = 1.0f;
+    *p++ = 10.0f;
 
     setVertexData(vertexData);
     setStride(stride);
-    setBounds(QVector3D(-1.0f, 0.0f, -1.0f), QVector3D(+1.0f, 0.0f, +1.0f));
+    setBounds(QVector3D(-10.0f, 0.0f, -10.0f), QVector3D(+10.0f, 0.0f, +10.0f));
 
     setPrimitiveType(QQuick3DGeometry::PrimitiveType::Triangles);
 
