@@ -33,15 +33,13 @@ int main(int argc, char *argv[])
     Scene *scene = new Scene;
     scene->setQQmlApplivationEngine(&engine);
     GeneratorManual *gen = new GeneratorManual(scene);
-    Agent *agent = new Agent();
+    Agent *agent = new Agent(scene);
 
-    Locator *loc1 = gen->addLocator(agent);
-    loc1->setLocation(QVector3D(0, 50, 0));
-    loc1->setRotation(QVector3D(0, -50, 50));
-
-    Locator *loc2 = gen->addLocator(agent);
-    loc2->setLocation(QVector3D(50, 0, 50));
-    loc2->setRotation(QVector3D(10, 50, 50));
+    for (int i = 0; i < 15; i++) {
+        Locator *loc = gen->addLocator(agent);
+        loc->setLocation(QVector3D(50 + 100 * i, 0, 50 + 10 * i));
+        loc->setRotation(QVector3D(0, 50 + i * 10, 0));
+    }
     gen->apply();
 
     // Debug

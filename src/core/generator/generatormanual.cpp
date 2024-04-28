@@ -24,7 +24,7 @@ void GeneratorManual::apply()
             if (!loc->isLocked() && loc->agentInstance() == nullptr) {
                 AgentInstance *inst = agent->addAgentInstance(loc);
                 loc->setAgentInstance(inst);
-                this->scene()->addAgentInstance(inst);
+                //this->scene()->addAgentInstance(inst);
             }
         } else {
             qCritical() << "No Agent in Locator found!";

@@ -15,11 +15,13 @@ class AgentInstance;
 class Brain;
 class Locator;
 
+class Scene;
+
 class Agent : public QObject
 {
     Q_OBJECT
 public:
-    explicit Agent(QObject *parent = nullptr);
+    explicit Agent(Scene *parent);
 
     QString m_name;
 
@@ -59,6 +61,8 @@ public:
 
     QJsonObject toJson() const;
 
+    Scene *scene() const;
+
 protected:
 private:
     AgentInstance *m_defaultAgentInstance;
@@ -73,6 +77,7 @@ private:
     QString m_fileName;
 
     Brain *m_brain;
+    Scene *m_scene;
 
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged FINAL)
 

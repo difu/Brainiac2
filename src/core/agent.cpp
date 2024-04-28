@@ -5,9 +5,12 @@
 #include <QtDebug>
 #include <QtGlobal>
 
-Agent::Agent(QObject *parent)
+#include "scene.h"
+
+Agent::Agent(Scene *parent)
     : QObject{parent}
 {
+    m_scene = parent;
     m_defaultAgentInstance = nullptr;
 
     m_brain = new Brain(this);
@@ -97,6 +100,11 @@ QJsonObject Agent::toJson() const
     QJsonObject obj;
     obj["name"] = m_name;
     return obj;
+}
+
+Scene *Agent::scene() const
+{
+    return m_scene;
 }
 
 void Agent::setFileName(const QString &newFileName)

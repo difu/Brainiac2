@@ -1,6 +1,7 @@
 #include "agentinstance.h"
 #include "agent.h"
 #include "channel.h"
+#include "scene.h"
 
 #include "generator/locator.h"
 
@@ -9,11 +10,11 @@
 AgentInstance::AgentInstance(Locator *locator, Agent *parent)
     : QObject{parent}
 {
-    m_agent = qobject_cast<Agent *>(parent);
-    if (!m_agent) {
-        qCritical() << "Parent of AgentInstance is not Agent!";
-    }
+    m_agent = parent;
+    locator->setAgentInstance(this);
     m_locator = locator;
+    m_agent->scene()->addAgentInstance(this);
+
     reset();
 }
 
