@@ -23,7 +23,7 @@ void AgentInstaceGeometryQuick3D::updateData()
     *p++ = -10.0f;
     *p++ = 0.0f;
     *p++ = 0.0f;
-    *p++ = 10.0f;
+    *p++ = 20.0f;
 
     setVertexData(vertexData);
     setStride(stride);
