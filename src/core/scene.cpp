@@ -29,7 +29,7 @@ QQmlApplicationEngine *Scene::qQmlApplicationEngine() const
 void Scene::setQQmlApplivationEngine(QQmlApplicationEngine *newQQmlApplicationEngine)
 {
     m_qQmlApplicationEngine = newQQmlApplicationEngine;
-    QObject *viewer = m_qQmlApplicationEngine->rootObjects().first();
+    QObject *viewer = m_qQmlApplicationEngine->rootObjects().constFirst();
     QObject *agentSpawner = nullptr;
     foreach (QObject *obj, viewer->findChildren<QObject *>("agentInstanceSpawner")) {
         agentSpawner = obj;

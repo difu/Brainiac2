@@ -46,13 +46,13 @@ include_directories(
 qt_add_qml_module(Brainiac
     URI "BrainiacViewer"
     VERSION 1.0
+    RESOURCE_PREFIX "/qt/qml"
     QML_FILES
         src/gui/MainViewer.qml
+        src/gui/AgentInstance.qml
     IMPORTS
         QtQuick3D
-    NO_RESOURCE_TARGET_PATH
     SOURCES src/gui/agent/agentinstacegeometryquick3d.h src/gui/agent/agentinstacegeometryquick3d.cpp
-    QML_FILES src/gui/AgentInstance.qml
 )
 
 
