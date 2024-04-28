@@ -91,7 +91,7 @@ ApplicationWindow {
                         console.debug("ERROR while spawning AgentInstance: "+ shapeComponent.errorString());
                     }
                 }
-                console.debug("Creating QML from QV Parameter (Pointer): " + agentInstanceQVariant);
+                // console.debug("Creating QML from QV Parameter (Pointer): " + agentInstanceQVariant);
                 let instance = shapeComponent.createObject(agentInstanceSpawner,
                     { "agentInstance": agentInstanceQVariant});
                 instances.push(instance);

@@ -11,6 +11,11 @@ AgentInstance::AgentInstance(Locator *locator, Agent *parent)
     : QObject{parent}
 {
     m_agent = parent;
+
+    /**
+        Take care that @ref Locator and @ref AgentInstance know each other.
+        Only after that it is safe to add an agentInstance to the Quick 3D view.
+    */
     locator->setAgentInstance(this);
     m_locator = locator;
     m_agent->scene()->addAgentInstance(this);

@@ -54,7 +54,7 @@ void AgentInstaceGeometryQuick3D::setAgentInstance(AgentInstance *newAgentInstan
 
 void AgentInstaceGeometryQuick3D::setAgentInstance(QVariant newAgentInstance)
 {
-    qDebug() << newAgentInstance;
+    //qDebug() << newAgentInstance;
     QPointer newAgentInstanceQP = newAgentInstance.value<QPointer<AgentInstance> >();
     AgentInstance *inst = newAgentInstanceQP.data();
     if (inst) {
