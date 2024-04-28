@@ -13,14 +13,15 @@ public:
     AgentInstaceGeometryQuick3D();
     Q_PROPERTY(QVariant agentInstance READ agentInstance WRITE setAgentInstance NOTIFY
                    agentInstanceChanged FINAL)
-    Q_PROPERTY(QVector3D translation READ translation NOTIFY translationChanged FINAL)
-    QVector3D translation() const;
+    Q_PROPERTY(QVector3D agentTranslation READ agentTranslation NOTIFY agentTranslationChanged FINAL)
+    QVector3D agentTranslation() const;
     QVariant agentInstance() const;
     Q_INVOKABLE void setAgentInstance(QVariant newAgentInstance);
+    void emitTranslationChanged();
 
 signals:
     void agentInstanceChanged();
-    void translationChanged();
+    void agentTranslationChanged(QVector3D);
 
 private:
     void setAgentInstance(AgentInstance *newAgentInstance);

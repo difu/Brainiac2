@@ -84,19 +84,16 @@ ApplicationWindow {
                 return "Hello from agentSpawner"
             }
 
-            function addAgentInstance(agentInstance) {
-                var xPos = (2 * Math.random() * range) - range;
-                var yPos = 0;
-                var zPos = (2 * Math.random() * range) - range;
+            function addAgentInstance(agentInstanceQVariant) {
                 var shapeComponent = Qt.createComponent("AgentInstance.qml");
                 if( shapeComponent.status !== Component.Ready ) {
                     if(shapeComponent.status === Component.Error) {
                         console.debug("ERROR while spawning AgentInstance: "+ shapeComponent.errorString());
                     }
                 }
-                console.debug("Creating QML from QV Parameter (Pointer): " + agentInstance);
+                console.debug("Creating QML from QV Parameter (Pointer): " + agentInstanceQVariant);
                 let instance = shapeComponent.createObject(agentInstanceSpawner,
-                    { "agentInstance": agentInstance ,"x": xPos, "y": yPos, "z": zPos});
+                    { "agentInstance": agentInstanceQVariant});
                 instances.push(instance);
                 count = instances.length
             }

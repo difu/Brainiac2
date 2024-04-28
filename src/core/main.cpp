@@ -67,13 +67,17 @@ int main(int argc, char *argv[])
         // }
 
         Locator *loc1 = gen->addLocator(agent);
-        loc1->setLocation(QVector3D(10, 0, 10));
+        qDebug() << "After addLocator";
+        loc1->setLocation(QVector3D(50, -50, 50));
+        qDebug() << "After setLocation";
         gen->apply();
-
+        qDebug() << "After apply ";
         QPointer<AgentInstance> qp(loc1->agentInstance());
         QVariant qv = QVariant::fromValue(qp);
         qDebug() << "QVariant from main.cpp " << qv;
         QMetaObject::invokeMethod(obj, "addAgentInstance", Q_ARG(QVariant, qv));
+        loc1->setLocation(QVector3D(0, 50, 0));
+        loc1->agentInstance()->reset();
     }
 
     // Debug

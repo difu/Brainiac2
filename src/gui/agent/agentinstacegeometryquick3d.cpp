@@ -64,7 +64,12 @@ void AgentInstaceGeometryQuick3D::setAgentInstance(QVariant newAgentInstance)
     }
 }
 
-QVector3D AgentInstaceGeometryQuick3D::translation() const
+QVector3D AgentInstaceGeometryQuick3D::agentTranslation() const
 {
     return m_agentInstance->translation();
+}
+
+void AgentInstaceGeometryQuick3D::emitTranslationChanged()
+{
+    emit agentTranslationChanged(m_agentInstance->translation());
 }

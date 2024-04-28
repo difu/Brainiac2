@@ -78,6 +78,12 @@ void AgentInstance::setTranslation(const QVector3D &newTranslation)
     if (m_translation == newTranslation)
         return;
     m_translation = newTranslation;
+
+    // TODO
+    // Should not be necessary, assume the Quick3d node is ready!
+    if (m_geometryQuick3DNode) {
+        m_geometryQuick3DNode->emitTranslationChanged();
+    }
     emit translationChanged();
 }
 
