@@ -87,10 +87,35 @@ void AgentInstance::setTranslation(const QVector3D &newTranslation)
     emit translationChanged();
 }
 
+QVector3D AgentInstance::rotation() const
+{
+    return m_rotation;
+}
+
+void AgentInstance::setRotation(const QVector3D &newRotation)
+{
+    if (m_rotation == newRotation)
+        return;
+
+    m_rotation = newRotation;
+    // TODO
+    // Should not be necessary, assume the Quick3d node is ready!
+    if (m_geometryQuick3DNode) {
+        m_geometryQuick3DNode->emitRotationChanged();
+    }
+    emit rotationChanged();
+}
+
 void AgentInstance::reset()
 {
     setTranslation(m_locator->location());
-    m_rotation = m_locator->rotation();
+    setRotation(m_locator->rotation());
+    // TODO
+    // Should not be necessary, assume the Quick3d node is ready!
+    if (m_geometryQuick3DNode) {
+        m_geometryQuick3DNode->emitTranslationChanged();
+        m_geometryQuick3DNode->emitRotationChanged();
+    }
     m_newTranslation = m_translation;
     m_newRotation = m_rotation;
 }

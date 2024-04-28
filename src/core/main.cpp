@@ -69,6 +69,7 @@ int main(int argc, char *argv[])
         Locator *loc1 = gen->addLocator(agent);
         qDebug() << "After addLocator";
         loc1->setLocation(QVector3D(50, -50, 50));
+        //loc1->setRotation(QVector3D(1, -50, 50));
         qDebug() << "After setLocation";
         gen->apply();
         qDebug() << "After apply ";
@@ -77,6 +78,7 @@ int main(int argc, char *argv[])
         qDebug() << "QVariant from main.cpp " << qv;
         QMetaObject::invokeMethod(obj, "addAgentInstance", Q_ARG(QVariant, qv));
         loc1->setLocation(QVector3D(0, 50, 0));
+        loc1->setRotation(QVector3D(0, -50, 50));
         loc1->agentInstance()->reset();
     }
 

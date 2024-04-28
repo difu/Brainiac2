@@ -69,6 +69,16 @@ QVector3D AgentInstaceGeometryQuick3D::agentTranslation() const
     return m_agentInstance->translation();
 }
 
+QVector3D AgentInstaceGeometryQuick3D::agentRotation() const
+{
+    return m_agentInstance->rotation();
+}
+
+void AgentInstaceGeometryQuick3D::emitRotationChanged()
+{
+    emit agentRotationChanged(m_agentInstance->rotation());
+}
+
 void AgentInstaceGeometryQuick3D::emitTranslationChanged()
 {
     emit agentTranslationChanged(m_agentInstance->translation());

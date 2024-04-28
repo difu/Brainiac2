@@ -18,8 +18,9 @@ Node {
             objectName: "AgentInstanceGeometry"
             agentInstance: agentInstanceNode.agentInstance
             onAgentTranslationChanged: agentInstanceModel.setPosition(instanceGeom.agentTranslation)
+            onAgentRotationChanged: agentInstanceModel.setEulerRotation(instanceGeom.agentRotation)
             Component.onCompleted: {
-                agentInstanceModel.setEulerRotation(Qt.vector3d(0, 0, 100))
+                //agentInstanceModel.setEulerRotation(Qt.vector3d(0, 0, 100))
             }
         }
         materials: [

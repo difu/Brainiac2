@@ -39,6 +39,9 @@ public:
     QVector3D translation() const;
     void setTranslation(const QVector3D &newTranslation);
 
+    QVector3D rotation() const;
+    void setRotation(const QVector3D &newRotation);
+
 private:
     Agent *m_agent;
     AgentInstaceGeometryQuick3D *m_geometryQuick3DNode;
@@ -62,6 +65,7 @@ private:
 signals:
     void geometryQuick3DNodeChanged();
     void translationChanged();
+    void rotationChanged();
 };
 
 #endif // AGENTINSTANCE_H
