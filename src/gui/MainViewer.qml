@@ -108,4 +108,7 @@ ApplicationWindow {
             camera: cameraNode
         }
     }
+    DebugView {
+        source: v3d
+    }
 }
