@@ -2,10 +2,10 @@
 
 #include "scene.h"
 
-Simulation::Simulation(QObject *parent)
-    : QObject{parent}
+Simulation::Simulation(QObject *scene)
+    : QObject{scene}
 {
-    m_scene = qobject_cast<Scene *>(parent);
+    m_scene = qobject_cast<Scene *>(scene);
     m_isRunning = false;
     setStartFrame(0);
     setEndFrame(24);
@@ -33,7 +33,7 @@ quint32 Simulation::startFrame() const
     return m_startFrame;
 }
 
-void Simulation::setStartFrame(qint32 newStartFrame)
+void Simulation::setStartFrame(quint32 newStartFrame)
 {
     if (m_startFrame == newStartFrame)
         return;
@@ -51,7 +51,7 @@ quint32 Simulation::endFrame() const
     return m_endFrame;
 }
 
-void Simulation::setEndFrame(qint32 newEndFrame)
+void Simulation::setEndFrame(quint32 newEndFrame)
 {
     if (m_endFrame == newEndFrame)
         return;

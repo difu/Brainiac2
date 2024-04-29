@@ -5,6 +5,7 @@
 
 class QQmlApplicationEngine;
 class AgentInstance;
+class Simulation;
 
 class Scene : public QObject
 {
@@ -22,6 +23,7 @@ public:
 private:
     QQmlApplicationEngine *m_qQmlApplicationEngine;
     QObject *m_agentInstanceSpawner;
+    Simulation *m_simulation;
 signals:
 };
 

@@ -9,16 +9,16 @@ class Simulation : public QObject
 {
     Q_OBJECT
 public:
-    explicit Simulation(QObject *parent = nullptr);
+    explicit Simulation(QObject *scene);
 
     void advance();
     quint32 currentFrame() const;
     void reset();
     quint32 startFrame() const;
-    void setStartFrame(qint32 newStartFrame);
+    void setStartFrame(quint32 newStartFrame);
 
     quint32 endFrame() const;
-    void setEndFrame(qint32 newEndFrame);
+    void setEndFrame(quint32 newEndFrame);
 
     void startSimulation();
 

@@ -4,11 +4,13 @@
 #include <QQmlApplicationEngine>
 
 #include "agentinstance.h"
+#include "src/core/simulation.h"
 
 Scene::Scene(QObject *parent)
     : QObject{parent}
 {
     setObjectName("Scene");
+    m_simulation=new Simulation(this);
     m_agentInstanceSpawner = nullptr;
     m_qQmlApplicationEngine = nullptr;
 }
