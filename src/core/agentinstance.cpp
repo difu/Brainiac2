@@ -26,6 +26,9 @@ AgentInstance::AgentInstance(Locator *locator, Agent *parent)
 void AgentInstance::addInputChannel(BrainiacGlobals::BrainiacId id,
                                     Channel::ChannelDefaults *defaults)
 {
+    if(m_inputChannels.contains(id)) {
+        return;
+    }
     Channel *newChannel = new Channel(this, defaults);
     m_inputChannels.insert(id, newChannel);
     qDebug() << "ChannelName " << newChannel->getInfo()
@@ -35,6 +38,9 @@ void AgentInstance::addInputChannel(BrainiacGlobals::BrainiacId id,
 void AgentInstance::addOutputChannel(BrainiacGlobals::BrainiacId id,
                                      Channel::ChannelDefaults *defaults)
 {
+    if(m_outputChannels.contains(id)){
+        return;
+    }
     Channel *newChannel = new Channel(this, defaults);
     m_outputChannels.insert(id, newChannel);
     qDebug() << "ChannelName " << newChannel->getInfo()
@@ -116,12 +122,7 @@ void AgentInstance::reset()
 {
     setTranslation(m_locator->location());
     setRotation(m_locator->rotation());
-    // TODO
-    // Should not be necessary, assume the Quick3d node is ready!
-    if (m_geometryQuick3DNode) {
-        m_geometryQuick3DNode->emitTranslationChanged();
-        m_geometryQuick3DNode->emitRotationChanged();
-    }
+
     m_newTranslation = m_translation;
     m_newRotation = m_rotation;
 }
