@@ -20,6 +20,8 @@ public:
 
     QObject *agentInstanceSpawner() const;
 
+    Simulation *simulation() const;
+
 private:
     QQmlApplicationEngine *m_qQmlApplicationEngine;
     QObject *m_agentInstanceSpawner;

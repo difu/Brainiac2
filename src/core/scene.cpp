@@ -46,3 +46,8 @@ QObject *Scene::agentInstanceSpawner() const
 {
     return m_agentInstanceSpawner;
 }
+
+Simulation *Scene::simulation() const
+{
+    return m_simulation;
+}

@@ -1,12 +1,16 @@
 #include "simulation.h"
-
 #include "scene.h"
+
+#include <QTimerEvent>
+#include <QMutexLocker>
+#include <QDebug>
 
 Simulation::Simulation(QObject *scene)
     : QObject{scene}
 {
     m_scene = qobject_cast<Scene *>(scene);
     m_isRunning = false;
+    m_timerId=0;
     setStartFrame(0);
     setEndFrame(24);
     setFrameRate(24.0f);
@@ -15,16 +19,20 @@ Simulation::Simulation(QObject *scene)
 
 void Simulation::advance()
 {
-    if (m_currentFrame == m_endFrame) {
+    if (m_currentFrame >= m_endFrame) {
         qInfo("End frame of simulation already reached: %d", m_endFrame);
         return;
     }
-    quint32 nextFrame = m_currentFrame + 1;
-    setCurrentFrame(nextFrame);
-    emit advanced(m_currentFrame);
-    if (m_currentFrame == m_endFrame) {
-        m_isRunning = false;
-        emit endFrameReached();
+    if(m_advanceMutex.tryLock()) {
+        qDebug() << "Advancing to frame " << m_currentFrame;
+        quint32 nextFrame = m_currentFrame + 1;
+        setCurrentFrame(nextFrame);
+        emit advanced(m_currentFrame);
+        if (m_currentFrame == m_endFrame) {
+            m_isRunning = false;
+            emit endFrameReached();
+        }
+        m_advanceMutex.unlock();
     }
 }
 
@@ -80,6 +88,8 @@ qreal Simulation::frameRate() const
 void Simulation::setFrameRate(qreal newFrameRate)
 {
     m_frameRate = newFrameRate;
+    this->killTimer(m_timerId);
+    m_timerId=this->startTimer(1/m_frameRate*1000);
 }
 
 bool Simulation::isRunning() const
@@ -90,6 +100,12 @@ bool Simulation::isRunning() const
 void Simulation::startSimulation()
 {
     m_isRunning = true;
+}
+
+void Simulation::timerEvent(QTimerEvent *event){
+    if(event->timerId() == m_timerId && m_isRunning) {
+        this->advance();
+    }
 }
 
 Simulation::~Simulation() {}

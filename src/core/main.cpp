@@ -11,6 +11,7 @@
 #include "generator/generatormanual.h"
 #include "generator/locator.h"
 #include "scene.h"
+#include "simulation.h"
 
 int main(int argc, char *argv[])
 {
@@ -41,6 +42,8 @@ int main(int argc, char *argv[])
         loc->setRotation(QVector3D(0, 50 + i * 10, 0));
     }
     gen->apply();
+
+    scene->simulation()->startSimulation();
 
     // Debug
 

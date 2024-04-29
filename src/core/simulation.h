@@ -1,6 +1,6 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
-
+#include <QMutex>
 #include <QObject>
 
 class Scene;
@@ -31,6 +31,7 @@ public:
 
 protected:
     void setCurrentFrame(quint32 newCurrentFrame);
+    virtual void timerEvent(QTimerEvent *event);
 
 private:
     quint32 m_startFrame;
@@ -39,7 +40,9 @@ private:
 
     qreal m_frameRate;
 
+    QMutex m_advanceMutex;
     bool m_isRunning;
+    int m_timerId;
 
     Scene *m_scene;
 
