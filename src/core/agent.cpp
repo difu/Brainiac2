@@ -19,21 +19,27 @@ Agent::Agent(Scene *parent)
     trans_defaults.max = 100;
     trans_defaults.min = -100;
     trans_defaults.value = 0.0f;
-    addOutputChannel("tx", trans_defaults.min,trans_defaults.max, trans_defaults.value,1);
-    addOutputChannel(QString("ty"), trans_defaults.min,trans_defaults.max, trans_defaults.value, 2);
-    addOutputChannel(QString("tz"), trans_defaults.min,trans_defaults.max, trans_defaults.value, 3);
 
     Channel::ChannelDefaults rot_defaults;
     rot_defaults.max = 180.0f;
     rot_defaults.min = -180.0f;
     rot_defaults.value = 0.0f;
-    addOutputChannel(QString("rx"), rot_defaults.min,rot_defaults.max, rot_defaults.value, 4);
-    addOutputChannel(QString("ry"), rot_defaults.min,rot_defaults.max, rot_defaults.value, 5);
-    addOutputChannel(QString("rz"), rot_defaults.min,rot_defaults.max, rot_defaults.value, 6);
 
-    addInputChannel(QString("tx"), trans_defaults.min,trans_defaults.max, trans_defaults.value, 1);
-    addInputChannel(QString("ty"), trans_defaults.min,trans_defaults.max, trans_defaults.value, 2);
-    addInputChannel(QString("tz"), trans_defaults.min,trans_defaults.max, trans_defaults.value, 3);
+    addOutputChannel(QString("tx"), trans_defaults.min,trans_defaults.max, trans_defaults.value, BrainiacGlobals::TX);
+    addOutputChannel(QString("ty"), trans_defaults.min,trans_defaults.max, trans_defaults.value, BrainiacGlobals::TY);
+    addOutputChannel(QString("tz"), trans_defaults.min,trans_defaults.max, trans_defaults.value, BrainiacGlobals::TZ);
+
+    addOutputChannel(QString("rx"), rot_defaults.min,rot_defaults.max, rot_defaults.value, BrainiacGlobals::RX);
+    addOutputChannel(QString("ry"), rot_defaults.min,rot_defaults.max, rot_defaults.value, BrainiacGlobals::RY);
+    addOutputChannel(QString("rz"), rot_defaults.min,rot_defaults.max, rot_defaults.value, BrainiacGlobals::RZ);
+
+    addInputChannel(QString("tx"), trans_defaults.min,trans_defaults.max, trans_defaults.value, BrainiacGlobals::TX);
+    addInputChannel(QString("ty"), trans_defaults.min,trans_defaults.max, trans_defaults.value, BrainiacGlobals::TY);
+    addInputChannel(QString("tz"), trans_defaults.min,trans_defaults.max, trans_defaults.value, BrainiacGlobals::TY);
+
+    addInputChannel(QString("rx"), trans_defaults.min,trans_defaults.max, trans_defaults.value, BrainiacGlobals::RX);
+    addInputChannel(QString("ry"), trans_defaults.min,trans_defaults.max, trans_defaults.value, BrainiacGlobals::RY);
+    addInputChannel(QString("rz"), trans_defaults.min,trans_defaults.max, trans_defaults.value, BrainiacGlobals::RZ);
 }
 
 AgentInstance *Agent::addAgentInstance(Locator *locator)

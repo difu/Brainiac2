@@ -21,6 +21,7 @@ void Scene::addAgentInstance(AgentInstance *newAgentInstance)
     QVariant qv = QVariant::fromValue(qp);
     //    qDebug() << "QVariant from scene " << qv;
     QMetaObject::invokeMethod(m_agentInstanceSpawner, "addAgentInstance", Q_ARG(QVariant, qv));
+    m_agentInstances.append(newAgentInstance);
 }
 
 QQmlApplicationEngine *Scene::qQmlApplicationEngine() const
@@ -50,4 +51,9 @@ QObject *Scene::agentInstanceSpawner() const
 Simulation *Scene::simulation() const
 {
     return m_simulation;
+}
+
+QList<AgentInstance *> Scene::agentInstances() const
+{
+    return m_agentInstances;
 }

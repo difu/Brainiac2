@@ -1,9 +1,13 @@
 #include "simulation.h"
 #include "scene.h"
 
-#include <QTimerEvent>
-#include <QMutexLocker>
+#include "agentinstance.h"
+
+#include <QDateTime>
 #include <QDebug>
+#include <QMutexLocker>
+#include <QThread>
+#include <QTimerEvent>
 
 Simulation::Simulation(QObject *scene)
     : QObject{scene}
@@ -24,6 +28,7 @@ void Simulation::advance()
         return;
     }
     if(m_advanceMutex.tryLock()) {
+        QDateTime startTime(QDateTime::currentDateTime());
         qDebug() << "Advancing to frame " << m_currentFrame;
         quint32 nextFrame = m_currentFrame + 1;
         setCurrentFrame(nextFrame);
@@ -32,7 +37,23 @@ void Simulation::advance()
             m_isRunning = false;
             emit endFrameReached();
         }
+        foreach (AgentInstance *agentInstance, m_scene->agentInstances()) {
+            agentInstance->advance();
+        }
+        foreach (AgentInstance *agentInstance, m_scene->agentInstances()) {
+            agentInstance->advanceCommit();
+        }
         m_advanceMutex.unlock();
+
+        const QDateTime endTime(QDateTime::currentDateTime());
+        const qint64 durationMS = startTime.msecsTo(endTime);
+        const qint64 frameLengthMS = (qint64) ((1 / (m_frameRate / 1000.0)));
+        const qint64 waitTimeMS = frameLengthMS - durationMS;
+        if (waitTimeMS > 0) {
+            qDebug() << "Frame took " << durationMS << "ms.";
+            qDebug() << "Sleeping for " << waitTimeMS << "ms.";
+            QThread::sleep((std::chrono::nanoseconds) waitTimeMS * 1000);
+        }
     }
 }
 

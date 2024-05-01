@@ -87,7 +87,7 @@ QVector3D AgentInstance::translation() const
 
 void AgentInstance::setTranslation(const QVector3D &newTranslation)
 {
-    if (m_translation == newTranslation)
+    if (qFuzzyCompare(newTranslation, m_translation))
         return;
     m_translation = newTranslation;
 
@@ -106,7 +106,7 @@ QVector3D AgentInstance::rotation() const
 
 void AgentInstance::setRotation(const QVector3D &newRotation)
 {
-    if (m_rotation == newRotation)
+    if (qFuzzyCompare(newRotation, m_rotation))
         return;
 
     m_rotation = newRotation;
@@ -116,6 +116,34 @@ void AgentInstance::setRotation(const QVector3D &newRotation)
         m_geometryQuick3DNode->emitRotationChanged();
     }
     emit rotationChanged();
+}
+
+void AgentInstance::advance()
+{
+    foreach (Channel *outputChannel, m_outputChannels) {
+    }
+    m_newRotation.setX(m_rotation.x() + m_outputChannels.value(BrainiacGlobals::RX)->value());
+    m_newRotation.setY(m_rotation.y() + m_outputChannels.value(BrainiacGlobals::RY)->value());
+    m_newRotation.setZ(m_rotation.z() + m_outputChannels.value(BrainiacGlobals::RZ)->value());
+
+    m_newTranslation.setX(m_translation.x()
+                          + m_outputChannels.value(BrainiacGlobals::TZ)->value()
+                                * BrainiacGlobals::sinGrad(m_newRotation.y())
+                          + m_outputChannels.value(BrainiacGlobals::TX)->value()
+                                * BrainiacGlobals::cosGrad(m_newRotation.y()));
+    m_newTranslation.setY(m_translation.y()); //!< @todo Implement this!
+    m_newTranslation.setZ(m_translation.z()
+                          + m_outputChannels.value(BrainiacGlobals::TZ)->value()
+                                * BrainiacGlobals::cosGrad(m_newRotation.y())
+                          + m_outputChannels.value(BrainiacGlobals::TX)->value()
+                                * BrainiacGlobals::sinGrad(m_newRotation.y()));
+}
+
+void AgentInstance::advanceCommit()
+{
+    // TODO: Think of only emitting once the update of rot and trans
+    setRotation(m_newRotation);
+    setTranslation(m_newTranslation);
 }
 
 void AgentInstance::reset()

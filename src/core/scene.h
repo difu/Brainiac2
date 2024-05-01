@@ -22,10 +22,13 @@ public:
 
     Simulation *simulation() const;
 
+    QList<AgentInstance *> agentInstances() const;
+
 private:
     QQmlApplicationEngine *m_qQmlApplicationEngine;
     QObject *m_agentInstanceSpawner;
     Simulation *m_simulation;
+    QList<AgentInstance *> m_agentInstances;
 signals:
 };
 

@@ -8,6 +8,7 @@
 #include <QtQuick3D/qquick3d.h>
 #include "agent.h"
 #include "agentinstance.h"
+#include "brainiacglobals.h"
 #include "generator/generatormanual.h"
 #include "generator/locator.h"
 #include "scene.h"
@@ -43,6 +44,14 @@ int main(int argc, char *argv[])
     }
     gen->apply();
 
+    AgentInstance *myInstance = scene->agentInstances().constFirst();
+    myInstance->outputChannels().value(BrainiacGlobals::TZ)->setValue(4);
+    myInstance->outputChannels().value(BrainiacGlobals::RY)->setValue(1);
+    AgentInstance *myInstance2 = scene->agentInstances().constLast();
+    myInstance2->outputChannels().value(BrainiacGlobals::TZ)->setValue(3);
+    myInstance2->outputChannels().value(BrainiacGlobals::RY)->setValue(-1);
+
+    scene->simulation()->setEndFrame(120);
     scene->simulation()->startSimulation();
 
     // Debug

@@ -24,6 +24,8 @@ public:
     void addInputChannel(BrainiacGlobals::BrainiacId id, Channel::ChannelDefaults *defaults);
     void addOutputChannel(BrainiacGlobals::BrainiacId id, Channel::ChannelDefaults *defaults);
 
+    void advance();
+    void advanceCommit();
     void reset();
 
     Agent *agent() const;

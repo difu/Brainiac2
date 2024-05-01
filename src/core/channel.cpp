@@ -9,11 +9,38 @@ Channel::Channel(AgentInstance *parent, ChannelDefaults *defaults)
 {
     m_defaults = defaults;
     m_agentInstance = parent;
+    m_value = m_oldValue = m_defaults->value;
+}
+
+void Channel::advance() {
+    m_oldValue=m_value;
 }
 
 Channel::ChannelDefaults *Channel::defaults() const
 {
     return m_defaults;
+}
+
+qreal Channel::value() const {
+    return m_value;
+}
+
+qreal Channel::oldValue() const {
+    return m_oldValue;
+}
+
+void Channel::setValue(qreal value, bool isSpeed)
+{
+    qreal origValue=m_value;
+    if(isSpeed) {
+        m_value=m_oldValue+value;
+    } else {
+        m_value=value;
+    }
+    m_value=qBound(m_defaults->min,m_value,m_defaults->max);
+    if(m_value!=origValue) {
+        //emit valueChanged(m_value);
+    }
 }
 
 QString Channel::getInfo()

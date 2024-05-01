@@ -20,11 +20,36 @@ public:
     };
     explicit Channel(AgentInstance *parent, Channel::ChannelDefaults *defaults);
 
+    /** \brief set channels old value to actual value
+    **/
+    void advance();
+
     ChannelDefaults *defaults() const;
+
+    /** \brief @returns the current value of this channel
+    **/
+    qreal value() const;
+
+    /** \brief sets channel´s value
+
+        set the channels value.
+        the value is cropped to the channels limits
+
+    **/
+    void setValue(qreal value, bool isSpeed=false);
+
+    /** \brief @returns the old value of this channel
+    **/
+    qreal oldValue() const;
+
+    /** \brief resets the channel
+     * the default value is applied both for value and old value
+    **/
+    void reset();
 
     /**
      * @brief getInfo
-     * returns a QStrinb containing the name and type of this channel
+     * returns a QString containing the name and type of this channel
      *
      * @return QString info message
      */
