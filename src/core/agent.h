@@ -33,11 +33,15 @@ public:
     Brain *brain() const;
 
     BrainiacGlobals::BrainiacId addInputChannel(const QString channelName,
-                                                Channel::ChannelDefaults defaults,
+                                                qreal channelMinVal,
+                                                qreal channelMaxVal,
+                                                qreal channelDefaultVal,
                                                 BrainiacGlobals::BrainiacId id = 0);
 
     BrainiacGlobals::BrainiacId addOutputChannel(const QString channelName,
-                                                 Channel::ChannelDefaults defaults,
+                                                 qreal channelMinVal,
+                                                 qreal channelMaxVal,
+                                                 qreal channelDefaultVal,
                                                  BrainiacGlobals::BrainiacId id = 0);
     quint32 numInputChannels() const;
     quint32 numOutputChannels() const;
@@ -50,8 +54,8 @@ public:
 
     QList<AgentInstance *> agentInstances() const;
 
-    QHash<BrainiacGlobals::BrainiacId, Channel::ChannelDefaults> inputChannelDefaults() const;
-    QHash<BrainiacGlobals::BrainiacId, Channel::ChannelDefaults> outputChannelDefaults() const;
+    QHash<BrainiacGlobals::BrainiacId, Channel::ChannelDefaults *> inputChannelDefaults() const;
+    QHash<BrainiacGlobals::BrainiacId, Channel::ChannelDefaults *> outputChannelDefaults() const;
 
     QString fileName() const;
     void setFileName(const QString &newFileName);
@@ -63,6 +67,8 @@ public:
 
     Scene *scene() const;
 
+    virtual ~Agent();
+
 protected:
 private:
     AgentInstance *m_defaultAgentInstance;
@@ -71,8 +77,8 @@ private:
     QHash<QString, BrainiacGlobals::BrainiacId> m_inputChannels;
     QHash<QString, BrainiacGlobals::BrainiacId> m_outputChannels;
 
-    QHash<BrainiacGlobals::BrainiacId, Channel::ChannelDefaults> m_inputChannelDefaults;
-    QHash<BrainiacGlobals::BrainiacId, Channel::ChannelDefaults> m_outputChannelDefaults;
+    QHash<BrainiacGlobals::BrainiacId, Channel::ChannelDefaults *> m_inputChannelDefaults;
+    QHash<BrainiacGlobals::BrainiacId, Channel::ChannelDefaults *> m_outputChannelDefaults;
 
     QString m_fileName;
 
