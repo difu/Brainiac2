@@ -39,6 +39,14 @@ AgentInstance *Agent::addAgentInstance(Locator *locator)
 {
     AgentInstance *newAgentInstance = new AgentInstance(locator, this);
     m_agentInstances.append(newAgentInstance);
+    foreach(BrainiacGlobals::BrainiacId inputId, m_inputChannels) {
+        Channel::ChannelDefaults channeldefaults = m_inputChannelDefaults.value(inputId);
+        newAgentInstance->addInputChannel(inputId, &channeldefaults);
+    }
+    foreach(BrainiacGlobals::BrainiacId outputId, m_outputChannels) {
+        Channel::ChannelDefaults channeldefaults = m_outputChannelDefaults.value(outputId);
+        newAgentInstance->addOutputChannel(outputId, &channeldefaults);
+    }
     return newAgentInstance;
 }
 

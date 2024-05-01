@@ -21,6 +21,13 @@ public:
     explicit Channel(AgentInstance *parent, Channel::ChannelDefaults *defaults);
 
     ChannelDefaults *defaults() const;
+
+    /**
+     * @brief getInfo
+     * returns a QStrinb containing the name and type of this channel
+     *
+     * @return QString info message
+     */
     QString getInfo();
 
 signals:

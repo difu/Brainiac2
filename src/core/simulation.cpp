@@ -89,7 +89,7 @@ void Simulation::setFrameRate(qreal newFrameRate)
 {
     m_frameRate = newFrameRate;
     this->killTimer(m_timerId);
-    m_timerId=this->startTimer(1/m_frameRate*1000);
+    m_timerId=this->startTimer((1/m_frameRate)*1000);
 }
 
 bool Simulation::isRunning() const
