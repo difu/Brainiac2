@@ -8,9 +8,9 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Quick Quick3D Widgets)
 
 qt_add_executable(Brainiac
     src/core/main.cpp
-#    src/gui/mainwindow.cpp
-#    src/gui/mainwindow.h
-#   src/gui/mainwindow.ui
+    src/gui/mainwindow.cpp
+    src/gui/mainwindow.h
+//    src/gui/mainwindow.ui
     src/core/agent.h src/core/agent.cpp
     src/core/agentinstance.h src/core/agentinstance.cpp
     src/core/brain/brain.h src/core/brain/brain.cpp

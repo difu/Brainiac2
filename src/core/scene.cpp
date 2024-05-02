@@ -57,3 +57,23 @@ QList<AgentInstance *> Scene::agentInstances() const
 {
     return m_agentInstances;
 }
+
+QList<AgentInstance *> Scene::selectedAgentInstances() const
+{
+    return m_selectedAgentInstances;
+}
+
+void Scene::setSelectedAgentInstances(const QList<AgentInstance *> &newSelectedAgentInstances)
+{
+    if (m_selectedAgentInstances == newSelectedAgentInstances)
+        return;
+    m_selectedAgentInstances = newSelectedAgentInstances;
+    emit selectedAgentInstancesChanged();
+}
+
+void Scene::setSelectedAgentInstance(AgentInstance *newSelectedAgentInstance)
+{
+    m_selectedAgentInstances.clear();
+    m_selectedAgentInstances.append(newSelectedAgentInstance);
+    emit selectedAgentInstancesChanged();
+}

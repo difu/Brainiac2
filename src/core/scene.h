@@ -4,6 +4,7 @@
 #include <QObject>
 
 class QQmlApplicationEngine;
+class Agent;
 class AgentInstance;
 class Simulation;
 
@@ -24,12 +25,27 @@ public:
 
     QList<AgentInstance *> agentInstances() const;
 
+    QList<AgentInstance *> selectedAgentInstances() const;
+    /**
+     * @brief setSelectedAgentInstances
+     * sets the list of selected agentInstances.
+     * 
+     * @param newSelectedAgentInstances
+     */
+    void setSelectedAgentInstances(const QList<AgentInstance *> &newSelectedAgentInstances);
+    void setSelectedAgentInstance(AgentInstance *newSelectedAgentInstance);
+
 private:
     QQmlApplicationEngine *m_qQmlApplicationEngine;
     QObject *m_agentInstanceSpawner;
     Simulation *m_simulation;
     QList<AgentInstance *> m_agentInstances;
+    QList<AgentInstance *> m_selectedAgentInstances;
+    Q_PROPERTY(QList<AgentInstance *> selectedAgentInstances READ selectedAgentInstances WRITE
+                   setSelectedAgentInstances NOTIFY selectedAgentInstancesChanged FINAL)
+
 signals:
+    void selectedAgentInstancesChanged();
 };
 
 #endif // SCENE_H

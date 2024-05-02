@@ -1,6 +1,6 @@
 //#include "../gui/mainwindow.h"
 
-#include <QGuiApplication>
+#include <QApplication>
 #include <QMetaObject>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
@@ -13,12 +13,13 @@
 #include "generator/locator.h"
 #include "scene.h"
 #include "simulation.h"
+#include "src/gui/mainwindow.h"
 
 int main(int argc, char *argv[])
 {
     qSetMessagePattern("%{file}:%{line} %{function} -> %{if-category}%{category}: %{endif}%{message}");
 
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
 
     QSurfaceFormat::setDefaultFormat(QQuick3D::idealSurfaceFormat());
 
@@ -31,6 +32,13 @@ int main(int argc, char *argv[])
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
     engine.loadFromModule("BrainiacViewer", "MainViewer");
+
+    MainWindow mainWindow;
+    mainWindow.setGeometry(100, 100, 800, 500);
+    mainWindow.show();
+
+    //QWidget widget;
+    //widget.show();
 
     Scene *scene = new Scene;
     scene->setQQmlApplivationEngine(&engine);
