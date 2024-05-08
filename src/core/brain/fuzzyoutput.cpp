@@ -4,12 +4,15 @@ FuzzyOutput::FuzzyOutput(QObject *parent)
     : FuzzyBase{parent}
 {
     m_channelId = 0;
-    LogicType m_type = FuzzyBase::OUTPUT;
+    m_type = FuzzyBase::OUTPUT;
 }
 
 void FuzzyOutput::fromJson(QJsonObject obj) {}
 
-QJsonObject FuzzyOutput::toJson() const {}
+QJsonObject FuzzyOutput::toJson() const
+{
+    return QJsonObject();
+}
 
 BrainiacGlobals::BrainiacId FuzzyOutput::channelId() const
 {
@@ -22,4 +25,9 @@ void FuzzyOutput::setChannelId(BrainiacGlobals::BrainiacId newChannelId)
         return;
     m_channelId = newChannelId;
     emit channelIdChanged();
+}
+
+qreal FuzzyOutput::result(AgentInstance *agentInstance)
+{
+    return 0;
 }
