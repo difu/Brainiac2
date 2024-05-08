@@ -5,6 +5,12 @@
 
 #include "src/core/brainiacglobals.h"
 
+/*!
+ * \brief The EditorItem class
+ * 
+ * The parent is of one of 
+ *   - FuzzyBase
+ */
 class EditorItem : public QGraphicsItem
 {
 public:
@@ -29,8 +35,9 @@ public:
     }
 
 protected:
-private:
     QObject *m_object;
+
+private:
     BrainiacGlobals::ItemType m_type;
 };
 

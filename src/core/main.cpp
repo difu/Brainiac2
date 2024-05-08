@@ -35,18 +35,18 @@ int main(int argc, char *argv[])
         Qt::QueuedConnection);
     engine.loadFromModule("BrainiacViewer", "MainViewer");
 
-    MainWindow mainWindow;
-    mainWindow.setGeometry(100, 100, 800, 500);
-    mainWindow.show();
-
     //QWidget widget;
     //widget.show();
 
     Scene *scene = new Scene;
+    MainWindow mainWindow(scene);
+    mainWindow.setGeometry(100, 100, 800, 500);
+    mainWindow.show();
     scene->setQQmlApplivationEngine(&engine);
     GeneratorManual *gen = new GeneratorManual(scene);
     Agent *agent = new Agent(scene);
     Noise *newNoise = agent->brain()->addNoiseNode();
+    newNoise->setRate(1.0);
 
     for (int i = 0; i < 15; i++) {
         Locator *loc = gen->addLocator(agent);
@@ -62,6 +62,7 @@ int main(int argc, char *argv[])
     AgentInstance *myInstance2 = scene->agentInstances().constLast();
     myInstance2->outputChannels().value(BrainiacGlobals::TZ)->setValue(3);
     myInstance2->outputChannels().value(BrainiacGlobals::RY)->setValue(-1);
+    agent->setDefaultAgentInstance(myInstance);
 
     mainWindow.setMainEditor(agent->brain()->brainEditor());
 

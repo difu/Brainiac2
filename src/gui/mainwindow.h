@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QtWidgets>
+#include "src/core/scene.h"
 #include "src/gui/editorbase.h"
 
 QT_BEGIN_NAMESPACE
@@ -16,12 +17,14 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(Scene *scene, QWidget *parent = nullptr);
     void setMainEditor(EditorBase *newEditor);
     ~MainWindow();
 
 private:
     //    Ui::MainWindow *ui;
     QGraphicsView *m_graphicsView;
+    EditorBase *m_currentEditor;
+    Scene *m_scene;
 };
 #endif // MAINWINDOW_H

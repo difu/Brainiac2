@@ -4,6 +4,11 @@
 #include <QObject>
 #include "fuzzybase.h"
 
+/*!
+ * \brief The Noise class
+ * 
+ * The parent is the Brain.
+ */
 class Noise : public FuzzyBase
 {
     Q_OBJECT

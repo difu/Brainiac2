@@ -89,3 +89,8 @@ void FuzzyBase::setEditorItem(EditorItem *newEditorItem)
     m_editorItem = newEditorItem;
     m_brain->brainEditor()->addItem(m_editorItem);
 }
+
+Brain *FuzzyBase::brain() const
+{
+    return m_brain;
+}

@@ -51,6 +51,8 @@ public:
 
     EditorItem *editorItem() const;
 
+    Brain *brain() const;
+
 protected:
     QJsonObject getBaseJsonConfig();
     void setEditorItem(EditorItem *newEditorItem);

@@ -13,6 +13,8 @@ Noise::Noise(QObject *parent)
 {
     m_type = LogicType::NOISE;
     m_rate = 0;
+    setMinValue(0.0);
+    setMaxValue(1.0);
     this->setEditorItem(new BrainEditorItem(this));
 }
 
@@ -35,6 +37,10 @@ void Noise::setRate(qreal newRate)
 
 qreal Noise::result(AgentInstance *agentInstance)
 {
+    if (!agentInstance) {
+        qDebug() << "No valid agentInstance";
+        return 0.0;
+    }
     quint32 seed = agentInstance->locator()->seed();
     if (m_rate != 0.0) {
         quint32 currentFrame = m_brain->agent()->scene()->simulation()->currentFrame();
