@@ -32,12 +32,16 @@ public:
     AgentInstance *agentInstance() const;
     void setAgentInstance(AgentInstance *newAgentInstance);
 
+    quint32 seed() const;
+    void setSeed(quint32 newSeed);
+
 private:
     AgentInstance *m_agentInstance;
     Agent *m_agent;
     LocatorState m_locatorState;
     QVector3D m_location;
     QVector3D m_rotation;
+    quint32 m_seed;
 signals:
 };
 

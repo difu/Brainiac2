@@ -6,7 +6,9 @@
 
 #include "../brainiacglobals.h"
 
-class QGraphicsItem;
+class AgentInstance;
+class Brain;
+class EditorItem;
 
 class FuzzyBase : public QObject
 {
@@ -30,6 +32,8 @@ public:
     qreal maxValue() const;
     void setMaxValue(qreal newMaxValue);
 
+    virtual qreal result(AgentInstance *agentInstance) = 0;
+
     void addChild(FuzzyBase *child);
     QList<FuzzyBase *> children() const;
 
@@ -41,12 +45,18 @@ public:
     QPointF editorPos() const;
     void setEditorPos(qreal x, qreal y);
 
-    virtual void fromJson(QJsonObject obj) const = 0;
+    virtual void fromJson(QJsonObject obj) = 0;
     virtual QJsonObject toJson() const = 0;
     virtual ~FuzzyBase();
 
+    EditorItem *editorItem() const;
+
 protected:
     QJsonObject getBaseJsonConfig();
+    void setEditorItem(EditorItem *newEditorItem);
+    LogicType m_type;
+    Brain *m_brain;
+    EditorItem *m_editorItem;
 
 private:
     struct Parent
@@ -54,17 +64,14 @@ private:
         FuzzyBase *parent;
         bool inverted;
     };
-    LogicType m_type;
     qreal m_maxValue;
     qreal m_minValue;
-    qreal m_result;
+    //qreal m_result;
 
     QList<Parent> m_parents;
     QList<FuzzyBase *> m_children;
 
     QString m_name;
-
-    QGraphicsItem *m_graphicsItem;
 
     Q_PROPERTY(qreal minValue READ minValue WRITE setMinValue NOTIFY minValueChanged FINAL)
 

@@ -9,6 +9,7 @@ Locator::Locator(Agent *agent, QObject *parent)
     m_agent = agent;
     m_agentInstance = nullptr;
     m_locatorState = Locator::DEFAULT;
+    m_seed = 0;
 }
 
 Locator::LocatorState Locator::locatorState() const
@@ -71,4 +72,14 @@ AgentInstance *Locator::agentInstance() const
 void Locator::setAgentInstance(AgentInstance *newAgentInstance)
 {
     m_agentInstance = newAgentInstance;
+}
+
+quint32 Locator::seed() const
+{
+    return m_seed;
+}
+
+void Locator::setSeed(quint32 newSeed)
+{
+    m_seed = newSeed;
 }

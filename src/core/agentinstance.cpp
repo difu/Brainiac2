@@ -4,6 +4,7 @@
 #include "scene.h"
 
 #include "generator/locator.h"
+#include "src/core/brain/agentinstancebrain.h"
 
 #include <QDebug>
 
@@ -11,6 +12,8 @@ AgentInstance::AgentInstance(Locator *locator, Agent *parent)
     : QObject{parent}
 {
     m_agent = parent;
+
+    m_instanceBrain = new AgentInstanceBrain(this);
 
     /**
         Take care that @ref Locator and @ref AgentInstance know each other.

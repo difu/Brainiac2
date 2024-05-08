@@ -10,7 +10,6 @@ qt_add_executable(Brainiac
     src/core/main.cpp
     src/gui/mainwindow.cpp
     src/gui/mainwindow.h
-//    src/gui/mainwindow.ui
     src/core/agent.h src/core/agent.cpp
     src/core/agentinstance.h src/core/agentinstance.cpp
     src/core/brain/brain.h src/core/brain/brain.cpp
@@ -18,11 +17,19 @@ qt_add_executable(Brainiac
     src/core/simulation.h src/core/simulation.cpp
     src/core/brain/fuzzybase.h src/core/brain/fuzzybase.cpp
     src/core/brain/fuzzyoutput.h src/core/brain/fuzzyoutput.cpp
+    src/core/brain/agentinstancebrain.h src/core/brain/agentinstancebrain.cpp
+    src/core/brain/noise.h src/core/brain/noise.cpp
     src/core/brainiacglobals.h src/core/brainiacglobals.cpp
     src/core/channel.h src/core/channel.cpp
     src/core/generator/generatorbase.h src/core/generator/generatorbase.cpp
     src/core/generator/generatormanual.h src/core/generator/generatormanual.cpp
     src/core/generator/locator.h src/core/generator/locator.cpp
+    src/gui/agent/agentinstacegeometryquick3d.h src/gui/agent/agentinstacegeometryquick3d.cpp
+    src/gui/editorbase.h src/gui/editorbase.cpp
+    src/gui/agent/brain/braineditor.h src/gui/agent/brain/braineditor.cpp
+    src/gui/editoritem.h src/gui/editoritem.cpp
+    src/gui/agent/brain/braineditoritem.h src/gui/agent/brain/braineditoritem.cpp
+
 )
 
 set_target_properties(Brainiac PROPERTIES
@@ -52,7 +59,6 @@ qt_add_qml_module(Brainiac
         src/gui/AgentInstance.qml
     IMPORTS
         QtQuick3D
-    SOURCES src/gui/agent/agentinstacegeometryquick3d.h src/gui/agent/agentinstacegeometryquick3d.cpp
 )
 
 

@@ -13,6 +13,7 @@
 #include "../../gui/agent/agentinstacegeometryquick3d.h"
 
 class Agent;
+class AgentInstanceBrain;
 class Locator;
 
 class AgentInstance : public QObject
@@ -46,6 +47,7 @@ public:
 
 private:
     Agent *m_agent;
+    AgentInstanceBrain *m_instanceBrain;
     AgentInstaceGeometryQuick3D *m_geometryQuick3DNode;
     Locator *m_locator;
     QVector3D m_translation;

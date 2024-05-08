@@ -26,6 +26,7 @@ public:
 
     qreal frameRate() const;
     void setFrameRate(qreal newFrameRate);
+    qint64 currentSimulationTimeMS() const;
 
     virtual ~Simulation();
 

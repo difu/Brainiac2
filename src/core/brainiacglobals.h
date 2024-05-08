@@ -27,7 +27,8 @@ public:
         GROUP,
         AGENT,
         ACTION,
-        TRANSITION
+        TRANSITION,
+        UNKNOWN
     };
     enum RotTrans { RX=1, RY=2, RZ=3, TX=4, TY=5, TZ=6 };
     enum AnimationType { STATIC, LOCOMOTION, RAMP, TURNING, NOTYPE };
@@ -38,6 +39,13 @@ public:
     static qreal sinGrad( qreal grad) { return sin(grad*PI/180.0); }
     static qreal cosGrad( qreal grad) { return cos(grad*PI/180.0); }
 
+    static qreal getRand(quint32 index)
+    {
+        return BrainiacGlobals::randoms[index % BrainiacGlobals::NUMBER_OF_RANDOMS];
+    }
+
+    static const quint32 NUMBER_OF_RANDOMS = 300;
+    static const qreal randoms[NUMBER_OF_RANDOMS];
 };
 
 #endif // BRAINIACGLOBALS_H

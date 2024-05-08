@@ -8,6 +8,8 @@
 #include <QtQuick3D/qquick3d.h>
 #include "agent.h"
 #include "agentinstance.h"
+#include "brain/brain.h"
+#include "brain/noise.h"
 #include "brainiacglobals.h"
 #include "generator/generatormanual.h"
 #include "generator/locator.h"
@@ -44,11 +46,13 @@ int main(int argc, char *argv[])
     scene->setQQmlApplivationEngine(&engine);
     GeneratorManual *gen = new GeneratorManual(scene);
     Agent *agent = new Agent(scene);
+    Noise *newNoise = agent->brain()->addNoiseNode();
 
     for (int i = 0; i < 15; i++) {
         Locator *loc = gen->addLocator(agent);
         loc->setLocation(QVector3D(50 + 100 * i, 0, 50 + 10 * i));
         loc->setRotation(QVector3D(0, 50 + i * 10, 0));
+        loc->setSeed(i * 4);
     }
     gen->apply();
 
@@ -58,6 +62,8 @@ int main(int argc, char *argv[])
     AgentInstance *myInstance2 = scene->agentInstances().constLast();
     myInstance2->outputChannels().value(BrainiacGlobals::TZ)->setValue(3);
     myInstance2->outputChannels().value(BrainiacGlobals::RY)->setValue(-1);
+
+    mainWindow.setMainEditor(agent->brain()->brainEditor());
 
     scene->simulation()->setEndFrame(120);
     scene->simulation()->startSimulation();

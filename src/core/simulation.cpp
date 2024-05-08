@@ -50,11 +50,17 @@ void Simulation::advance()
         const qint64 frameLengthMS = (qint64) ((1 / (m_frameRate / 1000.0)));
         const qint64 waitTimeMS = frameLengthMS - durationMS;
         if (waitTimeMS > 0) {
+            qDebug() << "Current simTime " << currentSimulationTimeMS();
             qDebug() << "Frame took " << durationMS << "ms.";
             qDebug() << "Sleeping for " << waitTimeMS << "ms.";
             QThread::sleep((std::chrono::nanoseconds) waitTimeMS * 1000);
         }
     }
+}
+
+qint64 Simulation::currentSimulationTimeMS() const
+{
+    return m_currentFrame * (qint64) ((1 / m_frameRate) * 1000.0);
 }
 
 quint32 Simulation::startFrame() const

@@ -35,7 +35,11 @@ Agent::Agent(Scene *parent)
 
     addInputChannel(QString("tx"), trans_defaults.min,trans_defaults.max, trans_defaults.value, BrainiacGlobals::TX);
     addInputChannel(QString("ty"), trans_defaults.min,trans_defaults.max, trans_defaults.value, BrainiacGlobals::TY);
-    addInputChannel(QString("tz"), trans_defaults.min,trans_defaults.max, trans_defaults.value, BrainiacGlobals::TY);
+    addInputChannel(QString("tz"),
+                    trans_defaults.min,
+                    trans_defaults.max,
+                    trans_defaults.value,
+                    BrainiacGlobals::TZ);
 
     addInputChannel(QString("rx"), trans_defaults.min,trans_defaults.max, trans_defaults.value, BrainiacGlobals::RX);
     addInputChannel(QString("ry"), trans_defaults.min,trans_defaults.max, trans_defaults.value, BrainiacGlobals::RY);
@@ -158,8 +162,8 @@ BrainiacGlobals::BrainiacId Agent::addInputChannel(const QString channelName,
         returnId = maxId;
     }
     if (idFound) {
-        qWarning() << __PRETTY_FUNCTION__ << " ID " << id << " was already used! New id is "
-                   << maxId;
+        qWarning() << __PRETTY_FUNCTION__ << " ID " << id << " for channel " << channelName
+                   << " was already used! New id is " << maxId;
         returnId = maxId;
     }
     if (returnId == 0) {
