@@ -5,6 +5,8 @@
 
 #include "src/core/brainiacglobals.h"
 
+class EditorItemConnector;
+
 /*!
  * \brief The EditorItem class
  * 
@@ -34,8 +36,14 @@ public:
         return Type;
     }
 
+    QList<EditorItemConnector *> connectors() const;
+    void addConnector(EditorItemConnector *connector);
+    void removeConnector(EditorItemConnector *connector);
+    void removeConnectors();
+
 protected:
     QObject *m_object;
+    QList<EditorItemConnector *> m_connectors;
 
 private:
     BrainiacGlobals::ItemType m_type;

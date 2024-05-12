@@ -5,7 +5,9 @@
 #include <QLinearGradient>
 #include <QPainter>
 #include <QPalette>
+#include "qgraphicsscene.h"
 #include "src/core/brain/noise.h"
+#include "src/gui/editoritemconnector.h"
 #include <qdrawutil.h>
 
 EditorItem::EditorItem(QObject *parent)
@@ -78,4 +80,32 @@ QPainterPath EditorItem::shape() const
     QPainterPath path;
     path.addRect(relxPos, relyPos, WIDTH, HEIGHT);
     return path;
+}
+
+QList<EditorItemConnector *> EditorItem::connectors() const
+{
+    return m_connectors;
+}
+
+void EditorItem::addConnector(EditorItemConnector *connector)
+{
+    m_connectors.append(connector);
+}
+
+void EditorItem::removeConnector(EditorItemConnector *connector)
+{
+    int index = m_connectors.indexOf(connector);
+
+    if (index != -1)
+        m_connectors.removeAt(index);
+}
+
+void EditorItem::removeConnectors()
+{
+    foreach (EditorItemConnector *connector, m_connectors) {
+        connector->startItem()->removeConnector(connector);
+        connector->endItem()->removeConnector(connector);
+        scene()->removeItem(connector);
+        delete connector;
+    }
 }

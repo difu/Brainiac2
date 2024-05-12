@@ -29,6 +29,7 @@ qt_add_executable(Brainiac
     src/gui/agent/brain/braineditor.h src/gui/agent/brain/braineditor.cpp
     src/gui/editoritem.h src/gui/editoritem.cpp
     src/gui/agent/brain/braineditoritem.h src/gui/agent/brain/braineditoritem.cpp
+    src/gui/editoritemconnector.h src/gui/editoritemconnector.cpp
 
 )
 
