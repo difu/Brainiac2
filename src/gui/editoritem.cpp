@@ -14,6 +14,7 @@ EditorItem::EditorItem(QObject *parent)
     m_type = BrainiacGlobals::UNKNOWN;
     if (qobject_cast<Noise *>(parent)) {
         m_type = BrainiacGlobals::NOISE;
+        m_symbolPic.load(":/gui/pics/editor_logo_noise.png");
     }
     if (m_type == BrainiacGlobals::UNKNOWN) {
         qFatal() << "Unknown Itemtype!";
@@ -62,7 +63,7 @@ void EditorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
                           Qt::TextWordWrap | Qt::AlignHCenter,
                           "Name of Noise");
     }
-    //painter->drawImage(QPoint(relxPos + 4, relyPos + 6), m_symbolPic);
+    painter->drawImage(QPoint(relxPos + 4, relyPos + 6), m_symbolPic);
 
     if (this->isSelected()) {
         painter->setPen(Qt::red);

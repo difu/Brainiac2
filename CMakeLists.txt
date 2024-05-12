@@ -32,6 +32,11 @@ qt_add_executable(Brainiac
 
 )
 
+qt_add_resources(Brainiac "images"
+    BASE "src/"
+    FILES src/gui/pics/editor_logo_noise.png
+)
+
 set_target_properties(Brainiac PROPERTIES
     WIN32_EXECUTABLE TRUE
     MACOSX_BUNDLE TRUE

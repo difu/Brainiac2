@@ -39,6 +39,7 @@ protected:
 
 private:
     BrainiacGlobals::ItemType m_type;
+    QImage m_symbolPic;
 };
 
 #endif // EDITORITEM_H
