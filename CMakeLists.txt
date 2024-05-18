@@ -17,6 +17,7 @@ qt_add_executable(Brainiac
     src/core/simulation.h src/core/simulation.cpp
     src/core/brain/fuzzybase.h src/core/brain/fuzzybase.cpp
     src/core/brain/fuzzyoutput.h src/core/brain/fuzzyoutput.cpp
+    src/core/brain/fuzzyinput.h src/core/brain/fuzzyinput.cpp
     src/core/brain/agentinstancebrain.h src/core/brain/agentinstancebrain.cpp
     src/core/brain/noise.h src/core/brain/noise.cpp
     src/core/brainiacglobals.h src/core/brainiacglobals.cpp

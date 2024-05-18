@@ -20,7 +20,7 @@ public:
 
     qreal rate() const;
     void setRate(qreal newRate);
-    virtual qreal result(AgentInstance *agentInstance);
+    virtual qreal result(const AgentInstance *agentInstance);
 
 private:
     qreal m_rate; //!< the rate of this noise node

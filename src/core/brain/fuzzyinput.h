@@ -1,15 +1,15 @@
-#ifndef FUZZYOUTPUT_H
-#define FUZZYOUTPUT_H
+#ifndef FUZZYINPUT_H
+#define FUZZYINPUT_H
 
 #include <QObject>
 #include "../brainiacglobals.h"
 #include "fuzzybase.h"
 
-class FuzzyOutput : public FuzzyBase
+class FuzzyInput : public FuzzyBase
 {
     Q_OBJECT
 public:
-    explicit FuzzyOutput(QObject *parent = nullptr);
+    explicit FuzzyInput(QObject *parent = nullptr);
 
     void fromJson(QJsonObject obj);
     QJsonObject toJson() const;
@@ -27,4 +27,4 @@ private:
                    channelIdChanged FINAL)
 };
 
-#endif // FUZZYOUTPUT_H
+#endif // FUZZYINPUT_H

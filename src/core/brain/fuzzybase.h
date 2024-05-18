@@ -32,7 +32,7 @@ public:
     qreal maxValue() const;
     void setMaxValue(qreal newMaxValue);
 
-    virtual qreal result(AgentInstance *agentInstance) = 0;
+    virtual qreal result(const AgentInstance *agentInstance) = 0;
 
     void addChild(FuzzyBase *child);
     QList<FuzzyBase *> children() const;

@@ -35,7 +35,7 @@ void Noise::setRate(qreal newRate)
     m_rate = newRate;
 }
 
-qreal Noise::result(AgentInstance *agentInstance)
+qreal Noise::result(const AgentInstance *agentInstance)
 {
     if (!agentInstance) {
         qDebug() << "No valid agentInstance";

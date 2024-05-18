@@ -27,7 +27,7 @@ void FuzzyOutput::setChannelId(BrainiacGlobals::BrainiacId newChannelId)
     emit channelIdChanged();
 }
 
-qreal FuzzyOutput::result(AgentInstance *agentInstance)
+qreal FuzzyOutput::result(const AgentInstance *agentInstance)
 {
     return 0;
 }
