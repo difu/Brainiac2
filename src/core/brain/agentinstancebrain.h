@@ -15,6 +15,10 @@ public:
     explicit AgentInstanceBrain(QObject *parent);
 
     QHash<BrainiacGlobals::BrainiacId, qreal> fuzzyResults() const;
+    void invalidateAll();
+    void invalidateResult(BrainiacGlobals::BrainiacId id);
+    bool hasResult(BrainiacGlobals::BrainiacId id) const;
+    void setResult(BrainiacGlobals::BrainiacId id, qreal result);
 
 private:
     QHash<BrainiacGlobals::BrainiacId, qreal> m_fuzzyResults;

@@ -13,3 +13,23 @@ QHash<BrainiacGlobals::BrainiacId, qreal> AgentInstanceBrain::fuzzyResults() con
 {
     return m_fuzzyResults;
 }
+
+void AgentInstanceBrain::invalidateAll()
+{
+    m_fuzzyResults.clear();
+}
+
+void AgentInstanceBrain::invalidateResult(BrainiacGlobals::BrainiacId id)
+{
+    m_fuzzyResults.remove(id);
+}
+
+bool AgentInstanceBrain::hasResult(BrainiacGlobals::BrainiacId id) const
+{
+    return m_fuzzyResults.contains(id);
+}
+
+void AgentInstanceBrain::setResult(BrainiacGlobals::BrainiacId id, qreal result)
+{
+    m_fuzzyResults.insert(id, result);
+}
