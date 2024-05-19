@@ -33,5 +33,7 @@
 
 CMakeLists.txt.user
 build-tests-Desktop_Qt*
+.idea
 CMakeFiles
 build/
+cmake-build-debug
