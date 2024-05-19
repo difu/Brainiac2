@@ -11,8 +11,10 @@ public:
     enum { Type = UserType + 4 };
 
     EditorItemConnector(EditorItem *startItem, EditorItem *endItem);
-    EditorItem *startItem() const { return m_StartItem; }
-    EditorItem *endItem() const { return m_EndItem; }
+
+    EditorItem *startItem() const { return m_startItem; }
+    EditorItem *endItem() const { return m_endItem; }
+
     virtual ~EditorItemConnector();
 
     bool inverted() const;
@@ -24,8 +26,8 @@ protected:
                        QWidget *widget = 0);
 
 private:
-    EditorItem *m_StartItem;
-    EditorItem *m_EndItem;
+    EditorItem *m_startItem;
+    EditorItem *m_endItem;
 
     bool m_inverted;
 };
