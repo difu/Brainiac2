@@ -25,7 +25,11 @@ Noise *Brain::addNoiseNode(BrainiacGlobals::BrainiacId id)
     if(id==0) {
         id=newId();
     }
-    Noise *newNoise = new Noise(this);
+    const auto newNoise = new Noise(this, id);
+    if(m_fuzzies.contains(id)) {
+        qFatal() << "Fuzzy id " << id << " already exists!";
+    }
+    m_fuzzies.insert(id, newNoise);
     return newNoise;
 }
 

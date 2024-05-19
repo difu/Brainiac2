@@ -49,7 +49,6 @@ public:
     void setName(const QString &newName);
 
     [[nodiscard]] BrainiacGlobals::BrainiacId id() const;
-    void setId(BrainiacGlobals::BrainiacId newId);
 
     QPointF editorPos() const;
     void setEditorPos(qreal x, qreal y);
@@ -65,6 +64,7 @@ public:
 protected:
     QJsonObject getBaseJsonConfig();
     void setEditorItem(EditorItem *newEditorItem);
+    void setId(BrainiacGlobals::BrainiacId newId);
     LogicType m_type;
     Brain *m_brain;
     EditorItem *m_editorItem;

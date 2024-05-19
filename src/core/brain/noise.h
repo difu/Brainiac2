@@ -13,7 +13,7 @@ class Noise : public FuzzyBase
 {
     Q_OBJECT
 public:
-    explicit Noise(QObject *parent = nullptr);
+    explicit Noise(QObject *parent = nullptr, BrainiacGlobals::BrainiacId id=0);
 
     void fromJson(QJsonObject obj);
     QJsonObject toJson() const;
