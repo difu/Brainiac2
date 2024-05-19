@@ -68,14 +68,14 @@ void EditorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
                           75,
                           50,
                           Qt::TextWordWrap | Qt::AlignHCenter,
-                          "Name of Noise");
+                          dynamic_cast<FuzzyBase *>(m_object)->name());
     } else if (m_type == BrainiacGlobals::OUTPUT) {
         painter->drawText(relxPos - adjust + 40,
                           relyPos - adjust + 10,
                           75,
                           50,
                           Qt::TextWordWrap | Qt::AlignHCenter,
-                          "Name of Output");
+                          dynamic_cast<FuzzyBase *>(m_object)->name());
     }
     painter->drawImage(QPoint(relxPos + 4, relyPos + 6), m_symbolPic);
 

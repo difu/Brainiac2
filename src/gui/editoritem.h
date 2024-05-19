@@ -42,7 +42,7 @@ public:
     void removeConnectors();
 
 protected:
-    QObject *m_object;
+    QObject *m_object; //!< The parent object of this EditorItem, for example @ref Noise node
     QList<EditorItemConnector *> m_connectors;
 
 private:

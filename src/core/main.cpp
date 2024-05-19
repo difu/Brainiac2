@@ -47,9 +47,11 @@ int main(int argc, char *argv[])
     Agent *agent = new Agent(scene);
     Noise *newNoise = agent->brain()->addNoiseNode();
     newNoise->setRate(1.0);
+    newNoise->setName("Noise 1");
 
     FuzzyOutput *newOutput = agent->brain()->addOutputNode();
     newOutput->setChannelId(BrainiacGlobals::TZ);
+    newOutput->setName("Output 1 (tz)");
 
     for (int i = 0; i < 15; i++) {
         Locator *loc = gen->addLocator(agent);
