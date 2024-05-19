@@ -6,6 +6,7 @@
 FuzzyBase::FuzzyBase(QObject *parent)
     : QObject{parent}
 {
+    m_id=0;
     m_brain = qobject_cast<Brain *>(parent);
     if (!m_brain) {
         qFatal() << "Parent of Fuzzy must be Brain!";
@@ -43,12 +44,22 @@ void FuzzyBase::addChild(FuzzyBase *child)
     m_children.append(child);
 }
 
+QList<FuzzyBase *> FuzzyBase::children() const
+{
+    return m_children;
+}
+
 void FuzzyBase::addParent(FuzzyBase *parent, bool isInverted)
 {
     Parent par;
     par.parent = parent;
     par.inverted = isInverted;
     m_parents.append(par);
+}
+
+QList<FuzzyBase::Parent> FuzzyBase::parents() const
+{
+    return m_parents;
 }
 
 QString FuzzyBase::name() const
@@ -88,6 +99,14 @@ void FuzzyBase::setEditorItem(EditorItem *newEditorItem)
 {
     m_editorItem = newEditorItem;
     m_brain->brainEditor()->addItem(m_editorItem);
+}
+
+BrainiacGlobals::BrainiacId FuzzyBase::id() const {
+    return m_id;
+}
+
+void FuzzyBase::setId(BrainiacGlobals::BrainiacId newId) {
+    m_id=newId;
 }
 
 Brain *FuzzyBase::brain() const

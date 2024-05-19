@@ -21,8 +21,9 @@ BrainiacGlobals::BrainiacId FuzzyInput::channelId() const
 
 void FuzzyInput::setChannelId(BrainiacGlobals::BrainiacId newChannelId)
 {
-    if (m_channelId == newChannelId)
+    if (m_channelId == newChannelId) {
         return;
+    }
     m_channelId = newChannelId;
     emit channelIdChanged();
 }

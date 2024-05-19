@@ -16,7 +16,7 @@ public:
 
     QHash<BrainiacGlobals::BrainiacId, qreal> fuzzyResults() const;
     void invalidateAll();
-    void invalidateResult(BrainiacGlobals::BrainiacId id);
+    void invalidateResult(BrainiacGlobals::BrainiacId fuzzyId);
     bool hasResult(BrainiacGlobals::BrainiacId id) const;
     void setResult(BrainiacGlobals::BrainiacId id, qreal result);
 

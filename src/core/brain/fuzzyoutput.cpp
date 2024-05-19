@@ -1,5 +1,8 @@
 #include "fuzzyoutput.h"
 
+#include "agentinstancebrain.h"
+#include "src/core/agentinstance.h"
+
 FuzzyOutput::FuzzyOutput(QObject *parent)
     : FuzzyBase{parent}
 {
@@ -21,13 +24,17 @@ BrainiacGlobals::BrainiacId FuzzyOutput::channelId() const
 
 void FuzzyOutput::setChannelId(BrainiacGlobals::BrainiacId newChannelId)
 {
-    if (m_channelId == newChannelId)
+    if (m_channelId == newChannelId) {
         return;
+    }
     m_channelId = newChannelId;
     emit channelIdChanged();
 }
 
 qreal FuzzyOutput::result(const AgentInstance *agentInstance)
 {
+    if(agentInstance->instanceBrain()->hasResult(this->id())) {
+        return 0.0;
+    }
     return 0;
 }

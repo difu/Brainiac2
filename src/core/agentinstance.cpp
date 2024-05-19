@@ -109,8 +109,9 @@ QVector3D AgentInstance::rotation() const
 
 void AgentInstance::setRotation(const QVector3D &newRotation)
 {
-    if (qFuzzyCompare(newRotation, m_rotation))
+    if (qFuzzyCompare(newRotation, m_rotation)) {
         return;
+    }
 
     m_rotation = newRotation;
     // TODO
@@ -147,6 +148,7 @@ void AgentInstance::advanceCommit()
     // TODO: Think of only emitting once the update of rot and trans
     setRotation(m_newRotation);
     setTranslation(m_newTranslation);
+    m_instanceBrain->invalidateAll();
 }
 
 void AgentInstance::reset()

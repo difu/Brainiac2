@@ -1,4 +1,6 @@
 #include "noise.h"
+
+#include "agentinstancebrain.h"
 #include "../agent.h"
 #include "../agentinstance.h"
 #include "../brainiacglobals.h"
@@ -41,22 +43,29 @@ qreal Noise::result(const AgentInstance *agentInstance)
         qDebug() << "No valid agentInstance";
         return 0.0;
     }
-    quint32 seed = agentInstance->locator()->seed();
+    if(agentInstance->instanceBrain()->hasResult(this->id())) {
+        return agentInstance->instanceBrain()->fuzzyResults().value(this->id());
+    }
+    qreal result=0.0;
+    const quint32 seed = agentInstance->locator()->seed();
     if (m_rate != 0.0) {
-        quint32 currentFrame = m_brain->agent()->scene()->simulation()->currentFrame();
-        qreal fps = m_brain->agent()->scene()->simulation()->frameRate();
+        const quint32 currentFrame = m_brain->agent()->scene()->simulation()->currentFrame();
+        const qreal fps = m_brain->agent()->scene()->simulation()->frameRate();
         quint32 i = 1;
         while (fps * m_rate * i < currentFrame) {
             i++;
         }
-        quint32 lastRandFrame = (i - 1) * (fps * m_rate);
-        quint32 nextRandFrame = (i) * (fps * m_rate);
+        const quint32 lastRandFrame = (i - 1) * (fps * m_rate);
+        const quint32 nextRandFrame = (i) * (fps * m_rate);
 
-        qreal lastRand = BrainiacGlobals::getRand(seed + lastRandFrame);
-        qreal nextRand = BrainiacGlobals::getRand(seed + nextRandFrame);
-        qreal diff = nextRand - lastRand;
-        qreal value = lastRand + (diff * (currentFrame - lastRandFrame) / (fps * m_rate));
-        return value;
+        const qreal lastRand = BrainiacGlobals::getRand(seed + lastRandFrame);
+        const qreal nextRand = BrainiacGlobals::getRand(seed + nextRandFrame);
+        const qreal diff = nextRand - lastRand;
+        const qreal value = lastRand + (diff * (currentFrame - lastRandFrame) / (fps * m_rate));
+        result = value;
+    } else {
+        result = BrainiacGlobals::getRand(seed);
     }
-    return BrainiacGlobals::getRand(seed);
+    agentInstance->instanceBrain()->setResult(this->id(), result);
+    return result;
 }

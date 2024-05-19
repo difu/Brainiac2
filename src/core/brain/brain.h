@@ -22,7 +22,8 @@ public:
 
     Agent *agent() const;
 
-    Noise *addNoiseNode();
+    Noise *addNoiseNode(BrainiacGlobals::BrainiacId id=0);
+    BrainiacGlobals::BrainiacId newId();
 
     BrainEditor *brainEditor() const;
 

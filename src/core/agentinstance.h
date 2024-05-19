@@ -48,6 +48,13 @@ public:
 private:
     Agent *m_agent;
     AgentInstanceBrain *m_instanceBrain;
+
+public:
+    [[nodiscard]] AgentInstanceBrain * instanceBrain() const {
+        return m_instanceBrain;
+    }
+
+private:
     AgentInstaceGeometryQuick3D *m_geometryQuick3DNode;
     Locator *m_locator;
     QVector3D m_translation;

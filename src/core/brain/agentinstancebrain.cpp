@@ -19,9 +19,9 @@ void AgentInstanceBrain::invalidateAll()
     m_fuzzyResults.clear();
 }
 
-void AgentInstanceBrain::invalidateResult(BrainiacGlobals::BrainiacId id)
+void AgentInstanceBrain::invalidateResult(BrainiacGlobals::BrainiacId fuzzyId)
 {
-    m_fuzzyResults.remove(id);
+    m_fuzzyResults.remove(fuzzyId);
 }
 
 bool AgentInstanceBrain::hasResult(BrainiacGlobals::BrainiacId id) const

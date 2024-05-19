@@ -24,6 +24,11 @@ public:
         NOISE = BrainiacGlobals::NOISE,
         TIMER = BrainiacGlobals::TIMER
     };
+    struct Parent
+    {
+        FuzzyBase *parent;
+        bool inverted;
+    };
     explicit FuzzyBase(QObject *parent = nullptr);
 
     qreal minValue() const;
@@ -38,9 +43,13 @@ public:
     QList<FuzzyBase *> children() const;
 
     void addParent(FuzzyBase *parent, bool isInverted = false);
+    [[nodiscard]] QList<FuzzyBase::Parent> parents() const;
 
     QString name() const;
     void setName(const QString &newName);
+
+    [[nodiscard]] BrainiacGlobals::BrainiacId id() const;
+    void setId(BrainiacGlobals::BrainiacId newId);
 
     QPointF editorPos() const;
     void setEditorPos(qreal x, qreal y);
@@ -61,15 +70,12 @@ protected:
     EditorItem *m_editorItem;
 
 private:
-    struct Parent
-    {
-        FuzzyBase *parent;
-        bool inverted;
-    };
     qreal m_maxValue;
     qreal m_minValue;
     //qreal m_result;
+    BrainiacGlobals::BrainiacId m_id;
 
+private:
     QList<Parent> m_parents;
     QList<FuzzyBase *> m_children;
 

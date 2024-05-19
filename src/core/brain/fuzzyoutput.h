@@ -13,7 +13,8 @@ public:
 
     void fromJson(QJsonObject obj);
     QJsonObject toJson() const;
-    virtual qreal result(const AgentInstance *agentInstance);
+
+    qreal result(const AgentInstance *agentInstance) override;
 
     BrainiacGlobals::BrainiacId channelId() const;
     void setChannelId(BrainiacGlobals::BrainiacId newChannelId);
