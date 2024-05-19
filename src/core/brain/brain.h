@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QString>
 
+#include "fuzzyoutput.h"
 #include "../brainiacglobals.h"
 #include "brain/braineditor.h"
 #include "src/core/brain/noise.h"
@@ -23,6 +24,7 @@ public:
     Agent *agent() const;
 
     Noise *addNoiseNode(BrainiacGlobals::BrainiacId id=0);
+    FuzzyOutput *addOutputNode(BrainiacGlobals::BrainiacId id=0);
     BrainiacGlobals::BrainiacId newId();
 
     BrainEditor *brainEditor() const;

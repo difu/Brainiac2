@@ -36,7 +36,7 @@ qt_add_executable(Brainiac
 
 qt_add_resources(Brainiac "images"
     BASE "src/"
-    FILES src/gui/pics/editor_logo_noise.png
+    FILES src/gui/pics/editor_logo_noise.png src/gui/pics/editor_logo_output.png
 )
 
 set_target_properties(Brainiac PROPERTIES

@@ -1,13 +1,20 @@
 #include "fuzzyoutput.h"
 
 #include "agentinstancebrain.h"
+#include "brain.h"
+#include "brain/braineditoritem.h"
+#include "src/core/agent.h"
 #include "src/core/agentinstance.h"
 
-FuzzyOutput::FuzzyOutput(QObject *parent)
+FuzzyOutput::FuzzyOutput(QObject *parent, BrainiacGlobals::BrainiacId id)
     : FuzzyBase{parent}
 {
     m_channelId = 0;
     m_type = FuzzyBase::OUTPUT;
+    setId(id);
+    setMinValue(0.0);
+    setMaxValue(1.0);
+    this->setEditorItem(new BrainEditorItem(this));
 }
 
 void FuzzyOutput::fromJson(QJsonObject obj) {}
@@ -28,13 +35,28 @@ void FuzzyOutput::setChannelId(BrainiacGlobals::BrainiacId newChannelId)
         return;
     }
     m_channelId = newChannelId;
+    if(brain()->agent()->outputChannelDefaults().contains(m_channelId)) {
+        setMinValue(brain()->agent()->outputChannelDefaults().value(m_channelId)->min);
+        setMaxValue(brain()->agent()->outputChannelDefaults().value(m_channelId)->max);
+    } else {
+        qDebug() << "Channel with id " << newChannelId << " does not exist";
+    }
+
     emit channelIdChanged();
 }
 
 qreal FuzzyOutput::result(const AgentInstance *agentInstance)
 {
     if(agentInstance->instanceBrain()->hasResult(this->id())) {
-        return 0.0;
+        return agentInstance->instanceBrain()->fuzzyResults().value(this->id());
+    } else {
+        if(m_channelId) {
+            if(parents().count()==0) {
+                const qreal result = agentInstance->outputChannels().value(m_channelId)->value();
+                agentInstance->instanceBrain()->setResult(this->id(),result);
+                return result;
+            }
+        }
     }
     return 0;
 }

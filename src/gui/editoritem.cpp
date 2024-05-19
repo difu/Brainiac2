@@ -10,6 +10,8 @@
 #include "src/gui/editoritemconnector.h"
 #include <qdrawutil.h>
 
+#include "src/core/brain/fuzzyoutput.h"
+
 EditorItem::EditorItem(QObject *parent)
     : m_object{parent}
 {
@@ -17,6 +19,9 @@ EditorItem::EditorItem(QObject *parent)
     if (qobject_cast<Noise *>(parent)) {
         m_type = BrainiacGlobals::NOISE;
         m_symbolPic.load(":/gui/pics/editor_logo_noise.png");
+    } else if (qobject_cast<FuzzyOutput *>(parent)) {
+        m_type = BrainiacGlobals::OUTPUT;
+        m_symbolPic.load(":/gui/pics/editor_logo_output.png");
     }
     if (m_type == BrainiacGlobals::UNKNOWN) {
         qFatal() << "Unknown Itemtype!";
@@ -64,6 +69,13 @@ void EditorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
                           50,
                           Qt::TextWordWrap | Qt::AlignHCenter,
                           "Name of Noise");
+    } else if (m_type == BrainiacGlobals::OUTPUT) {
+        painter->drawText(relxPos - adjust + 40,
+                          relyPos - adjust + 10,
+                          75,
+                          50,
+                          Qt::TextWordWrap | Qt::AlignHCenter,
+                          "Name of Output");
     }
     painter->drawImage(QPoint(relxPos + 4, relyPos + 6), m_symbolPic);
 

@@ -48,6 +48,9 @@ int main(int argc, char *argv[])
     Noise *newNoise = agent->brain()->addNoiseNode();
     newNoise->setRate(1.0);
 
+    FuzzyOutput *newOutput = agent->brain()->addOutputNode();
+    newOutput->setChannelId(BrainiacGlobals::TZ);
+
     for (int i = 0; i < 15; i++) {
         Locator *loc = gen->addLocator(agent);
         loc->setLocation(QVector3D(50 + 100 * i, 0, 50 + 10 * i));

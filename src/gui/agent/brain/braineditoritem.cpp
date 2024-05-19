@@ -21,8 +21,8 @@ void BrainEditorItem::paint(QPainter *painter,
         qFatal() << "m_object not of type <FuzzyBase>!";
     } else {
         qreal tmpResult = 0.0;
-        Brain *brain = fuzzy->brain();
-        Agent *agent = brain->agent();
+        const Brain *brain = fuzzy->brain();
+        const Agent *agent = brain->agent();
         AgentInstance *agentInstance = agent->defaultAgentInstance();
         if (fuzzy->minValue() < 0) {
             tmpResult = -30 * ((fuzzy->result(agentInstance)) / (fuzzy->minValue()));

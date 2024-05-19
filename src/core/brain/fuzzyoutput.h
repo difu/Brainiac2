@@ -9,7 +9,7 @@ class FuzzyOutput : public FuzzyBase
 {
     Q_OBJECT
 public:
-    explicit FuzzyOutput(QObject *parent = nullptr);
+    explicit FuzzyOutput(QObject *parent = nullptr, BrainiacGlobals::BrainiacId id=0);
 
     void fromJson(QJsonObject obj);
     QJsonObject toJson() const;

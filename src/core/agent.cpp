@@ -92,6 +92,11 @@ QHash<BrainiacGlobals::BrainiacId, Channel::ChannelDefaults *> Agent::inputChann
     return m_inputChannelDefaults;
 }
 
+QHash<BrainiacGlobals::BrainiacId, Channel::ChannelDefaults *> Agent::outputChannelDefaults() const
+{
+    return m_outputChannelDefaults;
+}
+
 QString Agent::fileName() const
 {
     return m_fileName;

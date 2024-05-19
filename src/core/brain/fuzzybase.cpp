@@ -51,7 +51,7 @@ QList<FuzzyBase *> FuzzyBase::children() const
 
 void FuzzyBase::addParent(FuzzyBase *parent, bool isInverted)
 {
-    Parent par;
+    Parent par{};
     par.parent = parent;
     par.inverted = isInverted;
     m_parents.append(par);
