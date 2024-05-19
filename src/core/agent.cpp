@@ -14,16 +14,9 @@ Agent::Agent(Scene *parent)
     m_defaultAgentInstance = nullptr;
 
     m_brain = new Brain(this);
-    Channel::ChannelDefaults trans_defaults;
+    constexpr Channel::ChannelDefaults trans_defaults{.min=-100.0, .max = 100.0, .value = 0.0};
 
-    trans_defaults.max = 100;
-    trans_defaults.min = -100;
-    trans_defaults.value = 0.0f;
-
-    Channel::ChannelDefaults rot_defaults;
-    rot_defaults.max = 180.0f;
-    rot_defaults.min = -180.0f;
-    rot_defaults.value = 0.0f;
+    constexpr Channel::ChannelDefaults rot_defaults{.min = -108.0, .max = 180.0, .value = 0.0};
 
     addOutputChannel(QString("tx"), trans_defaults.min,trans_defaults.max, trans_defaults.value, BrainiacGlobals::TX);
     addOutputChannel(QString("ty"), trans_defaults.min,trans_defaults.max, trans_defaults.value, BrainiacGlobals::TY);
