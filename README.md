@@ -1,4 +1,6 @@
-# Brainiac2
+# Brainiac
+
+![Brainiac Logo](docs/source/images/Brainiac_logo.png)
 
 ### Generate documentation
 
@@ -12,3 +14,5 @@ make html
 ```
 
 The documentation can now be found in ```docs/generated/build/html/```.
+
+Brainiac logo created with [Logos, only!](https://apps.apple.com/de/app/logos-only/id6451263363) - Check it out!
