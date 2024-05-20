@@ -37,3 +37,5 @@ build-tests-Desktop_Qt*
 CMakeFiles
 build/
 cmake-build-debug
+
+generated
