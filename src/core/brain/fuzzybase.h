@@ -10,6 +10,12 @@ class AgentInstance;
 class Brain;
 class EditorItem;
 
+/*!
+ * @brief The FuzzyBase class
+ *
+ * this is the base class of all fuzzy nodes.
+ * The parent of this class is the @ref Brain of the @ref Agent.
+ */
 class FuzzyBase : public QObject
 {
     Q_OBJECT
@@ -66,6 +72,11 @@ protected:
     void setEditorItem(EditorItem *newEditorItem);
     void setId(BrainiacGlobals::BrainiacId newId);
     LogicType m_type;
+    /*!
+     * @brief the Brain this fuzzy node belongs to.
+     *
+     * This is also the parent() property of the OObject. This mainly for convinience.
+     */
     Brain *m_brain;
     EditorItem *m_editorItem;
 

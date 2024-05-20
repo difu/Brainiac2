@@ -18,6 +18,10 @@ public:
     void fromJson(QJsonObject obj);
     QJsonObject toJson() const;
 
+    /*!
+     * @brief returns the rate of this noise node
+     * @return the rate in Hz
+     */
     qreal rate() const;
     void setRate(qreal newRate);
     virtual qreal result(const AgentInstance *agentInstance);
