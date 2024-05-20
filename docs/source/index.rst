@@ -3,7 +3,7 @@ Welcome to Brainiac's documentation!
 .. image:: images/Brainiac_logo.png
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
 
