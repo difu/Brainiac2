@@ -19,7 +19,8 @@ author = 'difu'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = [ "breathe" ]
+extensions = ["breathe",
+			  "sphinx.ext.githubpages", ]
 
 breathe_default_project = "Brainiac"
 
@@ -31,8 +32,6 @@ breathe_default_members = ('members', 'undoc-members')
 
 templates_path = ['_templates']
 exclude_patterns = []
-
-
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
