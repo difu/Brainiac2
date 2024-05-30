@@ -36,6 +36,15 @@ public:
     void addInputChannel(BrainiacGlobals::BrainiacId id, Channel::ChannelDefaults *defaults);
     void addOutputChannel(BrainiacGlobals::BrainiacId id, Channel::ChannelDefaults *defaults);
 
+    /**
+     * @brief Advance the AgentInstance.
+     *
+     * This method is called to advance the AgentInstance in the simulation. It updates the rotation and translation
+     * of the AgentInstance based on the values of the output channels. The new rotation and translation values are calculated
+     * using the current rotation, translation, and output channel values.
+     *
+     * @note This method assumes that the Quick3d node is ready. If the Quick3d node is null, these methods will not have any effect.
+     */
     void advance();
 
     /**
