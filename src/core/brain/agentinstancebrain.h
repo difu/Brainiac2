@@ -8,6 +8,16 @@
 class Brain;
 class AgentInstance;
 
+/**
+ * @class AgentInstanceBrain
+ *
+ * @brief The AgentInstanceBrain class represents the brain of a specific agent instance.
+ *
+ * It is responsible for storing and managing the fuzzy results for various fuzzy logic operations
+ * performed by the associated AgentInstance.
+ *
+ * @note This class inherits from QObject.
+ */
 class AgentInstanceBrain : public QObject
 {
     Q_OBJECT

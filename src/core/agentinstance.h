@@ -16,6 +16,17 @@ class Agent;
 class AgentInstanceBrain;
 class Locator;
 
+/**
+ * @class AgentInstance
+ *
+ * @brief The AgentInstance class represents an instance of an Agent.
+ *
+ * An AgentInstance is created by the Locator and is used to hold information about the specific instance
+ * of an Agent in the simulation. It contains the agent's input and output channels, as well as
+ * information about its position in 3D space.
+ *
+ * @note This class inherits from QObject to enable the use of signals and slots.
+ */
 class AgentInstance : public QObject
 {
     Q_OBJECT
@@ -26,6 +37,16 @@ public:
     void addOutputChannel(BrainiacGlobals::BrainiacId id, Channel::ChannelDefaults *defaults);
 
     void advance();
+
+    /**
+     * @brief Commit the changes made during the advance step.
+     *
+     * This method is called at the end of the advance step to commit the changes made to the agent's rotation and translation.
+     * The new rotation and translation values are set using the setRotation() and setTranslation() methods, respectively.
+     * After committing the changes, the agent's instance brain is invalidated using the invalidateAll() method.
+     *
+     * @note This method assumes that the Quick3d node is ready. If the Quick3d node is null, these methods will not have any effect.
+     */
     void advanceCommit();
     void reset();
 

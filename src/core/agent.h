@@ -17,6 +17,16 @@ class Locator;
 
 class Scene;
 
+/**
+ * @class Agent
+ * @brief This class represents an agent in the system.
+ *
+ * The Agent class is a QObject that encapsulates the functionality of an agent in the scene.
+ * It provides methods for managing agent instances, input and output channels, and other agent-related operations.
+ * It also provides access to the agent's brain, scene, and other properties.
+ *
+ * @note This class is part of the core functionality of the system and is used extensively throughout the codebase.
+ */
 class Agent : public QObject
 {
     Q_OBJECT

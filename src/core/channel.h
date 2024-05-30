@@ -8,16 +8,39 @@
 
 class AgentInstance;
 
+/**
+ * @class Channel
+ * @brief The Channel class represents a channel in the agent instance.
+ *
+ * It manages the current and old values of the channel, and provides methods to set and get these values.
+ * It also provides a method to reset the channel to its default values.
+ */
 class Channel : public QObject
 {
     Q_OBJECT
+
 public:
+    /**
+    * @struct ChannelDefaults
+    * @brief This struct represents the default values for a channel.
+    *
+    * It includes the minimum, maximum, and default values of the channel.
+    */
     struct ChannelDefaults
     {
         qreal min;   //!< the min value
         qreal max;   //!< the max value
         qreal value; //!< the default value of this channel
     };
+
+    /**
+     * @brief Channel constructor.
+     *
+     * This constructor creates a Channel object for the given agent instance and channel defaults.
+     *
+     * @param parent The agent instance to which this channel belongs.
+     * @param defaults The default values for this channel.
+     */
     explicit Channel(AgentInstance *parent, Channel::ChannelDefaults *defaults);
 
     /** \brief set channels old value to actual value

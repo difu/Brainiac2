@@ -5,6 +5,15 @@
 #include "../brainiacglobals.h"
 #include "fuzzybase.h"
 
+/**
+ * @class FuzzyInput
+ * @brief The FuzzyInput class represents a fuzzy input in a fuzzy system.
+ *        It inherits from the FuzzyBase class.
+ *
+ * The FuzzyInput class provides methods to handle fuzzy inputs, such
+ * as converting to and from JSON, getting and setting the channel ID, and
+ * calculating the result for a given agent instance.
+ */
 class FuzzyInput : public FuzzyBase
 {
     Q_OBJECT
