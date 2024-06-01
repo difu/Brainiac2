@@ -8,6 +8,12 @@ class Agent;
 class AgentInstance;
 class Simulation;
 
+/**
+ * @class Scene
+ * @brief The Scene class represents a scene in the application.
+ *
+ * The Scene class inherits from QObject and provides various methods to manage agent instances and perform simulations.
+ */
 class Scene : public QObject
 {
     Q_OBJECT

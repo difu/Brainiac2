@@ -9,9 +9,19 @@ class AgentInstance;
 
 /**
  * @class Locator
- * @brief A class representing a locator object.
  *
- * This class provides functionality to manage the state, location, rotation, agent, agent instance, and seed associated with a locator. It inherits from QObject.
+ * @brief The Locator class represents a locator object.
+ *
+ * The class provides methods to manage the state, location, rotation,
+ * agent instance, and seed of a locator. The locator can have three
+ * possible states: default, deleted, and locked. It also holds the
+ * location and rotation of the locator in 3D space. The locator can be
+ * associated with an agent and agent instance. Additionally, it holds a
+ * seed value for randomization purposes.
+ *
+ * @ingroup GroupName
+ *
+ * @sa Agent, AgentInstance
  */
 class Locator : public QObject
 {
