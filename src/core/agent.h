@@ -35,9 +35,21 @@ public:
 
     QString m_name;
 
+    /**
+     * @brief Adds a new instance of an agent.
+     *
+     * This method creates a new instance of the agent using the specified locator and adds it to the agent's list of instances.
+     * The locator object is used to initialize the instance's properties.
+     * The method also adds the input and output channels to the new agent instance based on the predefined defaults of the agent.
+     *
+     * @param locator The locator object used to initialize the properties of the new agent instance.
+     *
+     * @return A pointer to the newly created AgentInstance object.
+     * @note The Agent is the owner/parent of the created AgentInstance object.
+     */
     AgentInstance *addAgentInstance(Locator *locator);
 
-    AgentInstance *defaultAgentInstance() const;
+    [[nodiscard]] AgentInstance *defaultAgentInstance() const;
     void setDefaultAgentInstance(AgentInstance *newDefaultAgentInstance);
 
     Brain *brain() const;

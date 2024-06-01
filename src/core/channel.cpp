@@ -7,6 +7,7 @@
 Channel::Channel(AgentInstance *parent, ChannelDefaults *defaults)
     : QObject{parent}
 {
+    m_inherited = false;
     m_defaults = defaults;
     m_agentInstance = parent;
     m_value = m_oldValue = m_defaults->value;
@@ -47,8 +48,7 @@ QString Channel::getInfo()
 {
     QString name;
     QString type;
-    BrainiacGlobals::BrainiacId id = m_agentInstance->inputChannels().key(this, 0);
-    if (id != 0) {
+    if (BrainiacGlobals::BrainiacId id = m_agentInstance->inputChannels().key(this, 0); id != 0) {
         type = "Input";
         name = m_agentInstance->agent()->inputChannelName(id);
     } else {

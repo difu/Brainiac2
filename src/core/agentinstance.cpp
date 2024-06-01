@@ -12,7 +12,7 @@ AgentInstance::AgentInstance(Locator *locator, Agent *parent)
     : QObject{parent}
 {
     m_agent = parent;
-
+    m_geometryQuick3DNode = nullptr;
     m_instanceBrain = new AgentInstanceBrain(this);
 
     /**
@@ -32,7 +32,7 @@ void AgentInstance::addInputChannel(BrainiacGlobals::BrainiacId id,
     if(m_inputChannels.contains(id)) {
         return;
     }
-    Channel *newChannel = new Channel(this, defaults);
+    auto *newChannel = new Channel(this, defaults);
     m_inputChannels.insert(id, newChannel);
     qDebug() << "ChannelName " << newChannel->getInfo()
              << "Defaults: " << newChannel->defaults()->value;
@@ -44,7 +44,7 @@ void AgentInstance::addOutputChannel(BrainiacGlobals::BrainiacId id,
     if(m_outputChannels.contains(id)){
         return;
     }
-    Channel *newChannel = new Channel(this, defaults);
+    auto *newChannel = new Channel(this, defaults);
     m_outputChannels.insert(id, newChannel);
     qDebug() << "ChannelName " << newChannel->getInfo()
              << "Defaults: " << newChannel->defaults()->value;
@@ -72,8 +72,9 @@ AgentInstaceGeometryQuick3D *AgentInstance::geometryQuick3DNode() const
 
 void AgentInstance::setGeometryQuick3DNode(AgentInstaceGeometryQuick3D *newGeometryQuick3DNode)
 {
-    if (m_geometryQuick3DNode == newGeometryQuick3DNode)
+    if (m_geometryQuick3DNode == newGeometryQuick3DNode) {
         return;
+    }
     m_geometryQuick3DNode = newGeometryQuick3DNode;
     emit geometryQuick3DNodeChanged();
 }
@@ -90,8 +91,9 @@ QVector3D AgentInstance::translation() const
 
 void AgentInstance::setTranslation(const QVector3D &newTranslation)
 {
-    if (qFuzzyCompare(newTranslation, m_translation))
+    if (qFuzzyCompare(newTranslation, m_translation)) {
         return;
+    }
     m_translation = newTranslation;
 
     // TODO
