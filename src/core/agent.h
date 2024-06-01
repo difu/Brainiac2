@@ -50,6 +50,7 @@ public:
     AgentInstance *addAgentInstance(Locator *locator);
 
     [[nodiscard]] AgentInstance *defaultAgentInstance() const;
+
     void setDefaultAgentInstance(AgentInstance *newDefaultAgentInstance);
 
     Brain *brain() const;
