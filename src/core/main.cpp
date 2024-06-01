@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     newNoise->setName("Noise 1");
 
     FuzzyOutput *newOutput = agent->brain()->addOutputNode();
-    newOutput->setChannelId(BrainiacGlobals::TZ);
+    newOutput->setChannelId(BrainiacGlobals::CO_TZ);
     newOutput->setName("Output 1 (tz)");
 
     for (int i = 0; i < 15; i++) {
