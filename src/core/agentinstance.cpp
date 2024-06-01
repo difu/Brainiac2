@@ -128,21 +128,21 @@ void AgentInstance::advance()
 {
     foreach (Channel *outputChannel, m_outputChannels) {
     }
-    m_newRotation.setX(m_rotation.x() + m_outputChannels.value(BrainiacGlobals::RX)->value());
-    m_newRotation.setY(m_rotation.y() + m_outputChannels.value(BrainiacGlobals::RY)->value());
-    m_newRotation.setZ(m_rotation.z() + m_outputChannels.value(BrainiacGlobals::RZ)->value());
+    m_newRotation.setX(m_rotation.x() + m_outputChannels.value(BrainiacGlobals::CO_RX)->value());
+    m_newRotation.setY(m_rotation.y() + m_outputChannels.value(BrainiacGlobals::CO_RY)->value());
+    m_newRotation.setZ(m_rotation.z() + m_outputChannels.value(BrainiacGlobals::CO_RZ)->value());
 
     m_newTranslation.setX(m_translation.x()
-                          + m_outputChannels.value(BrainiacGlobals::TZ)->value()
-                                * BrainiacGlobals::sinGrad(m_newRotation.y())
-                          + m_outputChannels.value(BrainiacGlobals::TX)->value()
-                                * BrainiacGlobals::cosGrad(m_newRotation.y()));
+                          + m_outputChannels.value(BrainiacGlobals::CO_TZ)->value()
+                          * BrainiacGlobals::sinGrad(m_newRotation.y())
+                          + m_outputChannels.value(BrainiacGlobals::CO_TX)->value()
+                          * BrainiacGlobals::cosGrad(m_newRotation.y()));
     m_newTranslation.setY(m_translation.y()); //!< @todo Implement this!
     m_newTranslation.setZ(m_translation.z()
-                          + m_outputChannels.value(BrainiacGlobals::TZ)->value()
-                                * BrainiacGlobals::cosGrad(m_newRotation.y())
-                          + m_outputChannels.value(BrainiacGlobals::TX)->value()
-                                * BrainiacGlobals::sinGrad(m_newRotation.y()));
+                          + m_outputChannels.value(BrainiacGlobals::CO_TZ)->value()
+                          * BrainiacGlobals::cosGrad(m_newRotation.y())
+                          + m_outputChannels.value(BrainiacGlobals::CO_TX)->value()
+                          * BrainiacGlobals::sinGrad(m_newRotation.y()));
 }
 
 void AgentInstance::advanceCommit()

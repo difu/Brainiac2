@@ -8,40 +8,46 @@
 #include "scene.h"
 
 Agent::Agent(Scene *parent)
-    : QObject{parent}
-{
+    : QObject{parent} {
     m_scene = parent;
     m_defaultAgentInstance = nullptr;
 
     m_brain = new Brain(this);
-    constexpr Channel::ChannelDefaults trans_defaults{.min=-100.0, .max = 100.0, .value = 0.0};
+    constexpr Channel::ChannelDefaults trans_defaults{.min = -100.0, .max = 100.0, .value = 0.0};
 
     constexpr Channel::ChannelDefaults rot_defaults{.min = -108.0, .max = 180.0, .value = 0.0};
 
-    addOutputChannel(QString("tx"), trans_defaults.min,trans_defaults.max, trans_defaults.value, BrainiacGlobals::TX);
-    addOutputChannel(QString("ty"), trans_defaults.min,trans_defaults.max, trans_defaults.value, BrainiacGlobals::TY);
-    addOutputChannel(QString("tz"), trans_defaults.min,trans_defaults.max, trans_defaults.value, BrainiacGlobals::TZ);
+    addOutputChannel(QString("tx"), trans_defaults.min, trans_defaults.max, trans_defaults.value,
+                     BrainiacGlobals::CO_TX);
+    addOutputChannel(QString("ty"), trans_defaults.min, trans_defaults.max, trans_defaults.value,
+                     BrainiacGlobals::CO_TY);
+    addOutputChannel(QString("tz"), trans_defaults.min, trans_defaults.max, trans_defaults.value,
+                     BrainiacGlobals::CO_TZ);
 
-    addOutputChannel(QString("rx"), rot_defaults.min,rot_defaults.max, rot_defaults.value, BrainiacGlobals::RX);
-    addOutputChannel(QString("ry"), rot_defaults.min,rot_defaults.max, rot_defaults.value, BrainiacGlobals::RY);
-    addOutputChannel(QString("rz"), rot_defaults.min,rot_defaults.max, rot_defaults.value, BrainiacGlobals::RZ);
+    addOutputChannel(QString("rx"), rot_defaults.min, rot_defaults.max, rot_defaults.value, BrainiacGlobals::CO_RX);
+    addOutputChannel(QString("ry"), rot_defaults.min, rot_defaults.max, rot_defaults.value, BrainiacGlobals::CO_RY);
+    addOutputChannel(QString("rz"), rot_defaults.min, rot_defaults.max, rot_defaults.value, BrainiacGlobals::CO_RZ);
 
-    addInputChannel(QString("tx"), trans_defaults.min,trans_defaults.max, trans_defaults.value, BrainiacGlobals::TX);
-    addInputChannel(QString("ty"), trans_defaults.min,trans_defaults.max, trans_defaults.value, BrainiacGlobals::TY);
+    addInputChannel(QString("tx"), trans_defaults.min, trans_defaults.max, trans_defaults.value,
+                    BrainiacGlobals::CI_TX);
+    addInputChannel(QString("ty"), trans_defaults.min, trans_defaults.max, trans_defaults.value,
+                    BrainiacGlobals::CI_TY);
     addInputChannel(QString("tz"),
                     trans_defaults.min,
                     trans_defaults.max,
                     trans_defaults.value,
-                    BrainiacGlobals::TZ);
+                    BrainiacGlobals::CI_TZ);
 
-    addInputChannel(QString("rx"), trans_defaults.min,trans_defaults.max, trans_defaults.value, BrainiacGlobals::RX);
-    addInputChannel(QString("ry"), trans_defaults.min,trans_defaults.max, trans_defaults.value, BrainiacGlobals::RY);
-    addInputChannel(QString("rz"), trans_defaults.min,trans_defaults.max, trans_defaults.value, BrainiacGlobals::RZ);
+    addInputChannel(QString("rx"), trans_defaults.min, trans_defaults.max, trans_defaults.value,
+                    BrainiacGlobals::CI_RX);
+    addInputChannel(QString("ry"), trans_defaults.min, trans_defaults.max, trans_defaults.value,
+                    BrainiacGlobals::CI_RY);
+    addInputChannel(QString("rz"), trans_defaults.min, trans_defaults.max, trans_defaults.value,
+                    BrainiacGlobals::CI_RZ);
 }
 
-AgentInstance *Agent::addAgentInstance(Locator *locator)
-{
-    AgentInstance *newAgentInstance = new AgentInstance(locator, this);
+AgentInstance *Agent::addAgentInstance(Locator *locator) {
+    auto *newAgentInstance = new AgentInstance(locator, this);
     m_agentInstances.append(newAgentInstance);
     foreach(BrainiacGlobals::BrainiacId inputId, m_inputChannels) {
         Channel::ChannelDefaults *channeldefaults = m_inputChannelDefaults.value(inputId);
@@ -54,85 +60,71 @@ AgentInstance *Agent::addAgentInstance(Locator *locator)
     return newAgentInstance;
 }
 
-QString Agent::name() const
-{
+QString Agent::name() const {
     return m_name;
 }
 
-void Agent::setName(const QString &newName)
-{
-    if (m_name == newName)
+void Agent::setName(const QString &newName) {
+    if (m_name == newName) {
         return;
+    }
     m_name = newName;
     emit nameChanged();
 }
 
-AgentInstance *Agent::defaultAgentInstance() const
-{
+AgentInstance *Agent::defaultAgentInstance() const {
     return m_defaultAgentInstance;
 }
 
-void Agent::setDefaultAgentInstance(AgentInstance *newDefaultAgentInstance)
-{
+void Agent::setDefaultAgentInstance(AgentInstance *newDefaultAgentInstance) {
     m_defaultAgentInstance = newDefaultAgentInstance;
 }
 
-Brain *Agent::brain() const
-{
+Brain *Agent::brain() const {
     return m_brain;
 }
 
-QList<AgentInstance *> Agent::agentInstances() const
-{
+QList<AgentInstance *> Agent::agentInstances() const {
     return m_agentInstances;
 }
 
-QHash<BrainiacGlobals::BrainiacId, Channel::ChannelDefaults *> Agent::inputChannelDefaults() const
-{
+QHash<BrainiacGlobals::BrainiacId, Channel::ChannelDefaults *> Agent::inputChannelDefaults() const {
     return m_inputChannelDefaults;
 }
 
-QHash<BrainiacGlobals::BrainiacId, Channel::ChannelDefaults *> Agent::outputChannelDefaults() const
-{
+QHash<BrainiacGlobals::BrainiacId, Channel::ChannelDefaults *> Agent::outputChannelDefaults() const {
     return m_outputChannelDefaults;
 }
 
-QString Agent::fileName() const
-{
+QString Agent::fileName() const {
     return m_fileName;
 }
 
-bool Agent::load()
-{
+bool Agent::load() {
     return false;
 }
 
-bool Agent::save()
-{
+bool Agent::save() {
     return false;
 }
 
-QJsonObject Agent::toJson() const
-{
+QJsonObject Agent::toJson() const {
     QJsonObject obj;
     obj["name"] = m_name;
     return obj;
 }
 
-Scene *Agent::scene() const
-{
+Scene *Agent::scene() const {
     return m_scene;
 }
 
-void Agent::setFileName(const QString &newFileName)
-{
+void Agent::setFileName(const QString &newFileName) {
     m_fileName = newFileName;
 }
 
 BrainiacGlobals::BrainiacId Agent::addInputChannel(const QString channelName,
                                                    qreal channelMinVal, qreal channelMaxVal, qreal channelDefaultVal,
-                                                   BrainiacGlobals::BrainiacId id)
-{
+                                                   BrainiacGlobals::BrainiacId id) {
     // if channel already exists, return its ID
     if (m_inputChannels.contains(channelName)) {
         qDebug() << __PRETTY_FUNCTION__ << "Channel " << channelName << "already exists.";
@@ -156,27 +148,28 @@ BrainiacGlobals::BrainiacId Agent::addInputChannel(const QString channelName,
     }
     maxId++;
 
-    if (id == 0) { // requested a new ID
+    if (id == 0) {
+        // requested a new ID
         returnId = maxId;
     }
     if (idFound) {
         qWarning() << __PRETTY_FUNCTION__ << " ID " << id << " for channel " << channelName
-                   << " was already used! New id is " << maxId;
+                << " was already used! New id is " << maxId;
         returnId = maxId;
     }
     if (returnId == 0) {
         qCritical() << __PRETTY_FUNCTION__
-                    << "This should never happen! ChannelName: " << channelName;
+                 << "This should never happen! ChannelName: " << channelName;
     }
 
-    Channel::ChannelDefaults *cDefault = new Channel::ChannelDefaults;
-    cDefault->min=channelMinVal;
-    cDefault->max=channelMaxVal;
-    cDefault->value=channelDefaultVal;
+    auto *cDefault = new Channel::ChannelDefaults;
+    cDefault->min = channelMinVal;
+    cDefault->max = channelMaxVal;
+    cDefault->value = channelDefaultVal;
 
     m_inputChannels.insert(channelName, returnId);
     m_inputChannelDefaults.insert(returnId, cDefault);
-    foreach (AgentInstance *agentInstance, m_agentInstances) {
+    foreach(AgentInstance *agentInstance, m_agentInstances) {
         agentInstance->addInputChannel(returnId, cDefault);
     }
     if (m_defaultAgentInstance) {
@@ -188,8 +181,7 @@ BrainiacGlobals::BrainiacId Agent::addInputChannel(const QString channelName,
 
 BrainiacGlobals::BrainiacId Agent::addOutputChannel(const QString channelName,
                                                     qreal channelMinVal, qreal channelMaxVal, qreal channelDefaultVal,
-                                                    BrainiacGlobals::BrainiacId id)
-{
+                                                    BrainiacGlobals::BrainiacId id) {
     // if channel already exists, return its ID
     if (m_outputChannels.contains(channelName)) {
         return m_outputChannels.value(channelName);
@@ -213,27 +205,28 @@ BrainiacGlobals::BrainiacId Agent::addOutputChannel(const QString channelName,
     }
     maxId++;
 
-    if (id == 0) { // requested a new ID
+    if (id == 0) {
+        // requested a new ID
         returnId = maxId;
     }
     if (idFound) {
         qWarning() << __PRETTY_FUNCTION__ << " ID " << id << " was already used! New id is "
-                   << maxId;
+                << maxId;
         returnId = maxId;
     }
     if (returnId == 0) {
         qCritical() << __PRETTY_FUNCTION__
-                    << "This should never happen! ChannelName: " << channelName;
+                 << "This should never happen! ChannelName: " << channelName;
     }
 
-    Channel::ChannelDefaults *cDefault = new Channel::ChannelDefaults;
-    cDefault->min=channelMinVal;
-    cDefault->max=channelMaxVal;
-    cDefault->value=channelDefaultVal;
+    auto *cDefault = new Channel::ChannelDefaults;
+    cDefault->min = channelMinVal;
+    cDefault->max = channelMaxVal;
+    cDefault->value = channelDefaultVal;
 
     m_outputChannels.insert(channelName, returnId);
     m_outputChannelDefaults.insert(returnId, cDefault);
-    foreach (AgentInstance *agentInstance, m_agentInstances) {
+    foreach(AgentInstance *agentInstance, m_agentInstances) {
         agentInstance->addOutputChannel(returnId, cDefault);
     }
 
@@ -244,31 +237,27 @@ BrainiacGlobals::BrainiacId Agent::addOutputChannel(const QString channelName,
     return returnId;
 }
 
-quint32 Agent::numInputChannels() const
-{
+quint32 Agent::numInputChannels() const {
     return m_inputChannels.count();
 }
 
-quint32 Agent::numOutputChannels() const
-{
+quint32 Agent::numOutputChannels() const {
     return m_outputChannels.count();
 }
 
-QString Agent::inputChannelName(const BrainiacGlobals::BrainiacId id) const
-{
+QString Agent::inputChannelName(const BrainiacGlobals::BrainiacId id) const {
     return m_inputChannels.key(id, QString("This should not appear!"));
 }
 
-QString Agent::outputChannelName(const BrainiacGlobals::BrainiacId id) const
-{
+QString Agent::outputChannelName(const BrainiacGlobals::BrainiacId id) const {
     return m_outputChannels.key(id, QString("This should not appear!"));
 }
 
 Agent::~Agent() {
-    foreach(Channel::ChannelDefaults* cDefault,m_inputChannelDefaults) {
+    foreach(Channel::ChannelDefaults* cDefault, m_inputChannelDefaults) {
         delete cDefault;
     }
-    foreach(Channel::ChannelDefaults* cDefault,m_outputChannelDefaults) {
+    foreach(Channel::ChannelDefaults* cDefault, m_outputChannelDefaults) {
         delete cDefault;
     }
 }

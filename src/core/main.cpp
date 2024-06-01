@@ -62,11 +62,11 @@ int main(int argc, char *argv[])
     gen->apply();
 
     AgentInstance *myInstance = scene->agentInstances().constFirst();
-    myInstance->outputChannels().value(BrainiacGlobals::TZ)->setValue(4);
-    myInstance->outputChannels().value(BrainiacGlobals::RY)->setValue(1);
+    myInstance->outputChannels().value(BrainiacGlobals::CO_TZ)->setValue(4);
+    myInstance->outputChannels().value(BrainiacGlobals::CO_RY)->setValue(1);
     AgentInstance *myInstance2 = scene->agentInstances().constLast();
-    myInstance2->outputChannels().value(BrainiacGlobals::TZ)->setValue(3);
-    myInstance2->outputChannels().value(BrainiacGlobals::RY)->setValue(-1);
+    myInstance2->outputChannels().value(BrainiacGlobals::CO_TZ)->setValue(3);
+    myInstance2->outputChannels().value(BrainiacGlobals::CO_RY)->setValue(-1);
     agent->setDefaultAgentInstance(myInstance);
 
     mainWindow.setMainEditor(agent->brain()->brainEditor());

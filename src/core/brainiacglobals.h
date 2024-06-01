@@ -33,6 +33,11 @@ public:
     enum RotTrans { RX=1, RY=2, RZ=3, TX=4, TY=5, TZ=6 };
     enum AnimationType { STATIC, LOCOMOTION, RAMP, TURNING, NOTYPE };
 
+    enum Channels {
+        CI_RX, CI_RY, CI_RZ, CI_TX, CI_TY, CI_TZ,
+        CO_RX, CO_RY, CO_RZ, CO_TX, CO_TY, CO_TZ
+    };
+
     static qreal grad2rad(qreal grad) { return grad*PI/180.0; }
     static qreal rad2grad(qreal rad) { return rad*180.0/PI; }
 
