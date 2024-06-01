@@ -10,44 +10,30 @@ class AgentInstance;
 class Brain;
 class EditorItem;
 
-/**
- * @class Brain
- * @brief This class represents the brain of an agent in the system.
- *
- * The Brain class is a QObject that encapsulates the functionality of an agent's brain in the system.
- * It provides methods for managing fuzzy logic components, creating new IDs, and accessing the agent and brain editor associated with the brain.
- * It also provides access to the agent's fuzzy logic components through a QHash.
- *
- * The parent of this class is the @ref Brain of the @ref Agent.
- *
- * @note This class is part of the core functionality of the system and is used extensively throughout the codebase.
- */
-class Brain : public QObject {
-    class FuzzyBase : public QObject {
-        Q_OBJECT
+class FuzzyBase : public QObject {
+    Q_OBJECT
 
-    public:
-        /**
-        * @enum LogicType
-        * @brief Enumerates the types of logic that a fuzzy node can represent.
-        */
-        enum LogicType {
-            AND = BrainiacGlobals::AND,
-            OR  = BrainiacGlobals::OR,
-        OUTPUT  = BrainiacGlobals::OUTPUT,
-        INPUT   = BrainiacGlobals::INPUT,
-        DEFUZZ  = BrainiacGlobals::DEFUZZ,
-        FUZZ    = BrainiacGlobals::FUZZ,
-        NOISE   = BrainiacGlobals::NOISE,
-        TIMER   = BrainiacGlobals::TIMER
-        };
+public:
+    /**
+    * @enum LogicType
+    * @brief Enumerates the types of logic that a fuzzy node can represent.
+    */
+    enum LogicType {
+        AND    = BrainiacGlobals::AND,
+        OR     = BrainiacGlobals::OR,
+        OUTPUT = BrainiacGlobals::OUTPUT,
+        INPUT  = BrainiacGlobals::INPUT,
+        DEFUZZ = BrainiacGlobals::DEFUZZ,
+        FUZZ   = BrainiacGlobals::FUZZ,
+        NOISE  = BrainiacGlobals::NOISE,
+        TIMER  = BrainiacGlobals::TIMER
+    };
 
-        /**
-        * @struct Parent
-        * @brief Represents a parent of a fuzzy node.
-        */
-        struct Parent
-    {
+    /**
+    * @struct Parent
+    * @brief Represents a parent of a fuzzy node.
+    */
+    struct Parent {
         FuzzyBase *parent;
         bool inverted;
     };

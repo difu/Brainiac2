@@ -24,26 +24,27 @@ class FuzzyBase;
  * @note This class is part of the core functionality of the system and is used extensively throughout the codebase.
  */
 class Brain : public QObject {
-    class Brain : public QObject {
-        Q_OBJECT
+    Q_OBJECT
 
-    public:
-        /**
-         * @brief Constructs a Brain object with the given parent.
-         *
-         * The parent of a Brain is the Agent
-         *
-         * @param parent The parent object of the Brain.
-         * @return A new instance of Brain.
-         */
-        Brain(QObject *parent = nullptr);
+public:
+    /**
+     * @brief Constructs a Brain object with the given parent.
+     *
+     * The parent of a Brain is the Agent
+     *
+     * @param parent The parent object of the Brain.
+     * @return A new instance of Brain.
+     */
+    Brain(QObject *parent = nullptr);
 
-        QHash<BrainiacGlobals::BrainiacId, FuzzyBase *> fuzzies() const;
+    QHash<BrainiacGlobals::BrainiacId, FuzzyBase *> fuzzies() const;
 
-        Agent *agent() const;
+    Agent *agent() const;
 
-    Noise *addNoiseNode(BrainiacGlobals::BrainiacId id=0);
-    FuzzyOutput *addOutputNode(BrainiacGlobals::BrainiacId id=0);
+    Noise *addNoiseNode(BrainiacGlobals::BrainiacId id = 0);
+
+    FuzzyOutput *addOutputNode(BrainiacGlobals::BrainiacId id = 0);
+
     BrainiacGlobals::BrainiacId newId();
 
     BrainEditor *brainEditor() const;
