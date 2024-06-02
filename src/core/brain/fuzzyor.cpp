@@ -40,7 +40,10 @@ qreal FuzzyOr::result(const AgentInstance *agentInstance) {
                     break;
             }
         }
-        return tmpResult;
+        return qBound(
+            this->minValue(),
+            tmpResult,
+            this->maxValue());
     }
     return 0.0;
 }
