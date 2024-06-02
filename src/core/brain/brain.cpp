@@ -1,6 +1,8 @@
 #include "brain.h"
 
 #include <QtDebug>
+
+#include "fuzzyand.h"
 #include "../agent.h"
 
 Brain::Brain(QObject *parent)
@@ -18,6 +20,18 @@ QHash<BrainiacGlobals::BrainiacId, FuzzyBase *> Brain::fuzzies() const
 Agent *Brain::agent() const
 {
     return m_agent;
+}
+
+FuzzyAnd *Brain::addAndNode(BrainiacGlobals::BrainiacId id) {
+    if (id == 0) {
+        id = newId();
+    }
+    const auto newAnd = new FuzzyAnd(this, id);
+    if (m_fuzzies.contains(id)) {
+        qFatal() << "Fuzzy id " << id << " already exists!";
+    }
+    m_fuzzies.insert(id, newAnd);
+    return newAnd;
 }
 
 Noise *Brain::addNoiseNode(BrainiacGlobals::BrainiacId id)

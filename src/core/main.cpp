@@ -10,6 +10,8 @@
 #include "agentinstance.h"
 #include "brain/brain.h"
 #include "brain/noise.h"
+#include "brain/fuzzyoutput.h"
+#include "brain/fuzzyand.h"
 #include "brainiacglobals.h"
 #include "generator/generatormanual.h"
 #include "generator/locator.h"
@@ -17,8 +19,7 @@
 #include "simulation.h"
 #include "src/gui/mainwindow.h"
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     qSetMessagePattern("%{file}:%{line} %{function} -> %{if-category}%{category}: %{endif}%{message}");
 
     QApplication app(argc, argv);
@@ -56,10 +57,16 @@ int main(int argc, char *argv[])
     newNoise2->setName("Noise 2");
     newNoise2->setEditorPos(100, 150);
 
+    auto *newAnd = agent->brain()->addAndNode();
+    newAnd->setName("And 1");
+    newAnd->setEditorPos(400, 125);
 
     FuzzyOutput *newOutput = agent->brain()->addOutputNode();
     newOutput->setChannelId(BrainiacGlobals::CO_TZ);
     newOutput->setName("Output 1 (tz)");
+
+    FuzzyBase::connectFuzzies(newNoise, newAnd);
+    FuzzyBase::connectFuzzies(newNoise2, newAnd);
 
     // End Brain
 

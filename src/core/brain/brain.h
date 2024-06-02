@@ -10,6 +10,7 @@
 #include "brain/braineditor.h"
 #include "src/core/brain/noise.h"
 
+class FuzzyAnd;
 class Agent;
 class FuzzyBase;
 
@@ -40,6 +41,8 @@ public:
     QHash<BrainiacGlobals::BrainiacId, FuzzyBase *> fuzzies() const;
 
     Agent *agent() const;
+
+    FuzzyAnd *addAndNode(BrainiacGlobals::BrainiacId id = 0);
 
     Noise *addNoiseNode(BrainiacGlobals::BrainiacId id = 0);
 

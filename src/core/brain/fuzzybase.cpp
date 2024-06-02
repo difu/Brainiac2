@@ -2,6 +2,7 @@
 #include <QGraphicsItem>
 #include "brain.h"
 #include "src/gui/editoritem.h"
+#include "src/gui/editoritemconnector.h"
 
 FuzzyBase::FuzzyBase(QObject *parent)
     : QObject{parent}
@@ -47,6 +48,17 @@ void FuzzyBase::addChild(FuzzyBase *child)
 QList<FuzzyBase *> FuzzyBase::children() const
 {
     return m_children;
+}
+
+void FuzzyBase::connectFuzzies(FuzzyBase *parent, FuzzyBase *child, const bool isInverted) {
+    parent->addChild(child);
+    child->addParent(parent, isInverted);
+    const auto brain = parent->brain();
+    const auto connector = new EditorItemConnector{
+        parent->editorItem(),
+        child->editorItem()
+    };
+    brain->brainEditor()->addItem(connector);
 }
 
 void FuzzyBase::addParent(FuzzyBase *parent, bool isInverted)

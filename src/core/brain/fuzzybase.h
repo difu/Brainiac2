@@ -50,6 +50,8 @@ public:
     void addChild(FuzzyBase *child);
     QList<FuzzyBase *> children() const;
 
+    static void connectFuzzies(FuzzyBase *parent, FuzzyBase *child, bool isInverted = false);
+
     void addParent(FuzzyBase *parent, bool isInverted = false);
     [[nodiscard]] QList<FuzzyBase::Parent> parents() const;
 
@@ -82,16 +84,14 @@ protected:
     Brain *m_brain;
     EditorItem *m_editorItem;
 
+    QList<Parent> m_parents;
+    QList<FuzzyBase *> m_children;
+
 private:
     qreal m_maxValue;
     qreal m_minValue;
     //qreal m_result;
     BrainiacGlobals::BrainiacId m_id;
-
-private:
-    QList<Parent> m_parents;
-    QList<FuzzyBase *> m_children;
-
     QString m_name;
 
     Q_PROPERTY(qreal minValue READ minValue WRITE setMinValue NOTIFY minValueChanged FINAL)
