@@ -45,19 +45,29 @@ int main(int argc, char *argv[])
     scene->setQQmlApplivationEngine(&engine);
     GeneratorManual *gen = new GeneratorManual(scene);
     Agent *agent = new Agent(scene);
-    Noise *newNoise = agent->brain()->addNoiseNode();
+
+    // Brain
+    auto *newNoise = agent->brain()->addNoiseNode();
     newNoise->setRate(1.0);
     newNoise->setName("Noise 1");
+    newNoise->setEditorPos(100, 100);
+    auto *newNoise2 = agent->brain()->addNoiseNode();
+    newNoise2->setRate(1.0);
+    newNoise2->setName("Noise 2");
+    newNoise2->setEditorPos(100, 150);
+
 
     FuzzyOutput *newOutput = agent->brain()->addOutputNode();
     newOutput->setChannelId(BrainiacGlobals::CO_TZ);
     newOutput->setName("Output 1 (tz)");
 
+    // End Brain
+
     for (int i = 0; i < 15; i++) {
         Locator *loc = gen->addLocator(agent);
         loc->setLocation(QVector3D(50 + 100 * i, 0, 50 + 10 * i));
         loc->setRotation(QVector3D(0, 50 + i * 10, 0));
-        loc->setSeed(i * 4);
+        loc->setSeed((i + 1) * 4);
     }
     gen->apply();
 
