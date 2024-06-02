@@ -43,10 +43,46 @@ public:
 
     Agent *agent() const;
 
+    /**
+     * @brief Adds a new FuzzyAnd node to the Brain.
+     *
+     * This method creates a new FuzzyAnd object and inserts it into the Brain's QHash of fuzzies.
+     * If the provided id is 0, a new id will be generated using the `newId()` method.
+     * If the provided id already exists in the fuzzies QHash, a fatal error will be logged.
+     *
+     * @param id The BrainiacId of the FuzzyAnd. Default value is 0.
+     * @return A pointer to the newly created FuzzyAnd object.
+     *
+     * @note The ownership of the FuzzyAnd object is transferred to the Brain.
+     */
     FuzzyAnd *addAndNode(BrainiacGlobals::BrainiacId id = 0);
 
+    /**
+     * @brief Adds a new FuzzyOr node to the Brain.
+     *
+     * This method creates a new FuzzyOr object and inserts it into the Brain's QHash of fuzzies.
+     * If the provided id is 0, a new id will be generated using the `newId()` method.
+     * If the provided id already exists in the fuzzies QHash, a fatal error will be logged.
+     *
+     * @param id The BrainiacId of the FuzzyOr. Default value is 0.
+     * @return A pointer to the newly created FuzzyOr object.
+     *
+     * @note The ownership of the FuzzyOr object is transferred to the Brain.
+     */
     FuzzyOr *addOrNode(BrainiacGlobals::BrainiacId id = 0);
 
+    /**
+     * @brief Adds a new Noise node to the Brain.
+     *
+     * This method creates a new Noise object and inserts it into the Brain's QHash of fuzzies.
+     * If the provided id is 0, a new id will be generated using the `newId()` method.
+     * If the provided id already exists in the fuzzies QHash, a fatal error will be logged.
+     *
+     * @param id The BrainiacId of the Noise. Default value is 0.
+     * @return A pointer to the newly created Noise object.
+     *
+     * @note The ownership of the Noise object is transferred to the Brain.
+     */
     Noise *addNoiseNode(BrainiacGlobals::BrainiacId id = 0);
 
     FuzzyOutput *addOutputNode(BrainiacGlobals::BrainiacId id = 0);
