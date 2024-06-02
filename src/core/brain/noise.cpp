@@ -48,8 +48,8 @@ qreal Noise::result(const AgentInstance *agentInstance)
         return agentInstance->instanceBrain()->fuzzyResults().value(this->id());
     }
     qreal result=0.0;
-    const quint32 seed = agentInstance->locator()->seed();
-    if (m_rate != 0.0) {
+    const quint32 seed = agentInstance->locator()->seed() * this->id();
+    if (!qFuzzyCompare(m_rate, 0.0)) {
         const quint32 currentFrame = m_brain->agent()->scene()->simulation()->currentFrame();
         const qreal fps = m_brain->agent()->scene()->simulation()->frameRate();
         quint32 i = 1;
