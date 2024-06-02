@@ -10,6 +10,7 @@
 #include "brain/braineditor.h"
 #include "src/core/brain/noise.h"
 
+class FuzzyOr;
 class FuzzyAnd;
 class Agent;
 class FuzzyBase;
@@ -44,11 +45,13 @@ public:
 
     FuzzyAnd *addAndNode(BrainiacGlobals::BrainiacId id = 0);
 
+    FuzzyOr *addOrNode(BrainiacGlobals::BrainiacId id = 0);
+
     Noise *addNoiseNode(BrainiacGlobals::BrainiacId id = 0);
 
     FuzzyOutput *addOutputNode(BrainiacGlobals::BrainiacId id = 0);
 
-    BrainiacGlobals::BrainiacId newId();
+    BrainiacGlobals::BrainiacId newId() const;
 
     BrainEditor *brainEditor() const;
 

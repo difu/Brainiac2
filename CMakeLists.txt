@@ -33,6 +33,8 @@ qt_add_executable(Brainiac
     src/gui/editoritemconnector.h src/gui/editoritemconnector.cpp
         src/core/brain/fuzzyand.cpp
         src/core/brain/fuzzyand.h
+        src/core/brain/fuzzyor.cpp
+        src/core/brain/fuzzyor.h
 
 )
 
@@ -40,6 +42,7 @@ qt_add_resources(Brainiac "images"
     BASE "src/"
     FILES src/gui/pics/editor_logo_noise.png src/gui/pics/editor_logo_output.png
         src/gui/pics/editor_logo_input.png src/gui/pics/editor_logo_and.png
+        src/gui/pics/editor_logo_or.png
 )
 
 set_target_properties(Brainiac PROPERTIES

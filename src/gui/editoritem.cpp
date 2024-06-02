@@ -12,6 +12,7 @@
 
 #include "src/core/brain/fuzzyand.h"
 #include "src/core/brain/fuzzyoutput.h"
+#include "src/core/brain/fuzzyor.h"
 
 EditorItem::EditorItem(QObject *parent)
     : m_object{parent}
@@ -26,6 +27,9 @@ EditorItem::EditorItem(QObject *parent)
     } else if (qobject_cast<FuzzyAnd *>(parent)) {
         m_type = BrainiacGlobals::AND;
         m_symbolPic.load(":/gui/pics/editor_logo_and.png");
+    } else if (qobject_cast<FuzzyOr *>(parent)) {
+        m_type = BrainiacGlobals::OR;
+        m_symbolPic.load(":/gui/pics/editor_logo_or.png");
     }
     if (m_type == BrainiacGlobals::UNKNOWN) {
         qFatal() << "Unknown Itemtype!";
@@ -81,6 +85,13 @@ void EditorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
                           Qt::TextWordWrap | Qt::AlignHCenter,
                           dynamic_cast<FuzzyBase *>(m_object)->name());
     } else if (m_type == BrainiacGlobals::AND) {
+        painter->drawText(relxPos - adjust + 40,
+                          relyPos - adjust + 10,
+                          75,
+                          50,
+                          Qt::TextWordWrap | Qt::AlignHCenter,
+                          dynamic_cast<FuzzyBase *>(m_object)->name());
+    } else if (m_type == BrainiacGlobals::OR) {
         painter->drawText(relxPos - adjust + 40,
                           relyPos - adjust + 10,
                           75,

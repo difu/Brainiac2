@@ -17,6 +17,7 @@
 #include "generator/locator.h"
 #include "scene.h"
 #include "simulation.h"
+#include "brain/fuzzyor.h"
 #include "src/gui/mainwindow.h"
 
 int main(int argc, char *argv[]) {
@@ -59,7 +60,11 @@ int main(int argc, char *argv[]) {
 
     auto *newAnd = agent->brain()->addAndNode();
     newAnd->setName("And 1");
-    newAnd->setEditorPos(400, 125);
+    newAnd->setEditorPos(400, 75);
+
+    auto *newOr = agent->brain()->addOrNode();
+    newOr->setName("Or 1");
+    newOr->setEditorPos(400, 175);
 
     FuzzyOutput *newOutput = agent->brain()->addOutputNode();
     newOutput->setChannelId(BrainiacGlobals::CO_TZ);
@@ -67,6 +72,8 @@ int main(int argc, char *argv[]) {
 
     FuzzyBase::connectFuzzies(newNoise, newAnd);
     FuzzyBase::connectFuzzies(newNoise2, newAnd);
+    FuzzyBase::connectFuzzies(newNoise, newOr);
+    FuzzyBase::connectFuzzies(newNoise2, newOr);
 
     // End Brain
 
