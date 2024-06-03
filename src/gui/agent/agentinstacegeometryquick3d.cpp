@@ -1,5 +1,6 @@
 #include "agentinstacegeometryquick3d.h"
 
+#include <qcolor.h>
 #include <QVector3D>
 #include "src/core/agentinstance.h"
 
@@ -11,19 +12,68 @@ AgentInstaceGeometryQuick3D::AgentInstaceGeometryQuick3D()
 void AgentInstaceGeometryQuick3D::updateData()
 {
     clear();
-    int stride = 3 * sizeof(float);
+    int stride = 7 * sizeof(float);
 
-    QByteArray vertexData(3 * stride, Qt::Initialization::Uninitialized);
+    QColor color = QColor(255, 0, 0, 0);
+
+    QByteArray vertexData(2 * 3 * stride, Qt::Initialization::Uninitialized);
     float *p = reinterpret_cast<float *>(vertexData.data());
     *p++ = -10.0f;
     *p++ = .0f;
     *p++ = -10.0f;
+
+    *p++ = 0.0f;
+    *p++ = 0.0f;
+    *p++ = 0.0f;
+    *p++ = 0.0f;
+
     *p++ = 10.0f;
     *p++ = 0.0f;
     *p++ = -10.0f;
+
+    *p++ = 0.0f;
+    *p++ = 255.0f;
+    *p++ = 0.0f;
+    *p++ = 0.0f;
+
     *p++ = 0.0f;
     *p++ = 0.0f;
     *p++ = 20.0f;
+
+    *p++ = 0.0f;
+    *p++ = 0.0f;
+    *p++ = 0.0f;
+    *p++ = 0.0f;
+
+    // Second triangle
+
+    *p++ = -10.0f;
+    *p++ = 10.0f;
+    *p++ = -10.0f;
+
+    *p++ = 0.0f;
+    *p++ = 0.0f;
+    *p++ = 0.0f;
+    *p++ = 0.0f;
+
+    *p++ = 10.0f;
+    *p++ = 10.0f;
+    *p++ = -10.0f;
+
+    *p++ = 255.0f;
+    *p++ = 0.0f;
+    *p++ = 0.0f;
+    *p++ = 0.0f;
+
+    *p++ = 0.0f;
+    *p++ = 10.0f;
+    *p++ = 20.0f;
+
+    *p++ = 0.0f;
+    *p++ = 0.0f;
+    *p++ = 0.0f;
+    *p++ = 0.0f;
+
 
     setVertexData(vertexData);
     setStride(stride);
@@ -33,6 +83,9 @@ void AgentInstaceGeometryQuick3D::updateData()
 
     addAttribute(QQuick3DGeometry::Attribute::PositionSemantic,
                  0,
+                 QQuick3DGeometry::Attribute::F32Type);
+    addAttribute(QQuick3DGeometry::Attribute::ColorSemantic,
+                 3 * sizeof(float),
                  QQuick3DGeometry::Attribute::F32Type);
 }
 

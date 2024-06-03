@@ -24,9 +24,10 @@ Node {
             }
         }
         materials: [
-            DefaultMaterial {
+            PrincipledMaterial {
                 lineWidth: 1
                 cullMode: DefaultMaterial.NoCulling
+                lighting: DefaultMaterial.NoLighting
             }
         ]
         AxisHelper {
