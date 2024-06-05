@@ -15,6 +15,33 @@ ApplicationWindow {
 
     property bool isLandscape: width > height
 
+    menuBar: MenuBar {
+        Menu {
+            title: qsTr("&File")
+
+            MenuSeparator {
+            }
+            Action {
+                text: qsTr("&Quit")
+            }
+        }
+
+        Menu {
+            title: qsTr("View")
+            Action {
+                id: agentAxisAction
+                text: qsTr("&Agent Axis")
+                checkable: true
+            }
+        }
+        Menu {
+            title: qsTr("&Help")
+            Action {
+                text: qsTr("&About")
+            }
+        }
+    }
+
     View3D {
         id: v3d
         anchors.left: parent.left

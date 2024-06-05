@@ -31,10 +31,16 @@ Node {
             }
         ]
         AxisHelper {
+            id: agentAxisHelper
             enableXYGrid: false
             enableXZGrid: false
             enableYZGrid: false
             visible: false
+            Component.onCompleted: {
+                agentAxisAction.onTriggered.connect(function () {
+                    agentAxisHelper.visible = !agentAxisHelper.visible
+                })
+            }
         }
     }
 
