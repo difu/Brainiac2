@@ -50,7 +50,7 @@ void AgentInstaceGeometryQuick3D::updateData()
         qDebug() << "QColor of agent a: " << agentQColor;
 
 
-        int stride = 7 * sizeof(float);
+        static constexpr int stride = 7 * sizeof(float);
 
         QByteArray vertexData(3 * stride, Qt::Initialization::Uninitialized);
         float *p = reinterpret_cast<float *>(vertexData.data());
