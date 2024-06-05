@@ -1,6 +1,7 @@
 #ifndef BRAINIACGLOBALS_H
 #define BRAINIACGLOBALS_H
 
+#include <qcolor.h>
 #include <QtCore>
 
 class BrainiacGlobals
@@ -35,7 +36,8 @@ public:
 
     enum Channels {
         CI_RX, CI_RY, CI_RZ, CI_TX, CI_TY, CI_TZ,
-        CO_RX, CO_RY, CO_RZ, CO_TX, CO_TY, CO_TZ
+        CO_RX, CO_RY, CO_RZ, CO_TX, CO_TY, CO_TZ,
+        CO_COLOR //!< color channel of the agent
     };
 
     static qreal grad2rad(qreal grad) { return grad*PI/180.0; }
@@ -44,10 +46,9 @@ public:
     static qreal sinGrad( qreal grad) { return sin(grad*PI/180.0); }
     static qreal cosGrad( qreal grad) { return cos(grad*PI/180.0); }
 
-    static qreal getRand(quint32 index)
-    {
-        return BrainiacGlobals::randoms[index % BrainiacGlobals::NUMBER_OF_RANDOMS];
-    }
+    static QColor BrainiacColor(qreal color);
+
+    static qreal getRand(quint32 index);
 
     static const quint32 NUMBER_OF_RANDOMS = 300;
     static const qreal randoms[NUMBER_OF_RANDOMS];

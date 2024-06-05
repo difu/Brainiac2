@@ -79,6 +79,9 @@ void Simulation::setStartFrame(quint32 newStartFrame)
 void Simulation::reset()
 {
     setCurrentFrame(startFrame());
+    foreach(AgentInstance *agentInstance, m_scene->agentInstances()) {
+        agentInstance->reset();
+    }
 }
 
 quint32 Simulation::endFrame() const

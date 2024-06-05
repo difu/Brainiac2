@@ -18,3 +18,7 @@ Scene *GeneratorBase::scene()
 }
 
 GeneratorBase::~GeneratorBase() {}
+
+QList<Locator *> GeneratorBase::locators() const {
+    return m_locators;
+}

@@ -34,7 +34,7 @@ Node {
             enableXYGrid: false
             enableXZGrid: false
             enableYZGrid: false
-            visible: true
+            visible: false
         }
     }
 

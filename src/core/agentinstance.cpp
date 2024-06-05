@@ -21,7 +21,7 @@ AgentInstance::AgentInstance(Locator *locator, Agent *parent)
     */
     locator->setAgentInstance(this);
     m_locator = locator;
-    m_agent->scene()->addAgentInstance(this);
+    // m_agent->scene()->addAgentInstance(this);
 
     reset();
 }
@@ -46,8 +46,8 @@ void AgentInstance::addOutputChannel(BrainiacGlobals::BrainiacId id,
     }
     auto *newChannel = new Channel(this, defaults);
     m_outputChannels.insert(id, newChannel);
-    qDebug() << "ChannelName " << newChannel->getInfo()
-             << "Defaults: " << newChannel->defaults()->value;
+//    qDebug() << "ChannelName " << newChannel->getInfo()
+    //             << "Defaults: " << newChannel->defaults()->value;
 }
 
 Agent *AgentInstance::agent() const
@@ -104,6 +104,17 @@ void AgentInstance::setTranslation(const QVector3D &newTranslation)
     emit translationChanged();
 }
 
+void AgentInstance::setTranslationWithForcedEmit(const QVector3D &newTranslation) {
+    m_translation = newTranslation;
+
+    // TODO
+    // Should not be necessary, assume the Quick3d node is ready!
+    if (m_geometryQuick3DNode) {
+        m_geometryQuick3DNode->emitTranslationChanged();
+    }
+    emit translationChanged();
+}
+
 QVector3D AgentInstance::rotation() const
 {
     return m_rotation;
@@ -124,9 +135,22 @@ void AgentInstance::setRotation(const QVector3D &newRotation)
     emit rotationChanged();
 }
 
-void AgentInstance::advance()
-{
-    foreach (Channel *outputChannel, m_outputChannels) {
+void AgentInstance::setRotationithForcedEmit(const QVector3D &newRotation) {
+    m_rotation = newRotation;
+    // TODO
+    // Should not be necessary, assume the Quick3d node is ready!
+    if (m_geometryQuick3DNode) {
+        m_geometryQuick3DNode->emitRotationChanged();
+    }
+    emit rotationChanged();
+}
+
+void AgentInstance::advance() {
+    m_instanceBrain->think();
+    for (auto [id, channel]: m_outputChannels.asKeyValueRange()) {
+        if (id == BrainiacGlobals::CO_COLOR) {
+            qDebug() << "Color: " << channel->value();
+        }
     }
     m_newRotation.setX(m_rotation.x() + m_outputChannels.value(BrainiacGlobals::CO_RX)->value());
     m_newRotation.setY(m_rotation.y() + m_outputChannels.value(BrainiacGlobals::CO_RY)->value());
@@ -143,6 +167,7 @@ void AgentInstance::advance()
                           * BrainiacGlobals::cosGrad(m_newRotation.y())
                           + m_outputChannels.value(BrainiacGlobals::CO_TX)->value()
                           * BrainiacGlobals::sinGrad(m_newRotation.y()));
+    m_geometryQuick3DNode->setGeometryIsDirty(); // TODO: Think of using this in a more optimized way
 }
 
 void AgentInstance::advanceCommit()
@@ -155,8 +180,8 @@ void AgentInstance::advanceCommit()
 
 void AgentInstance::reset()
 {
-    setTranslation(m_locator->location());
-    setRotation(m_locator->rotation());
+    setTranslationWithForcedEmit(m_locator->location());
+    setRotationithForcedEmit(m_locator->rotation());
 
     m_newTranslation = m_translation;
     m_newRotation = m_rotation;

@@ -75,20 +75,25 @@ public:
     bool load();
     bool save();
 
-    QList<AgentInstance *> agentInstances() const;
+    [[nodiscard]] QList<AgentInstance *> agentInstances() const;
 
-    QHash<BrainiacGlobals::BrainiacId, Channel::ChannelDefaults *> inputChannelDefaults() const;
-    QHash<BrainiacGlobals::BrainiacId, Channel::ChannelDefaults *> outputChannelDefaults() const;
+    [[nodiscard]] QHash<BrainiacGlobals::BrainiacId, Channel::ChannelDefaults *> inputChannelDefaults() const;
 
-    QString fileName() const;
+    [[nodiscard]] QHash<BrainiacGlobals::BrainiacId, Channel::ChannelDefaults *> outputChannelDefaults() const;
+
+    [[nodiscard]] QString fileName() const;
+
     void setFileName(const QString &newFileName);
 
-    QString name() const;
+    [[nodiscard]] QString name() const;
+
     void setName(const QString &newName);
 
-    QJsonObject toJson() const;
+    [[nodiscard]] QJsonObject toJson() const;
 
-    Scene *scene() const;
+    [[nodiscard]] Scene *scene() const;
+
+    void dumpChannels();
 
     virtual ~Agent();
 

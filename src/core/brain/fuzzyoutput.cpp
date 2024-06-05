@@ -7,8 +7,7 @@
 #include "src/core/agentinstance.h"
 
 FuzzyOutput::FuzzyOutput(QObject *parent, BrainiacGlobals::BrainiacId id)
-    : FuzzyBase{parent}
-{
+    : FuzzyBase{parent} {
     m_channelId = 0;
     m_type = FuzzyBase::OUTPUT;
     setId(id);
@@ -17,25 +16,23 @@ FuzzyOutput::FuzzyOutput(QObject *parent, BrainiacGlobals::BrainiacId id)
     this->setEditorItem(new BrainEditorItem(this));
 }
 
-void FuzzyOutput::fromJson(QJsonObject obj) {}
+void FuzzyOutput::fromJson(QJsonObject obj) {
+}
 
-QJsonObject FuzzyOutput::toJson() const
-{
+QJsonObject FuzzyOutput::toJson() const {
     return QJsonObject();
 }
 
-BrainiacGlobals::BrainiacId FuzzyOutput::channelId() const
-{
+BrainiacGlobals::BrainiacId FuzzyOutput::channelId() const {
     return m_channelId;
 }
 
-void FuzzyOutput::setChannelId(BrainiacGlobals::BrainiacId newChannelId)
-{
+void FuzzyOutput::setChannelId(BrainiacGlobals::BrainiacId newChannelId) {
     if (m_channelId == newChannelId) {
         return;
     }
     m_channelId = newChannelId;
-    if(brain()->agent()->outputChannelDefaults().contains(m_channelId)) {
+    if (brain()->agent()->outputChannelDefaults().contains(m_channelId)) {
         setMinValue(brain()->agent()->outputChannelDefaults().value(m_channelId)->min);
         setMaxValue(brain()->agent()->outputChannelDefaults().value(m_channelId)->max);
     } else {
@@ -45,18 +42,23 @@ void FuzzyOutput::setChannelId(BrainiacGlobals::BrainiacId newChannelId)
     emit channelIdChanged();
 }
 
-qreal FuzzyOutput::result(const AgentInstance *agentInstance)
-{
-    if(agentInstance->instanceBrain()->hasResult(this->id())) {
+qreal FuzzyOutput::result(const AgentInstance *agentInstance) {
+    if (agentInstance->instanceBrain()->hasResult(this->id())) {
         return agentInstance->instanceBrain()->fuzzyResults().value(this->id());
     } else {
-        if(m_channelId) {
-            if(parents().count()==0) {
+        if (m_channelId) {
+            if (parents().count() == 0) {
                 const qreal result = agentInstance->outputChannels().value(m_channelId)->value();
-                agentInstance->instanceBrain()->setResult(this->id(),result);
+                agentInstance->instanceBrain()->setResult(this->id(), result);
+                return result;
+            } else {
+                const qreal result = parents().at(0).parent->result(agentInstance);
+                agentInstance->instanceBrain()->setResult(this->id(), result);
+                agentInstance->outputChannels().value(m_channelId)->setValue(result);
                 return result;
             }
         }
     }
+
     return 0;
 }

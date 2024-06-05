@@ -72,8 +72,12 @@ public:
     QVector3D translation() const;
     void setTranslation(const QVector3D &newTranslation);
 
+    void setTranslationWithForcedEmit(const QVector3D &newTranslation);
+
     QVector3D rotation() const;
     void setRotation(const QVector3D &newRotation);
+
+    void setRotationithForcedEmit(const QVector3D &newRotation);
 
 private:
     Agent *m_agent;

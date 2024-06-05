@@ -17,7 +17,22 @@ class FuzzyOutput : public FuzzyBase
 public:
     explicit FuzzyOutput(QObject *parent = nullptr, BrainiacGlobals::BrainiacId id=0);
 
+    /**
+     * @brief Converts a JSON object to a FuzzyOutput object.
+     *
+     * This method converts the provided JSON object to a FuzzyOutput object and updates the FuzzyOutput's properties accordingly.
+     *
+     * @param obj The JSON object to convert.
+     */
     void fromJson(QJsonObject obj);
+
+    /**
+     * @brief Converts the FuzzyOutput object to a JSON object.
+     *
+     * The method converts the FuzzyOutput object to a JSON object representation.
+     *
+     * @return The JSON object representing the FuzzyOutput.
+     */
     QJsonObject toJson() const;
 
     /**
@@ -36,7 +51,15 @@ public:
      */
     qreal result(const AgentInstance *agentInstance) override;
 
-    BrainiacGlobals::BrainiacId channelId() const;
+    /**
+     * @brief Get the channel id of the FuzzyOutput.
+     *
+     * The method returns the channel id of the FuzzyOutput.
+     *
+     * @return The channel id of the FuzzyOutput.
+     */
+    [[nodiscard]] BrainiacGlobals::BrainiacId channelId() const;
+
     void setChannelId(BrainiacGlobals::BrainiacId newChannelId);
 
 signals:

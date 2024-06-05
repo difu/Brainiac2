@@ -44,6 +44,8 @@ Agent::Agent(Scene *parent)
                     BrainiacGlobals::CI_RY);
     addInputChannel(QString("rz"), trans_defaults.min, trans_defaults.max, trans_defaults.value,
                     BrainiacGlobals::CI_RZ);
+
+    addOutputChannel(QString("color"), 0.0, 1.0, 1.0, BrainiacGlobals::CO_COLOR);
 }
 
 AgentInstance *Agent::addAgentInstance(Locator *locator) {
@@ -57,6 +59,8 @@ AgentInstance *Agent::addAgentInstance(Locator *locator) {
         Channel::ChannelDefaults *channeldefaults = m_outputChannelDefaults.value(outputId);
         newAgentInstance->addOutputChannel(outputId, channeldefaults);
     }
+    this->scene()->addAgentInstance(newAgentInstance);
+    qDebug()  << "Added new AgentInstance to Scene";
     return newAgentInstance;
 }
 
@@ -116,6 +120,17 @@ QJsonObject Agent::toJson() const {
 
 Scene *Agent::scene() const {
     return m_scene;
+}
+
+void Agent::dumpChannels() {
+    qDebug() << "Input Channels:";
+    foreach(BrainiacGlobals::BrainiacId id, m_inputChannels) {
+        qDebug() << "Channel: " << m_inputChannels.key(id) << " ID: " << id;
+    }
+    qDebug() << "Output Channels:";
+    foreach(BrainiacGlobals::BrainiacId id, m_outputChannels) {
+        qDebug() << "Channel: " << m_outputChannels.key(id) << " ID: " << id;
+    }
 }
 
 void Agent::setFileName(const QString &newFileName) {

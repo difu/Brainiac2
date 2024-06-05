@@ -19,6 +19,11 @@ public:
     QVector3D agentTranslation() const;
     QVariant agentInstance() const;
     Q_INVOKABLE void setAgentInstance(QVariant newAgentInstance);
+
+    [[nodiscard]] bool geometryIsDirty() const;
+
+    void setGeometryIsDirty();
+
     void emitRotationChanged();
     void emitTranslationChanged();
 
@@ -31,6 +36,7 @@ private:
     void setAgentInstance(AgentInstance *newAgentInstance);
     void updateData();
     AgentInstance *m_agentInstance;
+    bool m_geometryIsDirty;
 };
 
 #endif // AGENTINSTACEGEOMETRYQUICK3D_H

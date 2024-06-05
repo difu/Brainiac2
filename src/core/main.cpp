@@ -67,23 +67,37 @@ int main(int argc, char *argv[]) {
     newOr->setEditorPos(400, 175);
 
     FuzzyOutput *newOutput = agent->brain()->addOutputNode();
-    newOutput->setChannelId(BrainiacGlobals::CO_TZ);
-    newOutput->setName("Output 1 (tz)");
+    newOutput->setChannelId(BrainiacGlobals::CO_COLOR);
+    newOutput->setName("Output 1 (color)");
+    newOutput->setEditorPos(400, 225);
+    auto *newNoise3 = agent->brain()->addNoiseNode();
+    newNoise3->setRate(1.0);
+    newNoise3->setName("Color Noise");
+    newNoise3->setEditorPos(100, 225);
 
     FuzzyBase::connectFuzzies(newNoise, newAnd);
     FuzzyBase::connectFuzzies(newNoise2, newAnd);
     FuzzyBase::connectFuzzies(newNoise, newOr);
     FuzzyBase::connectFuzzies(newNoise2, newOr);
+    FuzzyBase::connectFuzzies(newNoise3, newOutput);
 
     // End Brain
 
-    for (int i = 0; i < 15; i++) {
+    const int numberOfLocators = 15;
+    for (int i = 0; i < numberOfLocators; i++) {
         Locator *loc = gen->addLocator(agent);
-        loc->setLocation(QVector3D(50 + 100 * i, 0, 50 + 10 * i));
+        loc->setLocation(QVector3D(50 - cos(i) * 200, 0, 50 + sin(i) * 200));
         loc->setRotation(QVector3D(0, 50 + i * 10, 0));
         loc->setSeed((i + 1) * 4);
     }
     gen->apply();
+
+    foreach(auto loc, gen->locators()) {
+        float i = 0.0;
+        loc->agentInstance()->outputChannels().value(BrainiacGlobals::CO_TZ)->setValue(4 + i / numberOfLocators);
+        loc->agentInstance()->outputChannels().value(BrainiacGlobals::CO_RY)->setValue(1);
+        i += 1.0;
+    }
 
     AgentInstance *myInstance = scene->agentInstances().constFirst();
     myInstance->outputChannels().value(BrainiacGlobals::CO_TZ)->setValue(4);

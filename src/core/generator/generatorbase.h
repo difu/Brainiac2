@@ -13,6 +13,9 @@ class GeneratorBase : public QObject
 public:
     explicit GeneratorBase(QObject *parent);
     virtual void apply() = 0;
+
+    [[nodiscard]] QList<Locator *> locators() const;
+
     Scene *scene();
     virtual ~GeneratorBase();
 

@@ -81,3 +81,18 @@ const qreal BrainiacGlobals::randoms[]
        0.7616641710915,     0.0936152917243476,  0.991349259574559,  0.36159173620198,
        0.514137232220538,   0.593176028780888,   0.577729841447816,  0.090325321097616,
        0.748561434764159,   0.549942131216852,   0.543134604435192,  0.831165896396961};
+
+QColor BrainiacGlobals::BrainiacColor(const qreal color) {
+    const float val = static_cast<float>(qBound(0.0, color, 1.0));
+    if (val < 0.1) {
+        return QColor::fromHsvF(val, 10 * val, 10 * val);
+    }
+    if (val < 0.9) {
+        return QColor::fromHsvF(val, 1, 1);
+    }
+    return QColor::fromHsvF(val, 1 - (val - 0.9) * 10, 1);
+}
+
+qreal BrainiacGlobals::getRand(const quint32 index) {
+    return BrainiacGlobals::randoms[index % BrainiacGlobals::NUMBER_OF_RANDOMS];
+}

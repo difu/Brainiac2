@@ -30,6 +30,8 @@ public:
     bool hasResult(BrainiacGlobals::BrainiacId id) const;
     void setResult(BrainiacGlobals::BrainiacId id, qreal result);
 
+    void think();
+
 private:
     QHash<BrainiacGlobals::BrainiacId, qreal> m_fuzzyResults;
     AgentInstance *m_agentInstance;
