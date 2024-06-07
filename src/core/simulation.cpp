@@ -43,9 +43,10 @@ void Simulation::advance()
         //     agentInstance->advance();
         // }
         QtConcurrent::blockingMap(m_scene->agentInstances(), &Simulation::advanceAgentInstance);
-        foreach(AgentInstance *agentInstance, m_scene->agentInstances()) {
-            agentInstance->advanceCommit();
-        }
+        // foreach(AgentInstance *agentInstance, m_scene->agentInstances()) {
+        //     agentInstance->advanceCommit();
+        // }
+        QtConcurrent::blockingMap(m_scene->agentInstances(), &Simulation::advanceAgentInstanceCommit);
         m_advanceMutex.unlock();
 
         const QDateTime endTime(QDateTime::currentDateTime());
@@ -63,6 +64,10 @@ void Simulation::advance()
 
 void Simulation::advanceAgentInstance(AgentInstance *agentInstance) {
     agentInstance->advance();
+}
+
+void Simulation::advanceAgentInstanceCommit(AgentInstance *agentInstance) {
+    agentInstance->advanceCommit();
 }
 
 qint64 Simulation::currentSimulationTimeMS() const

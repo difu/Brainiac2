@@ -38,6 +38,8 @@ public:
 
     static void advanceAgentInstance(AgentInstance *agentInstance);
 
+    static void advanceAgentInstanceCommit(AgentInstance *agentInstance);
+
     [[nodiscard]] quint32 currentFrame() const;
 
     void reset();
