@@ -67,11 +67,11 @@ protected:
     virtual void timerEvent(QTimerEvent *event);
 
 private:
-    quint32 m_startFrame;
-    quint32 m_endFrame;
-    quint32 m_currentFrame;
+    quint32 m_startFrame{};
+    quint32 m_endFrame{};
+    quint32 m_currentFrame{};
 
-    qreal m_frameRate;
+    qreal m_frameRate{};
 
     QMutex m_advanceMutex;
     bool m_isRunning;
