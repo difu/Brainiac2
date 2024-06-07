@@ -3,6 +3,7 @@
 #include <QMutex>
 #include <QObject>
 
+class AgentInstance;
 class Scene;
 
 /**
@@ -34,23 +35,32 @@ public:
     explicit Simulation(QObject *scene);
 
     void advance();
-    quint32 currentFrame() const;
+
+    static void advanceAgentInstance(AgentInstance *agentInstance);
+
+    [[nodiscard]] quint32 currentFrame() const;
+
     void reset();
-    quint32 startFrame() const;
+
+    [[nodiscard]] quint32 startFrame() const;
+
     void setStartFrame(quint32 newStartFrame);
 
-    quint32 endFrame() const;
+    [[nodiscard]] quint32 endFrame() const;
+
     void setEndFrame(quint32 newEndFrame);
 
     void startSimulation();
 
-    bool isRunning() const;
+    [[nodiscard]] bool isRunning() const;
 
-    qreal frameRate() const;
+    [[nodiscard]] qreal frameRate() const;
+
     void setFrameRate(qreal newFrameRate);
-    qint64 currentSimulationTimeMS() const;
 
-    virtual ~Simulation();
+    [[nodiscard]] qint64 currentSimulationTimeMS() const;
+
+    ~Simulation() override;
 
 protected:
     void setCurrentFrame(quint32 newCurrentFrame);

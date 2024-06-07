@@ -3,6 +3,8 @@
 
 #include "agentinstance.h"
 
+
+#include <QtConcurrent/QtConcurrent>
 #include <QDateTime>
 #include <QDebug>
 #include <QMutexLocker>
@@ -37,10 +39,11 @@ void Simulation::advance()
             m_isRunning = false;
             emit endFrameReached();
         }
-        foreach (AgentInstance *agentInstance, m_scene->agentInstances()) {
-            agentInstance->advance();
-        }
-        foreach (AgentInstance *agentInstance, m_scene->agentInstances()) {
+        // foreach (AgentInstance *agentInstance, m_scene->agentInstances()) {
+        //     agentInstance->advance();
+        // }
+        QtConcurrent::blockingMap(m_scene->agentInstances(), &Simulation::advanceAgentInstance);
+        foreach(AgentInstance *agentInstance, m_scene->agentInstances()) {
             agentInstance->advanceCommit();
         }
         m_advanceMutex.unlock();
@@ -53,9 +56,13 @@ void Simulation::advance()
             qDebug() << "Current simTime " << currentSimulationTimeMS();
             qDebug() << "Frame took " << durationMS << "ms.";
             qDebug() << "Sleeping for " << waitTimeMS << "ms.";
-            QThread::sleep((std::chrono::nanoseconds) waitTimeMS * 1000);
+            QThread::sleep(static_cast<std::chrono::nanoseconds>(waitTimeMS) * 1000);
         }
     }
+}
+
+void Simulation::advanceAgentInstance(AgentInstance *agentInstance) {
+    agentInstance->advance();
 }
 
 qint64 Simulation::currentSimulationTimeMS() const
@@ -138,4 +145,4 @@ void Simulation::timerEvent(QTimerEvent *event){
     }
 }
 
-Simulation::~Simulation() {}
+Simulation::~Simulation() = default;

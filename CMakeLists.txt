@@ -4,7 +4,7 @@ project(Brainiac VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_AUTOMOC ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Quick Quick3D Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Concurrent Core Gui Quick Quick3D Widgets)
 
 qt_add_executable(Brainiac
     src/core/main.cpp
@@ -52,11 +52,12 @@ set_target_properties(Brainiac PROPERTIES
 
 
 target_link_libraries(Brainiac PUBLIC
-    Qt::Widgets
-    Qt::Core
-    Qt::Gui
-    Qt::Quick
-    Qt::Quick3D
+        Qt::Widgets
+        Qt6::Concurrent
+        Qt::Core
+        Qt::Gui
+        Qt::Quick
+        Qt::Quick3D
 )
 
 include_directories(
