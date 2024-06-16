@@ -23,8 +23,6 @@ void AgentInstaceGeometryQuick3D::updateData()
     }
 
     if (geometryIsDirty()) {
-        static float bla = 01.0;
-        bla = bla + 1.0;
         clear();
         qreal agentColor = 0.45481;
         //m_agentInstance->agent()->dumpChannels();
