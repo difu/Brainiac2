@@ -18,9 +18,11 @@ Scene::Scene(QObject *parent)
 void Scene::addAgentInstance(AgentInstance *newAgentInstance)
 {
     QPointer<AgentInstance> qp(newAgentInstance);
-    QVariant qv = QVariant::fromValue(qp);
+    QVariant qv_agentInstance = QVariant::fromValue(qp);
+    QVariant qv_agentInstanceQML = QVariant::fromValue(newAgentInstance->instanceQML());
     //    qDebug() << "QVariant from scene " << qv;
-    QMetaObject::invokeMethod(m_agentInstanceSpawner, "addAgentInstance", Q_ARG(QVariant, qv));
+    QMetaObject::invokeMethod(m_agentInstanceSpawner, "addAgentInstance", Q_ARG(QVariant, qv_agentInstance),
+                              Q_ARG(QVariant, qv_agentInstanceQML));
     m_agentInstances.append(newAgentInstance);
 }
 

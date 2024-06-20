@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.5)
 project(Brainiac VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Concurrent Core Gui Quick Quick3D Widgets)
 
@@ -45,6 +46,12 @@ qt_add_resources(Brainiac "images"
         src/gui/pics/editor_logo_or.png
 )
 
+qt_add_resources(Brainiac "qml"
+        BASE "src/"
+        FILES
+        src/gui/AgentInstance.qml
+)
+
 set_target_properties(Brainiac PROPERTIES
     WIN32_EXECUTABLE TRUE
     MACOSX_BUNDLE TRUE
@@ -70,7 +77,8 @@ qt_add_qml_module(Brainiac
     RESOURCE_PREFIX "/qt/qml"
     QML_FILES
         src/gui/MainViewer.qml
-        src/gui/AgentInstance.qml
+        RESOURCES
+        src/gui/agent/shader/agentGeometry.vert
     IMPORTS
         QtQuick3D
 )

@@ -61,13 +61,36 @@ public:
 
     Agent *agent() const;
 
-    QHash<BrainiacGlobals::BrainiacId, Channel *> inputChannels() const;
-    QHash<BrainiacGlobals::BrainiacId, Channel *> outputChannels() const;
+    [[nodiscard]] QHash<BrainiacGlobals::BrainiacId, Channel *> inputChannels() const;
 
-    AgentInstaceGeometryQuick3D *geometryQuick3DNode() const;
+    [[nodiscard]] QHash<BrainiacGlobals::BrainiacId, Channel *> outputChannels() const;
+
+    /**
+     * @brief Returns the geometryQuick3DNode of the AgentInstance.
+     *
+     * This method returns the geometryQuick3DNode of the AgentInstance, which is an instance of the AgentInstaceGeometryQuick3D class.
+     * The geometryQuick3DNode represents the geometry of the AgentInstance in a Quick3D scene. It is used to hold information about the
+     * position, rotation, and other properties of the AgentInstance in 3D space.
+     *
+     * @note This method does not create a new instance of AgentInstaceGeometryQuick3D. It simply returns the existing instance.
+     * @return The geometryQuick3DNode of the AgentInstance.
+     */
+    [[nodiscard]] auto geometryQuick3DNode() const -> AgentInstaceGeometryQuick3D *;
+
+    /**
+     * @brief Returns the QML code for the instance of the Agent.
+     *
+     * This method reads the QML code from the file ":gui/AgentInstance.qml" and returns it as a QString.
+     * The QML code represents the visual representation of the AgentInstance in the 3D view.
+     *
+     * @note If the file cannot be opened, qFatal() is called to terminate the application.
+     * @return The QML code for the instance of the Agent.
+     */
+    [[nodiscard]] QString instanceQML() const;
+
     void setGeometryQuick3DNode(AgentInstaceGeometryQuick3D *newGeometryQuick3DNode);
 
-    Locator *locator() const;
+    [[nodiscard]] Locator *locator() const;
 
     QVector3D translation() const;
     void setTranslation(const QVector3D &newTranslation);

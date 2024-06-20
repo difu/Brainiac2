@@ -111,17 +111,32 @@ ApplicationWindow {
                 return "Hello from agentSpawner"
             }
 
-            function addAgentInstance(agentInstanceQVariant) {
-                var shapeComponent = Qt.createComponent("AgentInstance.qml");
-                if( shapeComponent.status !== Component.Ready ) {
-                    if(shapeComponent.status === Component.Error) {
-                        console.debug("ERROR while spawning AgentInstance: "+ shapeComponent.errorString());
+            function addAgentInstance(agentInstanceQVariant, agentInstanceQML) {
+                // var shapeComponent = Qt.createComponent("AgentInstance.qml");
+                // if( shapeComponent.status !== Component.Ready ) {
+                //     if(shapeComponent.status === Component.Error) {
+                //         console.debug("ERROR while spawning AgentInstance: "+ shapeComponent.errorString());
+                //     }
+                // }
+                // console.debug("Creating QML from QV Parameter (Pointer): " + agentInstanceQVariant);
+
+                var newAgentInstance = Qt.createQmlObject(agentInstanceQML,
+                    agentInstanceSpawner,
+                    "myDynamicSnippet"
+                );
+
+                if (newAgentInstance.status !== Component.Ready) {
+                    if (newAgentInstance.status === Component.Error) {
+                        console.debug("ERROR while spawning newAgentInstance: " + newAgentInstance.errorString());
                     }
                 }
-                // console.debug("Creating QML from QV Parameter (Pointer): " + agentInstanceQVariant);
-                let instance = shapeComponent.createObject(agentInstanceSpawner,
-                    { "agentInstance": agentInstanceQVariant});
-                instances.push(instance);
+                newAgentInstance.agentInstance = agentInstanceQVariant
+                console.debug("Position: ", newAgentInstance.position)
+
+                // let instance = shapeComponent.createObject(agentInstanceSpawner,
+                //    { "agentInstance": agentInstanceQVariant});
+                console.debug("Agent QML: ", agentInstanceQML)
+                instances.push(newAgentInstance);
                 count = instances.length
             }
             Component.onCompleted: {
