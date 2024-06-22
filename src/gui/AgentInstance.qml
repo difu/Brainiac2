@@ -13,6 +13,8 @@ Node {
         visible: true
         //scale: Qt.vector3d(100, 100, 100)
 
+        // {{ skeleton }}
+
         geometry: AgentInstaceGeometry {
             id: instanceGeom
             objectName: "AgentInstanceGeometry"

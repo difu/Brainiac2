@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+#include "brainiacglobals.h"
+
 class QQmlApplicationEngine;
 class Agent;
 class AgentInstance;
@@ -20,18 +22,32 @@ class Scene : public QObject
 public:
     explicit Scene(QObject *parent = nullptr);
 
+    auto addAgent(Agent *agent) -> void;
+
+    /**
+     * @brief agents
+     * Returns the list of agents in the scene.
+     *
+     * This function returns a QList of Agent pointers representing the agents in the scene.
+     *
+     * @return The list of agents in the scene.
+     */
+    [[nodiscard]] QList<Agent *> agents() const;
+
     void addAgentInstance(AgentInstance *newAgentInstance);
 
-    QQmlApplicationEngine *qQmlApplicationEngine() const;
+    [[nodiscard]] QQmlApplicationEngine *qQmlApplicationEngine() const;
+
     void setQQmlApplivationEngine(QQmlApplicationEngine *newQQmlApplivationEngine);
 
-    QObject *agentInstanceSpawner() const;
+    [[nodiscard]] QObject *agentInstanceSpawner() const;
 
-    Simulation *simulation() const;
+    [[nodiscard]] Simulation *simulation() const;
 
-    QList<AgentInstance *> agentInstances() const;
+    [[nodiscard]] QList<AgentInstance *> agentInstances() const;
 
-    QList<AgentInstance *> selectedAgentInstances() const;
+    [[nodiscard]] QList<AgentInstance *> selectedAgentInstances() const;
+
     /**
      * @brief setSelectedAgentInstances
      * sets the list of selected agentInstances.
@@ -45,6 +61,7 @@ private:
     QQmlApplicationEngine *m_qQmlApplicationEngine;
     QObject *m_agentInstanceSpawner;
     Simulation *m_simulation;
+    QList<Agent *> m_agents;
     QList<AgentInstance *> m_agentInstances;
     QList<AgentInstance *> m_selectedAgentInstances;
     Q_PROPERTY(QList<AgentInstance *> selectedAgentInstances READ selectedAgentInstances WRITE

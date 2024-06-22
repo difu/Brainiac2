@@ -6,12 +6,15 @@
 #include <QtGlobal>
 
 #include "scene.h"
+#include "body/body.h"
 
 Agent::Agent(Scene *parent)
     : QObject{parent} {
     m_scene = parent;
+    m_scene->addAgent(this);
     m_defaultAgentInstance = nullptr;
 
+    m_body = new Body(this);
     m_brain = new Brain(this);
     constexpr Channel::ChannelDefaults trans_defaults{.min = -100.0, .max = 100.0, .value = 0.0};
 
@@ -65,15 +68,24 @@ AgentInstance *Agent::addAgentInstance(Locator *locator) {
 }
 
 QString Agent::name() const {
-    return m_name;
+    return objectName();
 }
 
-void Agent::setName(const QString &newName) {
-    if (m_name == newName) {
-        return;
+bool Agent::setName(const QString &newName) {
+    if (objectName() == newName) {
+        return true;
     }
-    m_name = newName;
-    emit nameChanged();
+    foreach(auto *agent, m_scene->agents()) {
+        if (agent == this) {
+            continue;
+        }
+        if (agent->name() == newName) {
+            return false;
+        }
+    }
+
+    setObjectName(newName);
+    return true;
 }
 
 AgentInstance *Agent::defaultAgentInstance() const {
@@ -82,6 +94,10 @@ AgentInstance *Agent::defaultAgentInstance() const {
 
 void Agent::setDefaultAgentInstance(AgentInstance *newDefaultAgentInstance) {
     m_defaultAgentInstance = newDefaultAgentInstance;
+}
+
+Body *Agent::body() const {
+    return m_body;
 }
 
 Brain *Agent::brain() const {
@@ -114,7 +130,7 @@ bool Agent::save() {
 
 QJsonObject Agent::toJson() const {
     QJsonObject obj;
-    obj["name"] = m_name;
+    obj["name"] = objectName();
     return obj;
 }
 

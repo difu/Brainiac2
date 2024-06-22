@@ -17,6 +17,7 @@
 #include "generator/locator.h"
 #include "scene.h"
 #include "simulation.h"
+#include "body/body.h"
 #include "brain/fuzzyor.h"
 #include "src/gui/mainwindow.h"
 
@@ -45,8 +46,17 @@ int main(int argc, char *argv[]) {
     mainWindow.setGeometry(100, 100, 800, 500);
     mainWindow.show();
     scene->setQQmlApplivationEngine(&engine);
-    GeneratorManual *gen = new GeneratorManual(scene);
-    Agent *agent = new Agent(scene);
+    GeneratorManual *gen1 = new GeneratorManual(scene);
+    GeneratorManual *gen2 = new GeneratorManual(scene);
+
+    auto *agent = new Agent(scene);
+    if (!agent->setName("Agent1")) {
+        qFatal("Agent with the same name exists");
+    }
+    auto *agent2 = new Agent(scene);
+    if (!agent->setName("Agent2")) {
+        qFatal("Agent with the same name exists");
+    }
 
     // Brain
     auto *newNoise = agent->brain()->addNoiseNode();
@@ -82,19 +92,41 @@ int main(int argc, char *argv[]) {
     FuzzyBase::connectFuzzies(newNoise3, newOutput);
 
     // End Brain
+    // Body
+    BoneBox *rootBone = agent->body()->addBoneBox(1, 0, "root");
+    BoneBox *leftBone = agent->body()->addBoneBox(2, 1, "left");
+    BoneBox *rightBone = agent->body()->addBoneBox(3, 1, "right");
+    rootBone->setTranslation(QVector3D(1, 2, 3));
+    qDebug().noquote() << "Body QML :" << agent->body()->skeletonQML();
+
+    // Body
 
     const int numberOfLocators = 15;
     for (int i = 0; i < numberOfLocators; i++) {
-        Locator *loc = gen->addLocator(agent);
+        Locator *loc = gen1->addLocator(agent);
         loc->setLocation(QVector3D(50 - cos(i) * 200, 0, 50 + sin(i) * 200));
         loc->setRotation(QVector3D(0, 50 + i * 10, 0));
         loc->setSeed((i + 1) * 4);
     }
-    gen->apply();
 
-    foreach(auto loc, gen->locators()) {
+    for (int i = 0; i < numberOfLocators; i++) {
+        Locator *loc = gen2->addLocator(agent2);
+        loc->setLocation(QVector3D(20 - cos(i) * 180, 0, 60 + sin(i) * 200));
+        loc->setRotation(QVector3D(0, 70 + i * 12, 0));
+        loc->setSeed((i + 1) * 4);
+    }
+    gen1->apply();
+    gen2->apply();
+
+    foreach(auto loc, gen1->locators()) {
         float i = 0.0;
         loc->agentInstance()->outputChannels().value(BrainiacGlobals::CO_TZ)->setValue(4 + i / numberOfLocators);
+        loc->agentInstance()->outputChannels().value(BrainiacGlobals::CO_RY)->setValue(1);
+        i += 1.0;
+    }
+    foreach(auto loc, gen2->locators()) {
+        float i = 0.0;
+        loc->agentInstance()->outputChannels().value(BrainiacGlobals::CO_TZ)->setValue(5 + i / numberOfLocators);
         loc->agentInstance()->outputChannels().value(BrainiacGlobals::CO_RY)->setValue(1);
         i += 1.0;
     }
@@ -109,7 +141,7 @@ int main(int argc, char *argv[]) {
 
     mainWindow.setMainEditor(agent->brain()->brainEditor());
 
-    scene->simulation()->setEndFrame(120);
+    scene->simulation()->setEndFrame(1);
     scene->simulation()->startSimulation();
 
     // Debug

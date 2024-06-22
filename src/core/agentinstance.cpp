@@ -78,7 +78,8 @@ QString AgentInstance::instanceQML() const {
         qFatal() << "Could not open gentInstance.qml";
     }
     QTextStream in(&file);
-    QString qml = in.readAll();;
+    QString qml = in.readAll();
+
     return qml;
 }
 

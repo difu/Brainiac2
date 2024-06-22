@@ -15,6 +15,10 @@ Scene::Scene(QObject *parent)
     m_qQmlApplicationEngine = nullptr;
 }
 
+void Scene::addAgent(Agent *agent) {
+    m_agents.append(agent);
+}
+
 void Scene::addAgentInstance(AgentInstance *newAgentInstance)
 {
     QPointer<AgentInstance> qp(newAgentInstance);
@@ -78,4 +82,8 @@ void Scene::setSelectedAgentInstance(AgentInstance *newSelectedAgentInstance)
     m_selectedAgentInstances.clear();
     m_selectedAgentInstances.append(newSelectedAgentInstance);
     emit selectedAgentInstancesChanged();
+}
+
+QList<Agent *> Scene::agents() const {
+    return m_agents;
 }

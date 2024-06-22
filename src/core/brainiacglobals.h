@@ -23,7 +23,7 @@ public:
         NOISE,
         TIMER,
         SPHERE,
-        CUBE,
+        BOX,
         TUBE,
         GROUP,
         AGENT,

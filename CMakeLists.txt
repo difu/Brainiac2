@@ -36,6 +36,10 @@ qt_add_executable(Brainiac
         src/core/brain/fuzzyand.h
         src/core/brain/fuzzyor.cpp
         src/core/brain/fuzzyor.h
+        src/core/body/body.cpp
+        src/core/body/body.h
+    src/core/body/bone.h src/core/body/bone.cpp
+    src/core/body/bonebox.h src/core/body/bonebox.cpp
 
 )
 

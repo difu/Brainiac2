@@ -12,6 +12,7 @@
 #include "channel.h"
 
 class AgentInstance;
+class Body;
 class Brain;
 class Locator;
 
@@ -33,8 +34,6 @@ class Agent : public QObject
 public:
     explicit Agent(Scene *parent);
 
-    QString m_name;
-
     /**
      * @brief Adds a new instance of an agent.
      *
@@ -52,6 +51,8 @@ public:
     [[nodiscard]] AgentInstance *defaultAgentInstance() const;
 
     void setDefaultAgentInstance(AgentInstance *newDefaultAgentInstance);
+
+    [[nodiscard]] Body *body() const;
 
     Brain *brain() const;
 
@@ -87,7 +88,7 @@ public:
 
     [[nodiscard]] QString name() const;
 
-    void setName(const QString &newName);
+    [[nodiscard]] bool setName(const QString &newName);
 
     [[nodiscard]] QJsonObject toJson() const;
 
@@ -110,13 +111,11 @@ private:
 
     QString m_fileName;
 
+    Body *m_body;
     Brain *m_brain;
     Scene *m_scene;
 
-    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged FINAL)
-
 signals:
-    void nameChanged();
 };
 
 #endif // AGENT_H
