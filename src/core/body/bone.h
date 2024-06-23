@@ -63,8 +63,9 @@ private:
      *
      * The parent id is used to identify the parent Bone of a given Bone object.
      *
-     * Note: The parent is not to be confused with the parent of the QObject! The parent bobe does not take ownership
-     *       of the bone! The parent QObject is the @see Bone
+     * Note: The parent is not to be confused with the parent of the QObject! The parent bone does not take ownership
+     *       of the bone! The parent QObject is the Bone
+     *
      * Note: The parent id is initialized to 0 in the Bone constructor.
      *
      * @see Bone, BrainiacGlobals
