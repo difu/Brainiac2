@@ -8,13 +8,13 @@ Node {
 
     property variant agentInstance
     property real hue: Math.random()
+
+    // {{ skeleton }}
+
     Model {
         id: agentInstanceModel
         visible: true
         //scale: Qt.vector3d(100, 100, 100)
-
-        // {{ skeleton }}
-
         geometry: AgentInstaceGeometry {
             id: instanceGeom
             objectName: "AgentInstanceGeometry"
@@ -32,6 +32,7 @@ Node {
                 lighting: DefaultMaterial.NoLighting
             }
         ]
+        // {{ skin }}
         AxisHelper {
             id: agentAxisHelper
             enableXYGrid: false

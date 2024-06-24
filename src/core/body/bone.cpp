@@ -1,4 +1,7 @@
 #include "bone.h"
+
+#include <QMatrix4x4>
+
 #include "body.h"
 
 Bone::Bone(QObject *parent, const BrainiacGlobals::ItemType type, const BrainiacGlobals::BrainiacId id,
@@ -58,6 +61,21 @@ QVector3D Bone::rotation() const {
 
 void Bone::setRotation(const QVector3D &rotation) {
     m_rotation = rotation;
+}
+
+QMatrix4x4 Bone::inverseBindMatrix() const {
+    QMatrix4x4 local{};
+    local.translate(m_translation);
+    bool invertible = false;
+    QMatrix4x4 localInverted = local.inverted(&invertible);
+    if (!invertible) {
+        qFatal() << "Cannot invert matrix for bone " << this->id();
+    }
+    if (m_parent == 0) {
+        return local.inverted();
+    }
+    const QMatrix4x4 inverseBind = m_body->bones().value(m_parent)->inverseBindMatrix() * local.inverted();
+    return inverseBind;
 }
 
 Body *Bone::body() const {

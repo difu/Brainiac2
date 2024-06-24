@@ -1,5 +1,7 @@
 #include "body.h"
 
+#include <QMatrix4x4>
+
 #include "../agent.h"
 
 Body::Body(QObject *parent)
@@ -45,8 +47,44 @@ QString Body::skeletonQML() const {
     return qml;
 }
 
+QString Body::skinQML() const {
+    QString tabs("\t");
+    constexpr int indent = 1;
+    tabs = tabs.repeated(indent);
+    QString qml = tabs + QString("skin: Skin {\n") + QString("id: skin0\n") + tabs.repeated(2) + QString("joints: [\n");
+
+    // QHash of bones is not ordered, so store the order for the inverseBinds!
+    QList<BrainiacGlobals::BrainiacId> boneOrder;
+
+    foreach(Bone *aBone, m_bones) {
+        qml += tabs.repeated(3) + QString(aBone->objectName()) + QString(",\n");
+        boneOrder.append(aBone->id());
+    }
+    qml += tabs.repeated(2) + QString("]\n") + tabs + QString("inverseBindPoses: [\n");
+
+    foreach(auto boneId, boneOrder) {
+        auto aBone = m_bones.value(boneId);
+        QMatrix4x4 mat = aBone->inverseBindMatrix();
+        qml += tabs.repeated(3) + QString("Qt.matrix4x4(%1, %2, %3, %4,\n").arg(
+            QString::number(mat.data()[0]), QString::number(mat.data()[4]),
+            QString::number(mat.data()[8]), QString::number(mat.data()[12]));
+        qml += tabs.repeated(4) + QString("%1, %2, %3, %4,\n").arg(
+            QString::number(mat.data()[1]), QString::number(mat.data()[5]),
+            QString::number(mat.data()[9]), QString::number(mat.data()[13]));
+        qml += tabs.repeated(4) + QString("%1, %2, %3, %4,\n").arg(
+            QString::number(mat.data()[2]), QString::number(mat.data()[6]),
+            QString::number(mat.data()[10]), QString::number(mat.data()[14]));
+        qml += tabs.repeated(4) + QString("%1, %2, %3, %4),\n").arg(
+            QString::number(mat.data()[3]), QString::number(mat.data()[7]),
+            QString::number(mat.data()[11]), QString::number(mat.data()[15]));
+    }
+    qml += tabs.repeated(2) + QString("]\n") + tabs + QString("}");
+
+
+    return qml;
+}
+
 void Body::skeletonQmlTraverse(const quint32 level, const Bone *bone, QString &qml) const {
-    // const int indent = 1;
     QString tabs("\t");
     tabs = tabs.repeated(level);
     qml += QString("\n") + tabs + QString("Node { \n " + tabs.repeated(2) + "id: ") + bone->objectName() + QString(
@@ -58,6 +96,7 @@ void Body::skeletonQmlTraverse(const quint32 level, const Bone *bone, QString &q
             + QString("%1, %2, %3)").arg(
                 QString::number(bone->rotation().x()), QString::number(bone->rotation().y()),
                 QString::number(bone->rotation().z()));
+
     foreach(Bone *aBone, m_bones) {
         if (aBone->parentBoneId() == bone->id()) {
             skeletonQmlTraverse(level + 1, aBone, qml);

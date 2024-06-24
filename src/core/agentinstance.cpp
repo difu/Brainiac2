@@ -1,5 +1,7 @@
 #include "agentinstance.h"
 #include "agent.h"
+#include "body/bone.h"
+#include "body/body.h"
 #include "channel.h"
 #include "scene.h"
 
@@ -9,6 +11,9 @@
 #include <QFile>
 #include <QTextStream>
 #include <QDebug>
+#include <QMatrix4x4>
+
+#include "body/body.h"
 
 AgentInstance::AgentInstance(Locator *locator, Agent *parent)
     : QObject{parent}
@@ -79,8 +84,13 @@ QString AgentInstance::instanceQML() const {
     }
     QTextStream in(&file);
     QString qml = in.readAll();
+    QString afterReplaceSkeleton = qml.replace("// {{ skeleton }}", m_agent->body()->skeletonQML());
+    // qDebug().noquote() << "After " << after;
+    // {{ skin }}
+    //QString afterReplaceSkin = afterReplaceSkeleton.replace("// {{ skin }}", m_agent->body()->skinQML());
+    qDebug().noquote() << "Skin " << m_agent->body()->skinQML();
 
-    return qml;
+    return afterReplaceSkeleton;
 }
 
 void AgentInstance::setGeometryQuick3DNode(AgentInstaceGeometryQuick3D *newGeometryQuick3DNode)

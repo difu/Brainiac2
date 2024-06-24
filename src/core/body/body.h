@@ -41,6 +41,8 @@ public:
      */
     [[nodiscard]] QString skeletonQML() const;
 
+    [[nodiscard]] QString skinQML() const;
+
 private:
     Agent *m_agent;
     QHash<BrainiacGlobals::BrainiacId, Bone*> m_bones;

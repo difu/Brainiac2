@@ -46,6 +46,8 @@ public:
 
     void setRotation(const QVector3D &rotation);
 
+    [[nodiscard]] QMatrix4x4 inverseBindMatrix() const;
+
 public:
 
 
@@ -73,9 +75,6 @@ private:
     BrainiacGlobals::BrainiacId m_parent;
 
     QVector3D m_translation;
-
-
-private:
     QVector3D m_rotation;
 
 

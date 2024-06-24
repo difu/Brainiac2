@@ -97,11 +97,13 @@ int main(int argc, char *argv[]) {
     BoneBox *leftBone = agent->body()->addBoneBox(2, 1, "left");
     BoneBox *rightBone = agent->body()->addBoneBox(3, 1, "right");
     rootBone->setTranslation(QVector3D(1, 2, 3));
+    leftBone->setTranslation(QVector3D(1, 2, 3));
+    rightBone->setTranslation(QVector3D(1, 2, 3));
     qDebug().noquote() << "Body QML :" << agent->body()->skeletonQML();
 
     // Body
 
-    const int numberOfLocators = 15;
+    const int numberOfLocators = 1;
     for (int i = 0; i < numberOfLocators; i++) {
         Locator *loc = gen1->addLocator(agent);
         loc->setLocation(QVector3D(50 - cos(i) * 200, 0, 50 + sin(i) * 200));
