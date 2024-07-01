@@ -40,6 +40,8 @@ public:
      * This method creates a new instance of the agent using the specified locator and adds it to the agent's list of instances.
      * The locator object is used to initialize the instance's properties.
      * The method also adds the input and output channels to the new agent instance based on the predefined defaults of the agent.
+     * Also, the instance is added to the scene. When added to the scene, the AgentInstaceGeometryQuick3D is set
+     * and ready to use in the instance.
      *
      * @param locator The locator object used to initialize the properties of the new agent instance.
      *
