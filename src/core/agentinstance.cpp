@@ -85,12 +85,9 @@ QString AgentInstance::instanceQML() const {
     QTextStream in(&file);
     QString qml = in.readAll();
     QString afterReplaceSkeleton = qml.replace("// {{ skeleton }}", m_agent->body()->skeletonQML());
-    // qDebug().noquote() << "After " << after;
-    // {{ skin }}
-    //QString afterReplaceSkin = afterReplaceSkeleton.replace("// {{ skin }}", m_agent->body()->skinQML());
-    qDebug().noquote() << "Skin " << m_agent->body()->skinQML();
+    QString afterReplaceSkin = afterReplaceSkeleton.replace("// {{ skin }}", m_agent->body()->skinQML());
 
-    return afterReplaceSkeleton;
+    return afterReplaceSkin;
 }
 
 void AgentInstance::setGeometryQuick3DNode(AgentInstaceGeometryQuick3D *newGeometryQuick3DNode)
@@ -190,7 +187,7 @@ void AgentInstance::advance() {
                           * BrainiacGlobals::cosGrad(m_newRotation.y())
                           + m_outputChannels.value(BrainiacGlobals::CO_TX)->value()
                           * BrainiacGlobals::sinGrad(m_newRotation.y()));
-    m_geometryQuick3DNode->setGeometryIsDirty(); // TODO: Think of using this in a more optimized way
+    m_geometryQuick3DNode->setMarkerGeometryIsDirty(); // TODO: Think of using this in a more optimized way
 }
 
 void AgentInstance::advanceCommit()
