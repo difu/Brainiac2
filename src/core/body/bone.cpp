@@ -6,7 +6,7 @@
 
 Bone::Bone(QObject *parent, const BrainiacGlobals::ItemType type, const BrainiacGlobals::BrainiacId id,
            const BrainiacGlobals::BrainiacId parentId, const QString &name)
-    : QObject{parent}, m_type(type), m_id(id), m_parent(parentId) {
+    : QObject{parent}, m_type(type), m_id(id), m_parentId(parentId) {
     m_body = qobject_cast<Body *>(parent);
     if (!m_body) {
         qFatal() << "parent must be of type Body!";
@@ -27,7 +27,7 @@ BrainiacGlobals::BrainiacId Bone::id() const {
 }
 
 BrainiacGlobals::BrainiacId Bone::parentBoneId() const {
-    return m_parent;
+    return m_parentId;
 }
 
 QString Bone::setBoneName(const QString &newName) {
@@ -71,10 +71,10 @@ QMatrix4x4 Bone::inverseBindMatrix() const {
     if (!invertible) {
         qFatal() << "Cannot invert matrix for bone " << this->id();
     }
-    if (m_parent == 0) {
+    if (m_parentId == 0) {
         return local.inverted();
     }
-    const QMatrix4x4 inverseBind = m_body->bones().value(m_parent)->inverseBindMatrix() * local.inverted();
+    const QMatrix4x4 inverseBind = m_body->bones().value(m_parentId)->inverseBindMatrix() * local.inverted();
     return inverseBind;
 }
 
