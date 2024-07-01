@@ -3,11 +3,14 @@
 #include <qcolor.h>
 #include <QVector3D>
 
+#include "qqmlapplicationengine.h"
+#include "qquaternion.h"
 #include "src/core/agent.h"
 #include "src/core/agentinstance.h"
-#include "src/core/brainiacglobals.h"
 #include "src/core/body/body.h"
 #include "src/core/body/bonebox.h"
+#include "src/core/brainiacglobals.h"
+#include "src/core/scene.h"
 
 struct Vertex {
     QVector3D position;
@@ -155,14 +158,27 @@ void AgentInstaceGeometryQuick3D::setAgentInstance(AgentInstance *newAgentInstan
                 QQuick3DGeometry::Attribute::ComponentType::F32Type
         )
         ;
-    }
 
-    foreach(Bone *bone, m_agentInstance->agent()->body()->bones()) {
-        if (qobject_cast<BoneBox *>(bone)) {
-            quint32 boneIndex = m_agentInstance->agent()->body()->boneOrder().indexOf(bone->id());
-            addCube(bone->translation(), QVector3D(10, 10, 10), boneIndex);
-            qDebug() << "Added Bone " << bone->objectName() << " Id " << bone->id()
-                     << " with boneIndex " << boneIndex;
+        // foreach (QObject *obj, viewer->findChildren<QObject *>("root")) {
+        //     qDebug() << "Found QML: " << obj->objectName();
+        //     QQuaternion q = QQuaternion::fromEulerAngles(10, 20, 40);
+        //     obj->setProperty("rotation", QVariant(q));
+        // }
+        QQmlApplicationEngine *engine = m_agentInstance->agent()->scene()->qQmlApplicationEngine();
+        QObject *viewer = engine->rootObjects().constFirst();
+        foreach(Bone *bone, m_agentInstance->agent()->body()->bones()) {
+            if (qobject_cast<BoneBox *>(bone)) {
+                quint32 boneIndex = m_agentInstance->agent()->body()->boneOrder().indexOf(bone->id());
+                addCube(bone->translation(), QVector3D(10, 10, 10), boneIndex);
+                qDebug() << "Added Bone " << bone->objectName() << " Id " << bone->id()
+                        << " with boneIndex " << boneIndex;
+            }
+
+            auto *joint = viewer->findChild<QObject *>(bone->objectName());
+            if (!joint) {
+                qFatal() << "Joint with name " << bone->objectName() << "not found!";
+            }
+            m_boneJointLookup.insert(bone, joint);
         }
     }
 
