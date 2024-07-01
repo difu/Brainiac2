@@ -43,9 +43,34 @@ public:
 
     [[nodiscard]] QString skinQML() const;
 
+    QList<BrainiacGlobals::BrainiacId> boneOrder() const;
+
 private:
     Agent *m_agent;
     QHash<BrainiacGlobals::BrainiacId, Bone*> m_bones;
+    /**
+     * @var m_boneOrder
+     * @brief The ordered list of bone IDs.
+     *
+     * This variable stores the ordered list of bone IDs in the Body class.
+     * The bone order determines the hierarchy of the bones in the skeleton.
+     * Each ID corresponds to a BoneBox object in the Body. This is important, because the IDs of a given bone differs
+     * from the weight in the skinning process. The index of the bone of this list is the corresponding joint in the
+     * QQuick3d-Skinning process.
+     *
+     * Example usage:
+     * @code
+     * QList<BrainiacGlobals::BrainiacId> boneOrder = body.boneOrder();
+     * foreach (BrainiacGlobals::BrainiacId boneId, boneOrder) {
+     *     BoneBox *bone = body.bones().value(boneId);
+     *     // Perform operations on the bone
+     * }
+     * @endcode
+     *
+     * @see BoneBox, Body, Bone
+     */
+    QList<BrainiacGlobals::BrainiacId> m_boneOrder;
+
     void skeletonQmlTraverse(quint32 level, const Bone *bone, QString &qml) const;
 
 };

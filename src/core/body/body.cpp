@@ -11,6 +11,7 @@ Body::Body(QObject *parent)
 
 void Body::addBone(Bone *newBone) {
     m_bones.insert(newBone->id(), newBone);
+    m_boneOrder.append(newBone->id());
 }
 
 BoneBox *Body::addBoneBox(const BrainiacGlobals::BrainiacId id, const BrainiacGlobals::BrainiacId parentId,
@@ -53,16 +54,13 @@ QString Body::skinQML() const {
     tabs = tabs.repeated(indent);
     QString qml = tabs + QString("skin: Skin {\n") + QString("id: skin0\n") + tabs.repeated(2) + QString("joints: [\n");
 
-    // QHash of bones is not ordered, so store the order for the inverseBinds!
-    QList<BrainiacGlobals::BrainiacId> boneOrder;
-
-    foreach(Bone *aBone, m_bones) {
+    foreach (auto boneId, m_boneOrder) {
+        auto aBone = m_bones.value(boneId);
         qml += tabs.repeated(3) + QString(aBone->objectName()) + QString(",\n");
-        boneOrder.append(aBone->id());
     }
     qml += tabs.repeated(2) + QString("]\n") + tabs + QString("inverseBindPoses: [\n");
 
-    foreach(auto boneId, boneOrder) {
+    foreach (auto boneId, m_boneOrder) {
         auto aBone = m_bones.value(boneId);
         QMatrix4x4 mat = aBone->inverseBindMatrix();
         qml += tabs.repeated(3) + QString("Qt.matrix4x4(%1, %2, %3, %4,\n").arg(
@@ -82,6 +80,11 @@ QString Body::skinQML() const {
 
 
     return qml;
+}
+
+QList<BrainiacGlobals::BrainiacId> Body::boneOrder() const
+{
+    return m_boneOrder;
 }
 
 void Body::skeletonQmlTraverse(const quint32 level, const Bone *bone, QString &qml) const {
