@@ -45,6 +45,8 @@ public:
 
     QList<BrainiacGlobals::BrainiacId> boneOrder() const;
 
+    Agent *agent() const;
+
 private:
     Agent *m_agent;
     QHash<BrainiacGlobals::BrainiacId, Bone*> m_bones;

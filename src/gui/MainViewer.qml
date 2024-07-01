@@ -175,7 +175,7 @@ ApplicationWindow {
 
                 // let instance = shapeComponent.createObject(agentInstanceSpawner,
                 //    { "agentInstance": agentInstanceQVariant});
-                console.debug("Agent QML: ", agentInstanceQML)
+                // console.debug("Agent QML: ", agentInstanceQML)
                 instances.push(newAgentInstance);
                 count = instances.length
             }

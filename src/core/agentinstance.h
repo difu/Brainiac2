@@ -13,6 +13,7 @@
 #include "../../gui/agent/agentinstacegeometryquick3d.h"
 
 class Agent;
+class AgentInstanceBody;
 class AgentInstanceBrain;
 class Locator;
 
@@ -105,11 +106,10 @@ public:
 private:
     Agent *m_agent;
     AgentInstanceBrain *m_instanceBrain;
+    AgentInstanceBody *m_agentInstanceBody;
 
 public:
-    [[nodiscard]] AgentInstanceBrain * instanceBrain() const {
-        return m_instanceBrain;
-    }
+    [[nodiscard]] AgentInstanceBrain *instanceBrain() const { return m_instanceBrain; }
 
 private:
     AgentInstaceGeometryQuick3D *m_geometryQuick3DNode;

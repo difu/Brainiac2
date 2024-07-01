@@ -32,14 +32,15 @@ qt_add_executable(Brainiac
     src/gui/editoritem.h src/gui/editoritem.cpp
     src/gui/agent/brain/braineditoritem.h src/gui/agent/brain/braineditoritem.cpp
     src/gui/editoritemconnector.h src/gui/editoritemconnector.cpp
-        src/core/brain/fuzzyand.cpp
-        src/core/brain/fuzzyand.h
-        src/core/brain/fuzzyor.cpp
-        src/core/brain/fuzzyor.h
-        src/core/body/body.cpp
-        src/core/body/body.h
+    src/core/brain/fuzzyand.cpp
+    src/core/brain/fuzzyand.h
+    src/core/brain/fuzzyor.cpp
+    src/core/brain/fuzzyor.h
+    src/core/body/body.cpp
+    src/core/body/body.h
     src/core/body/bone.h src/core/body/bone.cpp
     src/core/body/bonebox.h src/core/body/bonebox.cpp
+    src/core/body/agentinstancebody.h src/core/body/agentinstancebody.cpp
 
 )
 

@@ -13,6 +13,7 @@
 #include <QDebug>
 #include <QMatrix4x4>
 
+#include "body/agentinstancebody.h"
 #include "body/body.h"
 
 AgentInstance::AgentInstance(Locator *locator, Agent *parent)
@@ -21,6 +22,7 @@ AgentInstance::AgentInstance(Locator *locator, Agent *parent)
     m_agent = parent;
     m_geometryQuick3DNode = nullptr;
     m_instanceBrain = new AgentInstanceBrain(this);
+    m_agentInstanceBody = new AgentInstanceBody(this);
 
     /**
         Take care that @ref Locator and @ref AgentInstance know each other.

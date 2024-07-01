@@ -3,6 +3,7 @@
 #include <QMatrix4x4>
 
 #include "body.h"
+#include "src/core/agent.h"
 
 Bone::Bone(QObject *parent, const BrainiacGlobals::ItemType type, const BrainiacGlobals::BrainiacId id,
            const BrainiacGlobals::BrainiacId parentId, const QString &name)
@@ -16,6 +17,32 @@ Bone::Bone(QObject *parent, const BrainiacGlobals::ItemType type, const Brainiac
     }
     setBoneName(name);
     m_body->addBone(this);
+
+    m_channelID_TX = m_body->agent()->addOutputChannel(this->objectName().append(":tx"),
+                                                       BrainiacGlobals::MINQREAL,
+                                                       BrainiacGlobals::MAXQREAL,
+                                                       this->translation().x());
+    m_channelID_TY = m_body->agent()->addOutputChannel(this->objectName().append(":ty"),
+                                                       BrainiacGlobals::MINQREAL,
+                                                       BrainiacGlobals::MAXQREAL,
+                                                       this->translation().y());
+    m_channelID_TZ = m_body->agent()->addOutputChannel(this->objectName().append(":tz"),
+                                                       BrainiacGlobals::MINQREAL,
+                                                       BrainiacGlobals::MAXQREAL,
+                                                       this->translation().z());
+
+    m_channelID_RX = m_body->agent()->addOutputChannel(this->objectName().append(":rx"),
+                                                       -360.,
+                                                       360.,
+                                                       this->rotation().x());
+    m_channelID_RY = m_body->agent()->addOutputChannel(this->objectName().append(":ry"),
+                                                       -360.,
+                                                       360.,
+                                                       this->rotation().y());
+    m_channelID_RZ = m_body->agent()->addOutputChannel(this->objectName().append(":rz"),
+                                                       -360.,
+                                                       360.,
+                                                       this->rotation().z());
 }
 
 BrainiacGlobals::ItemType Bone::type() const {

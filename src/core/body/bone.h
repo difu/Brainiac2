@@ -125,7 +125,13 @@ private:
     QVector3D m_translation;
     QVector3D m_rotation;
 
+    BrainiacGlobals::BrainiacId m_channelID_TX;
+    BrainiacGlobals::BrainiacId m_channelID_TY;
+    BrainiacGlobals::BrainiacId m_channelID_TZ;
 
+    BrainiacGlobals::BrainiacId m_channelID_RX;
+    BrainiacGlobals::BrainiacId m_channelID_RY;
+    BrainiacGlobals::BrainiacId m_channelID_RZ;
 signals:
 };
 

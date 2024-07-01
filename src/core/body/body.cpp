@@ -88,6 +88,11 @@ QList<BrainiacGlobals::BrainiacId> Body::boneOrder() const
     return m_boneOrder;
 }
 
+Agent *Body::agent() const
+{
+    return m_agent;
+}
+
 void Body::skeletonQmlTraverse(const quint32 level, const Bone *bone, QString &qml) const {
     QString tabs("\t");
     tabs = tabs.repeated(level);
