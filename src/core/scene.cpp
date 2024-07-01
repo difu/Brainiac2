@@ -4,6 +4,7 @@
 #include <QQmlApplicationEngine>
 
 #include "agentinstance.h"
+#include "qqmlcontext.h"
 #include "src/core/simulation.h"
 
 Scene::Scene(QObject *parent)
@@ -38,6 +39,10 @@ QQmlApplicationEngine *Scene::qQmlApplicationEngine() const
 void Scene::setQQmlApplivationEngine(QQmlApplicationEngine *newQQmlApplicationEngine)
 {
     m_qQmlApplicationEngine = newQQmlApplicationEngine;
+
+    QQmlContext *ctx = m_qQmlApplicationEngine->rootContext();
+    ctx->setContextProperty("simulation", m_simulation);
+
     QObject *viewer = m_qQmlApplicationEngine->rootObjects().constFirst();
     QObject *agentSpawner = nullptr;
     foreach (QObject *obj, viewer->findChildren<QObject *>("agentInstanceSpawner")) {

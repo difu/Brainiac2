@@ -13,8 +13,39 @@ ApplicationWindow {
     visible: true
     title: "Viewer"
 
-    property bool isLandscape: width > height
 
+    Connections {
+        target: simulation
+        onAdvanced: {
+            simulationFrameLabel.text="Simulation Frame: " + simulation.currentFrame
+        }
+    }
+
+    property bool isLandscape: width > height
+    header: ToolBar {
+        RowLayout {
+            anchors.fill: parent
+            Label {
+                id: simulationFrameLabel
+                text: "Simulation Frame:"
+                elide: Label.ElideRight
+                horizontalAlignment: Qt.AlignLeft
+                verticalAlignment: Qt.AlignVCenter
+                Layout.fillWidth: true
+            }
+            Label {
+                text: "Title2"
+                elide: Label.ElideRight
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                Layout.fillWidth: true
+            }
+        }
+        StackView {
+            id: stack
+            anchors.fill: parent
+        }
+    }
     menuBar: MenuBar {
         Menu {
             title: qsTr("&File")
