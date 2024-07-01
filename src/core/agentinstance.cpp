@@ -41,8 +41,8 @@ void AgentInstance::addInputChannel(BrainiacGlobals::BrainiacId id,
     }
     auto *newChannel = new Channel(this, defaults);
     m_inputChannels.insert(id, newChannel);
-    qDebug() << "ChannelName " << newChannel->getInfo()
-             << "Defaults: " << newChannel->defaults()->value;
+    // qDebug() << "ChannelName " << newChannel->getInfo()
+    //          << "Defaults: " << newChannel->defaults()->value;
 }
 
 void AgentInstance::addOutputChannel(BrainiacGlobals::BrainiacId id,
@@ -169,7 +169,7 @@ void AgentInstance::advance() {
     m_instanceBrain->think();
     for (auto [id, channel]: m_outputChannels.asKeyValueRange()) {
         if (id == BrainiacGlobals::CO_COLOR) {
-            qDebug() << "Color: " << channel->value();
+            // qDebug() << "Color: " << channel->value();
         }
     }
     m_newRotation.setX(m_rotation.x() + m_outputChannels.value(BrainiacGlobals::CO_RX)->value());

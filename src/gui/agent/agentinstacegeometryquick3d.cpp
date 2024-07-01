@@ -268,9 +268,9 @@ void AgentInstaceGeometryQuick3D::setIndexes(const QList<quint32> &indexes) {
 }
 
 QSSGRenderGraphObject *AgentInstaceGeometryQuick3D::updateSpatialNode(QSSGRenderGraphObject *node) {
-    if (m_vertexPositions.count() > 0) {
-        qDebug() << "Seems 2 have Bones!";
-    }
+    // if (m_vertexPositions.count() > 0) {
+    //     qDebug() << "Seems 2 have Bones!";
+    // }
     if (m_vertexDirty) {
         m_vertexDirty = false;
         qDebug() << "Num of Verts" << m_vertexPositions.count();

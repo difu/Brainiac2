@@ -38,7 +38,7 @@ void BrainEditorItem::paint(QPainter *painter,
             painter->fillRect(QRectF(relxPos - adjust + 5, relyPos - adjust + 39, tmpResult, 7),
                               Qt::blue);
         }
-        qDebug() << "Result " << tmpResult << "AgentResult " << fuzzy->result(agentInstance);
+        // qDebug() << "Result " << tmpResult << "AgentResult " << fuzzy->result(agentInstance);
     }
 
     // if (lUnit->getType() == FuzzyBase::AND) {

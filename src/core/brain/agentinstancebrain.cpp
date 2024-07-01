@@ -39,6 +39,6 @@ void AgentInstanceBrain::setResult(BrainiacGlobals::BrainiacId id, qreal result)
 void AgentInstanceBrain::think() {
     foreach(FuzzyBase *fuzz, m_brain->fuzzies()) {
         qreal result = fuzz->result(m_agentInstance);
-        qDebug() << "Fuzzy " << fuzz->name() << " result: " << result;
+        // qDebug() << "Fuzzy " << fuzz->name() << " result: " << result;
     }
 }

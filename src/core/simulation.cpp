@@ -31,7 +31,7 @@ void Simulation::advance()
     }
     if(m_advanceMutex.tryLock()) {
         QDateTime startTime(QDateTime::currentDateTime());
-        qDebug() << "Advancing to frame " << m_currentFrame;
+        // qDebug() << "Advancing to frame " << m_currentFrame;
         quint32 nextFrame = m_currentFrame + 1;
         setCurrentFrame(nextFrame);
         emit advanced(m_currentFrame);
@@ -54,9 +54,9 @@ void Simulation::advance()
         const qint64 frameLengthMS = (qint64) ((1 / (m_frameRate / 1000.0)));
         const qint64 waitTimeMS = frameLengthMS - durationMS;
         if (waitTimeMS > 0) {
-            qDebug() << "Current simTime " << currentSimulationTimeMS();
-            qDebug() << "Frame took " << durationMS << "ms.";
-            qDebug() << "Sleeping for " << waitTimeMS << "ms.";
+            // qDebug() << "Current simTime " << currentSimulationTimeMS();
+            // qDebug() << "Frame took " << durationMS << "ms.";
+            // qDebug() << "Sleeping for " << waitTimeMS << "ms.";
             QThread::sleep(static_cast<std::chrono::nanoseconds>(waitTimeMS) * 1000);
         }
     }
