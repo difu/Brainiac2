@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick3D
 import QtQuick3D.Helpers
 import BrainiacViewer
+import QtQuick.Timeline
 
 Node {
     id: agentInstanceNode
@@ -10,7 +11,6 @@ Node {
     property real hue: Math.random()
 
     // {{ skeleton }}
-
     Model {
         id: agentInstanceModel
         visible: true
@@ -19,9 +19,12 @@ Node {
             id: instanceGeom
             objectName: "AgentInstanceGeometry"
             agentInstance: agentInstanceNode.agentInstance
-            onAgentTranslationChanged: agentInstanceModel.setPosition(instanceGeom.agentTranslation)
-            onAgentRotationChanged: agentInstanceModel.setEulerRotation(instanceGeom.agentRotation)
+            onAgentTranslationChanged: agentInstanceNode.setPosition(
+                                           instanceGeom.agentTranslation)
+            onAgentRotationChanged: agentInstanceNode.setEulerRotation(
+                                        instanceGeom.agentRotation)
             Component.onCompleted: {
+
                 //agentInstanceModel.setEulerRotation(Qt.vector3d(0, 0, 100))
             }
         }
@@ -46,5 +49,4 @@ Node {
             }
         }
     }
-
 }
