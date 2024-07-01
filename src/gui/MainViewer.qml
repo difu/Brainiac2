@@ -119,11 +119,20 @@ ApplicationWindow {
                 //     }
                 // }
                 // console.debug("Creating QML from QV Parameter (Pointer): " + agentInstanceQVariant);
-
-                var newAgentInstance = Qt.createQmlObject(agentInstanceQML,
-                    agentInstanceSpawner,
-                    "myDynamicSnippet"
-                );
+                try {
+                    var newAgentInstance = Qt.createQmlObject(agentInstanceQML,
+                        agentInstanceSpawner,
+                        "myDynamicSnippet"
+                    );
+                } catch (error) {
+                print ("Error loading QML : ")
+                for (var i = 0; i < error.qmlErrors.length; i++) {
+                    print("lineNumber: " + error.qmlErrors[i].lineNumber)
+                    print("columnNumber: " + error.qmlErrors[i].columnNumber)
+                    print("fileName: " + error.qmlErrors[i].fileName)
+                    print("message: " + error.qmlErrors[i].message)
+                }
+            }
 
                 if (newAgentInstance.status !== Component.Ready) {
                     if (newAgentInstance.status === Component.Error) {
