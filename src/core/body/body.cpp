@@ -52,7 +52,8 @@ QString Body::skinQML() const {
     QString tabs("\t");
     constexpr int indent = 1;
     tabs = tabs.repeated(indent);
-    QString qml = tabs + QString("skin: Skin {\n") + QString("id: skin0\n") + tabs.repeated(2) + QString("joints: [\n");
+    QString qml = tabs + QString("skin: Skin {\n") + QString("id: skin0\n") + tabs.repeated(2)
+                  + QString("joints: [\n");
 
     foreach (auto boneId, m_boneOrder) {
         auto aBone = m_bones.value(boneId);
@@ -90,15 +91,18 @@ QList<BrainiacGlobals::BrainiacId> Body::boneOrder() const
 void Body::skeletonQmlTraverse(const quint32 level, const Bone *bone, QString &qml) const {
     QString tabs("\t");
     tabs = tabs.repeated(level);
-    qml += QString("\n") + tabs + QString("Node { \n " + tabs.repeated(2) + "id: ") + bone->objectName() + QString(
-                "\n " + tabs.repeated(2) + "position: Qt.vector3d(")
-            + QString("%1, %2, %3)").arg(
-                QString::number(bone->translation().x()), QString::number(bone->translation().y()),
-                QString::number(bone->translation().z())) + QString(
-                "\n " + tabs.repeated(2) + "eulerRotation: Qt.vector3d(")
-            + QString("%1, %2, %3)").arg(
-                QString::number(bone->rotation().x()), QString::number(bone->rotation().y()),
-                QString::number(bone->rotation().z()));
+    qml += QString("\n") + tabs + QString("Node { \n " + tabs.repeated(2) + "id: ")
+           + bone->objectName() + QString("\n " + tabs.repeated(2) + "objectName: \"")
+           + bone->objectName() + QString("\"\n " + tabs.repeated(2) + "position: Qt.vector3d(")
+           + QString("%1, %2, %3)")
+                 .arg(QString::number(bone->translation().x()),
+                      QString::number(bone->translation().y()),
+                      QString::number(bone->translation().z()))
+           + QString("\n " + tabs.repeated(2) + "eulerRotation: Qt.vector3d(")
+           + QString("%1, %2, %3)")
+                 .arg(QString::number(bone->rotation().x()),
+                      QString::number(bone->rotation().y()),
+                      QString::number(bone->rotation().z()));
 
     foreach(Bone *aBone, m_bones) {
         if (aBone->parentBoneId() == bone->id()) {
