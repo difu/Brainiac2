@@ -11,7 +11,7 @@ class Body;
 class Bone : public QObject
 {
     Q_OBJECT
-/**
+    /**
  * @brief Construct a new Bone object with the given parameters.
  *
  * This constructor creates a new Bone object with the provided parent, type, id, parentId, and name.
@@ -35,7 +35,7 @@ class Bone : public QObject
  * @param parentId The parent id of the Bone.
  * @param name The name of the Bone.
  */
-   public:
+public:
     Bone(QObject *parent, BrainiacGlobals::ItemType type, BrainiacGlobals::BrainiacId id,
          BrainiacGlobals::BrainiacId parentId, const QString &name);
 
@@ -100,7 +100,6 @@ public:
 
 
 protected:
-
 private:
     Body *m_body;
     BrainiacGlobals::ItemType m_type;

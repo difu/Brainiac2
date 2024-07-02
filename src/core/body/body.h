@@ -43,9 +43,11 @@ public:
 
     [[nodiscard]] QString skinQML() const;
 
-    QList<BrainiacGlobals::BrainiacId> boneOrder() const;
+    [[nodiscard]] QList<BrainiacGlobals::BrainiacId> boneOrder() const;
 
-    Agent *agent() const;
+    [[nodiscard]] Agent *agent() const;
+
+    void setBones(const QHash<BrainiacGlobals::BrainiacId, Bone *> &newBones);
 
 private:
     Agent *m_agent;
