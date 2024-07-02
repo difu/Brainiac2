@@ -4,7 +4,6 @@
 #include <QObject>
 
 #include <QString>
-#include "brainiacglobals.h"
 
 class AgentInstance;
 
