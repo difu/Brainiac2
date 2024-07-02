@@ -18,7 +18,7 @@ Agent::Agent(Scene *parent)
     m_brain = new Brain(this);
     constexpr Channel::ChannelDefaults trans_defaults{.min = -100.0, .max = 100.0, .value = 0.0};
 
-    constexpr Channel::ChannelDefaults rot_defaults{.min = -108.0, .max = 180.0, .value = 0.0};
+    constexpr Channel::ChannelDefaults rot_defaults{.min = -180.0, .max = 180.0, .value = 0.0};
 
     addOutputChannel(QString("tx"), trans_defaults.min, trans_defaults.max, trans_defaults.value,
                      BrainiacGlobals::CO_TX);
@@ -41,11 +41,20 @@ Agent::Agent(Scene *parent)
                     trans_defaults.value,
                     BrainiacGlobals::CI_TZ);
 
-    addInputChannel(QString("rx"), trans_defaults.min, trans_defaults.max, trans_defaults.value,
+    addInputChannel(QString("rx"),
+                    rot_defaults.min,
+                    rot_defaults.max,
+                    rot_defaults.value,
                     BrainiacGlobals::CI_RX);
-    addInputChannel(QString("ry"), trans_defaults.min, trans_defaults.max, trans_defaults.value,
+    addInputChannel(QString("ry"),
+                    rot_defaults.min,
+                    rot_defaults.max,
+                    rot_defaults.value,
                     BrainiacGlobals::CI_RY);
-    addInputChannel(QString("rz"), trans_defaults.min, trans_defaults.max, trans_defaults.value,
+    addInputChannel(QString("rz"),
+                    rot_defaults.min,
+                    rot_defaults.max,
+                    rot_defaults.value,
                     BrainiacGlobals::CI_RZ);
 
     addOutputChannel(QString("color"), 0.0, 1.0, 1.0, BrainiacGlobals::CO_COLOR);
@@ -54,14 +63,6 @@ Agent::Agent(Scene *parent)
 AgentInstance *Agent::addAgentInstance(Locator *locator) {
     auto *newAgentInstance = new AgentInstance(locator, this);
     m_agentInstances.append(newAgentInstance);
-    foreach(BrainiacGlobals::BrainiacId inputId, m_inputChannels) {
-        Channel::ChannelDefaults *channeldefaults = m_inputChannelDefaults.value(inputId);
-        newAgentInstance->addInputChannel(inputId, channeldefaults);
-    }
-    foreach(BrainiacGlobals::BrainiacId outputId, m_outputChannels) {
-        Channel::ChannelDefaults *channeldefaults = m_outputChannelDefaults.value(outputId);
-        newAgentInstance->addOutputChannel(outputId, channeldefaults);
-    }
     this->scene()->addAgentInstance(newAgentInstance);
     qDebug()  << "Added new AgentInstance to Scene";
     return newAgentInstance;

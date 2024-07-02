@@ -32,6 +32,47 @@ AgentInstance::AgentInstance(Locator *locator, Agent *parent)
     m_locator = locator;
     // m_agent->scene()->addAgentInstance(this);
 
+    // foreach(BrainiacGlobals::BrainiacId inputId, m_inputChannels) {
+    //     Channel::ChannelDefaults *channeldefaults = m_inputChannelDefaults.value(inputId);
+    //     newAgentInstance->addInputChannel(inputId, channeldefaults);
+    // }
+    // foreach(BrainiacGlobals::BrainiacId outputId, m_outputChannels) {
+    //     Channel::ChannelDefaults *channeldefaults = m_outputChannelDefaults.value(outputId);
+    //     newAgentInstance->addOutputChannel(outputId, channeldefaults);
+    // }
+
+    Channel::ChannelDefaults *channeldefaults = nullptr;
+    channeldefaults = m_agent->outputChannelDefaults().value(BrainiacGlobals::CO_RX);
+    addOutputChannel(BrainiacGlobals::CO_RX, channeldefaults);
+    channeldefaults = m_agent->outputChannelDefaults().value(BrainiacGlobals::CO_RY);
+    addOutputChannel(BrainiacGlobals::CO_RY, channeldefaults);
+    channeldefaults = m_agent->outputChannelDefaults().value(BrainiacGlobals::CO_RZ);
+    addOutputChannel(BrainiacGlobals::CO_RZ, channeldefaults);
+
+    channeldefaults = m_agent->outputChannelDefaults().value(BrainiacGlobals::CO_TX);
+    addOutputChannel(BrainiacGlobals::CO_TX, channeldefaults);
+    channeldefaults = m_agent->outputChannelDefaults().value(BrainiacGlobals::CO_TY);
+    addOutputChannel(BrainiacGlobals::CO_TY, channeldefaults);
+    channeldefaults = m_agent->outputChannelDefaults().value(BrainiacGlobals::CO_TZ);
+    addOutputChannel(BrainiacGlobals::CO_TZ, channeldefaults);
+    qDebug() << "CI_RX" << BrainiacGlobals::CI_RX;
+    channeldefaults = m_agent->inputChannelDefaults().value(BrainiacGlobals::CI_RX);
+    addInputChannel(BrainiacGlobals::CI_RX, channeldefaults);
+    channeldefaults = m_agent->inputChannelDefaults().value(BrainiacGlobals::CI_RY);
+    addInputChannel(BrainiacGlobals::CI_RY, channeldefaults);
+    channeldefaults = m_agent->inputChannelDefaults().value(BrainiacGlobals::CI_RZ);
+    addInputChannel(BrainiacGlobals::CI_RZ, channeldefaults);
+
+    channeldefaults = m_agent->inputChannelDefaults().value(BrainiacGlobals::CI_TX);
+    addInputChannel(BrainiacGlobals::CI_TX, channeldefaults);
+    channeldefaults = m_agent->inputChannelDefaults().value(BrainiacGlobals::CI_TY);
+    addInputChannel(BrainiacGlobals::CI_TY, channeldefaults);
+    channeldefaults = m_agent->inputChannelDefaults().value(BrainiacGlobals::CI_TZ);
+    addInputChannel(BrainiacGlobals::CI_TZ, channeldefaults);
+
+    channeldefaults = m_agent->outputChannelDefaults().value(BrainiacGlobals::CO_COLOR);
+    addOutputChannel(BrainiacGlobals::CO_COLOR, channeldefaults);
+
     reset();
 }
 

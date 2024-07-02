@@ -35,9 +35,19 @@ public:
     enum AnimationType { STATIC, LOCOMOTION, RAMP, TURNING, NOTYPE };
 
     enum Channels {
-        CI_RX, CI_RY, CI_RZ, CI_TX, CI_TY, CI_TZ,
-        CO_RX, CO_RY, CO_RZ, CO_TX, CO_TY, CO_TZ,
-        CO_COLOR //!< color channel of the agent
+        CI_RX = 1,
+        CI_RY = 2,
+        CI_RZ = 3,
+        CI_TX = 4,
+        CI_TY = 5,
+        CI_TZ = 6,
+        CO_RX = 7,
+        CO_RY = 8,
+        CO_RZ = 9,
+        CO_TX = 10,
+        CO_TY = 11,
+        CO_TZ = 12,
+        CO_COLOR = 13 //!< color channel of the agent
     };
 
     static qreal grad2rad(qreal grad) { return grad*PI/180.0; }
