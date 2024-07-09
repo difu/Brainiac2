@@ -2,12 +2,26 @@
 
 // add necessary includes here
 #include "src/core/agent.h"
+#include "src/core/body/body.h"
 // #include "../src/core/brain/brain.h"
 // #include "../src/core/brainiacglobals.h"
 #include <QGraphicsScene>
 
 #include "src/core/scene.h"
 #include "src/core/generator/generatormanual.h"
+
+void testAgent1(Agent *agent)
+{
+    {
+        BoneBox *rootBone = agent->body()->addBoneBox(1, 0, "root");
+        BoneBox *leftBone = agent->body()->addBoneBox(2, 1, "left");
+        BoneBox *rightBone = agent->body()->addBoneBox(3, 1, "right");
+        rootBone->setTranslation(QVector3D(0, 0, 0));
+        leftBone->setTranslation(QVector3D(30, -20, 0));
+        rightBone->setTranslation(QVector3D(-30, -20, 0));
+        qDebug().noquote() << "Body QML :" << agent->body()->skeletonQML();
+    }
+}
 
 class AgentTest : public QObject
 {
@@ -39,6 +53,10 @@ void AgentTest::test_loadSave()
     Scene myScene;
 
     auto *agent = new Agent(&myScene);
+    ::testAgent1(agent);
+    agent->setFileName("/tmp/difu.baf");
+    agent->save();
+    qDebug() << "After Save";
 }
 
 // void AgentTest::test_outputChannels()

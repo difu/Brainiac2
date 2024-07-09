@@ -6,3 +6,12 @@ BoneBox::BoneBox(QObject *parent, const BrainiacGlobals::BrainiacId id, const Br
 
 }
 
+QVector3D BoneBox::size() const
+{
+    return m_size;
+}
+
+void BoneBox::setSize(const QVector3D &newSize)
+{
+    m_size = newSize;
+}

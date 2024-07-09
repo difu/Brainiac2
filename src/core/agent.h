@@ -12,6 +12,7 @@
 #include "channel.h"
 
 class AgentInstance;
+class AgentReaderWriter;
 class Body;
 class Brain;
 class Locator;
@@ -117,6 +118,8 @@ public:
     ~Agent() override;
 
 protected:
+    [[nodiscard]] AgentReaderWriter *agentReaderWriter() const;
+
 private:
     AgentInstance *m_defaultAgentInstance;
     QList<AgentInstance*> m_agentInstances;
@@ -129,6 +132,7 @@ private:
 
     QString m_fileName;
 
+    AgentReaderWriter *m_agentReaderWriter;
     Body *m_body;
     Brain *m_brain;
     Scene *m_scene;

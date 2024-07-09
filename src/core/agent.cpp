@@ -1,5 +1,6 @@
 #include "agent.h"
 #include "agentinstance.h"
+#include "agentreaderwriter.h"
 #include "brain/brain.h"
 
 #include <QtDebug>
@@ -14,6 +15,7 @@ Agent::Agent(Scene *parent)
     m_scene->addAgent(this);
     m_defaultAgentInstance = nullptr;
 
+    m_agentReaderWriter = new AgentReaderWriter(this);
     m_body = new Body(this);
     m_brain = new Brain(this);
     constexpr Channel::ChannelDefaults trans_defaults{.min = -100.0, .max = 100.0, .value = 0.0};
@@ -126,7 +128,9 @@ bool Agent::load() {
 }
 
 bool Agent::save() {
-    return false;
+    bool ret = false;
+    ret = m_agentReaderWriter->saveAsBAF();
+    return ret;
 }
 
 QJsonObject Agent::toJson() const {
@@ -292,4 +296,9 @@ Agent::~Agent() {
     foreach(Channel::ChannelDefaults* cDefault, m_outputChannelDefaults) {
         delete cDefault;
     }
+}
+
+AgentReaderWriter *Agent::agentReaderWriter() const
+{
+    return m_agentReaderWriter;
 }

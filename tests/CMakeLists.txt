@@ -20,6 +20,7 @@ add_executable(
         ../src/gui/mainwindow.h
         ../src/core/agent.h ../src/core/agent.cpp
         ../src/core/agentinstance.h ../src/core/agentinstance.cpp
+        ../src/core/agentreaderwriter.h ../src/core/agentreaderwriter.cpp
         ../src/core/brain/brain.h ../src/core/brain/brain.cpp
         ../src/core/scene.h ../src/core/scene.cpp
         ../src/core/simulation.h ../src/core/simulation.cpp
