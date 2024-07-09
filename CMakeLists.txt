@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.5)
 
 project(Brainiac VERSION 0.1 LANGUAGES CXX)
 
+add_subdirectory(tests)
+
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
