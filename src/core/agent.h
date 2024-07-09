@@ -56,7 +56,7 @@ public:
 
     [[nodiscard]] Body *body() const;
 
-    Brain *brain() const;
+    [[nodiscard]] Brain *brain() const;
 
     BrainiacGlobals::BrainiacId addInputChannel(const QString channelName,
                                                 qreal channelMinVal,
@@ -69,11 +69,14 @@ public:
                                                  qreal channelMaxVal,
                                                  qreal channelDefaultVal,
                                                  BrainiacGlobals::BrainiacId id = 0);
-    quint32 numInputChannels() const;
-    quint32 numOutputChannels() const;
 
-    QString inputChannelName(const BrainiacGlobals::BrainiacId) const;
-    QString outputChannelName(const BrainiacGlobals::BrainiacId) const;
+    [[nodiscard]] quint32 numInputChannels() const;
+
+    [[nodiscard]] quint32 numOutputChannels() const;
+
+    [[nodiscard]] QString inputChannelName(BrainiacGlobals::BrainiacId) const;
+
+    [[nodiscard]] QString outputChannelName(BrainiacGlobals::BrainiacId) const;
 
     bool load();
     bool save();
@@ -90,6 +93,19 @@ public:
 
     [[nodiscard]] QString name() const;
 
+    /**
+     * @brief Sets the name of the agent.
+     *
+     * This method sets the name of the agent to the specified new name.
+     * If the new name is the same as the current name, the method returns true without making any changes.
+     * If the new name is already assigned to another agent in the scene, the method returns false without making any changes.
+     *
+     * @param newName The new name for the agent.
+     * @return True if the name was successfully changed, false otherwise.
+     *
+     * @note The name is used to identify and distinguish agents in the scene.
+     * If the name is not unique within the scene, it can lead to conflicts and unexpected behavior.
+     */
     [[nodiscard]] bool setName(const QString &newName);
 
     [[nodiscard]] QJsonObject toJson() const;
@@ -98,7 +114,7 @@ public:
 
     void dumpChannels();
 
-    virtual ~Agent();
+    ~Agent() override;
 
 protected:
 private:
