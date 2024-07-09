@@ -17,6 +17,7 @@ void testAgent1(Agent *agent)
         BoneBox *leftBone = agent->body()->addBoneBox(2, 1, "left");
         BoneBox *rightBone = agent->body()->addBoneBox(3, 1, "right");
         rootBone->setTranslation(QVector3D(0, 0, 0));
+        rootBone->setSize(QVector3D(10, 20, 30));
         leftBone->setTranslation(QVector3D(30, -20, 0));
         rightBone->setTranslation(QVector3D(-30, -20, 0));
         qDebug().noquote() << "Body QML :" << agent->body()->skeletonQML();

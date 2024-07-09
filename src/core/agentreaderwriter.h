@@ -10,6 +10,16 @@ class AgentReaderWriter : public QObject
 public:
     explicit AgentReaderWriter(Agent *parent);
     [[nodiscard]] bool save();
+
+    /**
+     * Saves the agent as a BAF file.
+     *
+     * A BAF file is the "Brainiac Agent File" format. This format is a plain ASCII based format that is meant to be
+     * human readable. It is also easily editable with any editor and also can be created and understood by external
+     * tools or scripts.
+     * 
+     * @return true if the agent was successfully saved, false otherwise.
+     */
     [[nodiscard]] bool saveAsBAF();
 
 private:
