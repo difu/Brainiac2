@@ -4,8 +4,9 @@
 #include <qcolor.h>
 #include <QtCore>
 
-class BrainiacGlobals
+class BrainiacGlobals : public QObject
 {
+    Q_OBJECT
 public:
     static const qreal PI;
     static const qreal MAXQREAL;
@@ -31,7 +32,9 @@ public:
         TRANSITION,
         UNKNOWN
     };
-    enum RotTrans { RX=1, RY=2, RZ=3, TX=4, TY=5, TZ=6 };
+    Q_ENUM(ItemType)
+
+    enum RotTrans { RX = 1, RY = 2, RZ = 3, TX = 4, TY = 5, TZ = 6 };
     enum AnimationType { STATIC, LOCOMOTION, RAMP, TURNING, NOTYPE };
 
     enum Channels {
