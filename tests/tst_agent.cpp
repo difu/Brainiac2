@@ -57,7 +57,13 @@ void AgentTest::test_loadSave()
     ::testAgent1(agent);
     agent->setFileName("/tmp/difu.baf");
     agent->save();
-    qDebug() << "After Save";
+
+    auto *loadAgent = new Agent(&myScene);
+    loadAgent->setFileName("/tmp/difu.baf");
+    loadAgent->load();
+
+    loadAgent->setFileName("/tmp/difu2.baf");
+    loadAgent->save();
 }
 
 // void AgentTest::test_outputChannels()

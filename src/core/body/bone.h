@@ -97,8 +97,8 @@ public:
     [[nodiscard]] QMatrix4x4 inverseBindMatrix() const;
 
 public:
-
-
+    void setParentId(BrainiacGlobals::BrainiacId newParentId);
+    // QTC_TEMP
 protected:
 private:
     Body *m_body;

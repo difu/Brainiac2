@@ -29,6 +29,7 @@ public:
      */
     BoneBox * addBoneBox(BrainiacGlobals::BrainiacId id, BrainiacGlobals::BrainiacId parentId=0, const QString& name="");
     [[nodiscard]] QHash<BrainiacGlobals::BrainiacId, Bone *> bones() const;
+    [[nodiscard]] BrainiacGlobals::BrainiacId boneIdbyName(QString &name) const;
     [[nodiscard]] BrainiacGlobals::BrainiacId newId() const;
 
     /**

@@ -124,7 +124,9 @@ QString Agent::fileName() const {
 }
 
 bool Agent::load() {
-    return false;
+    bool ret = false;
+    ret = m_agentReaderWriter->loadFromBAF();
+    return ret;
 }
 
 bool Agent::save() {

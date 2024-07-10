@@ -105,6 +105,11 @@ QMatrix4x4 Bone::inverseBindMatrix() const {
     return inverseBind;
 }
 
+void Bone::setParentId(BrainiacGlobals::BrainiacId newParentId)
+{
+    m_parentId = newParentId;
+}
+
 Body *Bone::body() const {
     return m_body;
 }

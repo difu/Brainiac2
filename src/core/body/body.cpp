@@ -121,3 +121,14 @@ void Body::skeletonQmlTraverse(const quint32 level, const Bone *bone, QString &q
 QHash<BrainiacGlobals::BrainiacId, Bone *> Body::bones() const {
     return m_bones;
 }
+
+BrainiacGlobals::BrainiacId Body::boneIdbyName(QString &name) const
+{
+    for (auto i = m_bones.cbegin(), end = m_bones.cend(); i != end; ++i) {
+        if (i.value()->objectName() == name) {
+            return i.key();
+        }
+    }
+    qFatal() << "No bone with name " << name << "found!";
+    return 0;
+}
