@@ -6,6 +6,7 @@
 
 #include "src/core/brainiacglobals.h"
 
+class EditorItem;
 class Body;
 
 class Bone : public QObject
@@ -98,6 +99,14 @@ public:
 
 public:
     void setParentId(BrainiacGlobals::BrainiacId newParentId);
+
+    [[nodiscard]] EditorItem *editorItem() const;
+
+    [[nodiscard]] QPointF editorPos() const;
+
+
+    void setEditorPos(qreal x, qreal y);
+
     // QTC_TEMP
 protected:
 private:
@@ -131,6 +140,10 @@ private:
     BrainiacGlobals::BrainiacId m_channelID_RX;
     BrainiacGlobals::BrainiacId m_channelID_RY;
     BrainiacGlobals::BrainiacId m_channelID_RZ;
+
+    EditorItem *m_editorItem;
+
+private:
 signals:
 };
 

@@ -3,7 +3,10 @@
 #include <QMatrix4x4>
 
 #include "body.h"
+#include "body/bodyeditoritem.h"
 #include "src/core/agent.h"
+
+#include "src/gui/editoritem.h"
 
 Bone::Bone(QObject *parent, const BrainiacGlobals::ItemType type, const BrainiacGlobals::BrainiacId id,
            const BrainiacGlobals::BrainiacId parentId, const QString &name)
@@ -15,6 +18,7 @@ Bone::Bone(QObject *parent, const BrainiacGlobals::ItemType type, const Brainiac
     if (id == 0) {
         qFatal() << "Id must not be 0, reserved as root!";
     }
+    m_editorItem = new BodyEditorItem(this);
     setBoneName(name);
     m_body->addBone(this);
 
@@ -110,6 +114,18 @@ void Bone::setParentId(BrainiacGlobals::BrainiacId newParentId)
     m_parentId = newParentId;
 }
 
+EditorItem *Bone::editorItem() const {
+    return m_editorItem;
+}
+
 Body *Bone::body() const {
     return m_body;
+}
+
+QPointF Bone::editorPos() const {
+    return m_editorItem->pos();
+}
+
+void Bone::setEditorPos(const qreal x, const qreal y) {
+    m_editorItem->setPos(x, y);
 }

@@ -39,6 +39,7 @@ add_executable(
         ../src/gui/agent/brain/braineditor.h ../src/gui/agent/brain/braineditor.cpp
         ../src/gui/editoritem.h ../src/gui/editoritem.cpp
         ../src/gui/agent/brain/braineditoritem.h ../src/gui/agent/brain/braineditoritem.cpp
+        ../src/gui/agent/body/bodyeditoritem.h ../src/gui/agent/body/bodyeditoritem.cpp
         ../src/gui/editoritemconnector.h ../src/gui/editoritemconnector.cpp
         ../src/core/brain/fuzzyand.cpp
         ../src/core/brain/fuzzyand.h

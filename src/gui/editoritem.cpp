@@ -14,6 +14,8 @@
 #include "src/core/brain/fuzzyoutput.h"
 #include "src/core/brain/fuzzyor.h"
 
+#include "src/core/body/bonebox.h"
+
 EditorItem::EditorItem(QObject *parent)
     : m_object{parent}
 {
@@ -30,6 +32,10 @@ EditorItem::EditorItem(QObject *parent)
     } else if (qobject_cast<FuzzyOr *>(parent)) {
         m_type = BrainiacGlobals::OR;
         m_symbolPic.load(":/gui/pics/editor_logo_or.png");
+    } else if (qobject_cast<Bone *>(parent)) {
+        // TODO: FIX: Why is casting to BoneBox not working?!
+        m_type = BrainiacGlobals::BOX;
+        qWarning() << "No pic implemented!";
     }
     if (m_type == BrainiacGlobals::UNKNOWN) {
         qFatal() << "Unknown Itemtype!";
