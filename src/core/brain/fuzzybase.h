@@ -76,6 +76,11 @@ protected:
     void setEditorItem(EditorItem *newEditorItem);
     void setId(BrainiacGlobals::BrainiacId newId);
     LogicType m_type;
+
+public:
+    [[nodiscard]] LogicType type() const;
+
+protected:
     /*!
      * @brief the Brain this fuzzy node belongs to.
      *

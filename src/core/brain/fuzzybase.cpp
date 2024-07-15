@@ -119,6 +119,10 @@ void FuzzyBase::setId(BrainiacGlobals::BrainiacId newId) {
     qDebug() << "ID assigned " << m_id << ", for type" << m_type;
 }
 
+FuzzyBase::LogicType FuzzyBase::type() const {
+    return m_type;
+}
+
 Brain *FuzzyBase::brain() const
 {
     return m_brain;

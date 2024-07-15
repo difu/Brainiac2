@@ -54,3 +54,11 @@ qreal FuzzyOr::result(const AgentInstance *agentInstance) {
     }
     return 0.0;
 }
+
+FuzzyOr::Mode FuzzyOr::mode() const {
+    return m_mode;
+}
+
+void FuzzyOr::setMode(const Mode newMode) {
+    m_mode = newMode;
+}

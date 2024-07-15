@@ -2,6 +2,8 @@
 #include "body/body.h"
 #include "body/bonebox.h"
 #include "brain/brain.h"
+#include "brain/fuzzyand.h"
+#include "brain/fuzzyor.h"
 
 AgentReaderWriter::AgentReaderWriter(Agent *parent)
     : QObject{parent}
@@ -62,8 +64,7 @@ bool AgentReaderWriter::save()
     return false;
 }
 
-bool AgentReaderWriter::saveAsBAF() const
-{
+bool AgentReaderWriter::saveAsBAF() const {
     QFile file(m_agent->fileName());
     if (file.open(QIODevice::ReadWrite)) {
         QTextStream stream(&file);
@@ -85,7 +86,7 @@ bool AgentReaderWriter::saveAsBAF() const
             stream << _indent << "rotation " << bone->rotation().x() << " " << bone->rotation().y()
                    << " " << bone->rotation().z() << Qt::endl;
 
-            QMetaEnum qEnum(BrainiacGlobals::ItemType);
+            //QMetaEnum qEnum(BrainiacGlobals::ItemType);
             switch (bone->type()) {
             case BrainiacGlobals::BOX: {
                 auto *box = dynamic_cast<BoneBox *>(bone);
@@ -100,9 +101,80 @@ bool AgentReaderWriter::saveAsBAF() const
             default:
                 break;
             }
+            stream << _indent << "editorpos " << bone->editorPos().x() << " " << bone->editorPos().y() << Qt::endl;
             stream << "endSegment" << Qt::endl;
         }
+
+        foreach(auto fuzz, m_agent->brain()->fuzzies()) {
+            stream << "fuzz " << fuzz->name() << Qt::endl;
+            switch (fuzz->type()) {
+                case BrainiacGlobals::AND: {
+                    auto *fuzzAnd = dynamic_cast<FuzzyAnd *>(fuzz);
+                    stream << _indent << "type "
+                            << QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
+                                BrainiacGlobals::AND)
+                            << Qt::endl;
+                    stream << _indent << "mode "
+                            << QMetaEnum::fromType<FuzzyAnd::Mode>().valueToKey(
+                                fuzzAnd->mode())
+                            << Qt::endl;
+                    // stream << _indent << "size " << fuzzAnd-> << " " << box->size().y() << " "
+                    //         << box->size().z() << Qt::endl;
+                    break;
+                }
+                case BrainiacGlobals::OR: {
+                    auto *fuzzyOr = dynamic_cast<FuzzyOr *>(fuzz);
+                    stream << _indent << "type "
+                            << QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
+                                BrainiacGlobals::OR)
+                            << Qt::endl;
+                    stream << _indent << "mode "
+                            << QMetaEnum::fromType<FuzzyOr::Mode>().valueToKey(
+                                fuzzyOr->mode())
+                            << Qt::endl;
+                    // stream << _indent << "size " << fuzzAnd-> << " " << box->size().y() << " "
+                    //         << box->size().z() << Qt::endl;
+                    break;
+                }
+                case BrainiacGlobals::NOISE: {
+                    auto *noise = dynamic_cast<Noise *>(fuzz);
+                    stream << _indent << "type "
+                            << QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
+                                BrainiacGlobals::NOISE)
+                            << Qt::endl;
+                    stream << _indent << "rate "
+                            << noise->rate()
+                            << Qt::endl;
+                    // stream << _indent << "size " << fuzzAnd-> << " " << box->size().y() << " "
+                    //         << box->size().z() << Qt::endl;
+                    break;
+                }
+                case BrainiacGlobals::OUTPUT: {
+                    auto *outout = dynamic_cast<FuzzyOutput *>(fuzz);
+                    stream << _indent << "type "
+                            << QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
+                                BrainiacGlobals::OUTPUT)
+                            << Qt::endl;
+                    // stream << _indent << "mode "
+                    //         << QMetaEnum::fromType<FuzzyOr::Mode>().valueToKey(
+                    //             fuzzyOr->mode())
+                    //         << Qt::endl;
+                    // stream << _indent << "size " << fuzzAnd-> << " " << box->size().y() << " "
+                    //         << box->size().z() << Qt::endl;
+                    break;
+                }
+
+                default:
+                    break;
+            }
+            //QMetaEnum qEnum(BrainiacGlobals::ItemType);
+            stream << _indent << "editorpos "
+                    << fuzz->editorPos().x() << " " << fuzz->editorPos().y() << Qt::endl;
+            stream << "endFuzz" << Qt::endl;
+        }
+
         stream << "End" << Qt::endl;
+        return true;
     }
     return false;
 }

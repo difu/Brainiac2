@@ -23,9 +23,16 @@ public:
     enum Mode { MAX,        //!< take the maximum input as result
                 SUM         //!< take the sum of all inputs as result
               };
+
+    Q_ENUM(Mode)
+
     void fromJson(QJsonObject obj) override;
     [[nodiscard]] QJsonObject toJson() const override;
     qreal result(const AgentInstance *agentInstance) override;
+
+    [[nodiscard]] Mode mode() const;
+
+    void setMode(Mode newMode);
 
 private:
     Mode m_mode;  //!< the mode of this FuzzyOr
