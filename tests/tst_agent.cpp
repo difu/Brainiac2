@@ -8,6 +8,12 @@
 #include <QGraphicsScene>
 
 #include "src/core/scene.h"
+#include "src/core/brain/brain.h"
+#include "src/core/brain/fuzzybase.h"
+#include "src/core/brain/fuzzyand.h"
+#include "src/core/brain/fuzzyor.h"
+#include "src/core/brain/noise.h"
+#include "src/core/brain/fuzzyoutput.h"
 #include "src/core/generator/generatormanual.h"
 
 void testAgent1(Agent *agent)
@@ -21,6 +27,39 @@ void testAgent1(Agent *agent)
         leftBone->setTranslation(QVector3D(30, -20, 0));
         rightBone->setTranslation(QVector3D(-30, -20, 0));
         qDebug().noquote() << "Body QML :" << agent->body()->skeletonQML();
+
+        // Brain
+        auto *newNoise = agent->brain()->addNoiseNode();
+        newNoise->setRate(1.0);
+        newNoise->setName("Noise 1");
+        newNoise->setEditorPos(100, 100);
+        auto *newNoise2 = agent->brain()->addNoiseNode();
+        newNoise2->setRate(1.0);
+        newNoise2->setName("Noise 2");
+        newNoise2->setEditorPos(100, 150);
+
+        auto *newAnd = agent->brain()->addAndNode();
+        newAnd->setName("And 1");
+        newAnd->setEditorPos(400, 75);
+
+        auto *newOr = agent->brain()->addOrNode();
+        newOr->setName("Or 1");
+        newOr->setEditorPos(400, 175);
+
+        FuzzyOutput *newOutput = agent->brain()->addOutputNode();
+        newOutput->setChannelId(BrainiacGlobals::CO_COLOR);
+        newOutput->setName("Output 1 (color)");
+        newOutput->setEditorPos(400, 225);
+        auto *newNoise3 = agent->brain()->addNoiseNode();
+        newNoise3->setRate(1.0);
+        newNoise3->setName("Color Noise");
+        newNoise3->setEditorPos(100, 225);
+
+        FuzzyBase::connectFuzzies(newNoise, newAnd);
+        FuzzyBase::connectFuzzies(newNoise2, newAnd);
+        FuzzyBase::connectFuzzies(newNoise, newOr);
+        FuzzyBase::connectFuzzies(newNoise2, newOr);
+        FuzzyBase::connectFuzzies(newNoise3, newOutput);
     }
 }
 

@@ -97,10 +97,7 @@ void FuzzyBase::setEditorPos(qreal x, qreal y)
     m_editorItem->setPos(x, y);
 }
 
-FuzzyBase::~FuzzyBase()
-{
-    delete m_editorItem;
-}
+FuzzyBase::~FuzzyBase() {}
 
 EditorItem *FuzzyBase::editorItem() const
 {

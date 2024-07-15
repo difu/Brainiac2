@@ -143,3 +143,12 @@ void EditorItem::removeConnectors()
         delete connector;
     }
 }
+
+QObject *EditorItem::object() const
+{
+    return m_object;
+}
+EditorItem::~EditorItem()
+{
+    removeConnectors();
+}

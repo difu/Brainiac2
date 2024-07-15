@@ -3,3 +3,5 @@
 EditorBase::EditorBase(QObject *parent)
     : QGraphicsScene{parent}
 {}
+
+EditorBase::~EditorBase() {}

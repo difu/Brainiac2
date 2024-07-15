@@ -16,7 +16,8 @@ class EditorItemConnector;
 class EditorItem : public QGraphicsItem
 {
 public:
-    EditorItem(QObject *parent);
+    explicit EditorItem(QObject *parent);
+    virtual ~EditorItem();
     enum { Type = UserType + 15 };
     QRectF boundingRect() const;
     BrainiacGlobals::ItemType objectType() const;
@@ -30,7 +31,7 @@ public:
     static const qint32 _raster = 10;
     constexpr static const qreal adjust = 0.5;
 
-    int type() const
+    [[nodiscard]] int type() const
     {
         // Enable the use of qgraphicsitem_cast with this item.
         return Type;
@@ -40,6 +41,8 @@ public:
     void addConnector(EditorItemConnector *connector);
     void removeConnector(EditorItemConnector *connector);
     void removeConnectors();
+
+    QObject *object() const;
 
 protected:
     QObject *m_object; //!< The parent object of this EditorItem, for example @ref Noise node

@@ -9,6 +9,7 @@ class BrainEditor : public EditorBase
     Q_OBJECT
 public:
     explicit BrainEditor(QObject *parent);
+    void deleteConnector(QObject *sourceObject, QObject *destObject);
 };
 
 #endif // BRAINEDITOR_H

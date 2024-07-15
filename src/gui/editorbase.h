@@ -10,6 +10,7 @@ class EditorBase : public QGraphicsScene
     Q_OBJECT
 public:
     explicit EditorBase(QObject *parent);
+    virtual ~EditorBase();
 };
 
 #endif // EDITORBASE_H
