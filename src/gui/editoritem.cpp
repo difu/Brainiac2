@@ -32,8 +32,7 @@ EditorItem::EditorItem(QObject *parent)
     } else if (qobject_cast<FuzzyOr *>(parent)) {
         m_type = BrainiacGlobals::OR;
         m_symbolPic.load(":/gui/pics/editor_logo_or.png");
-    } else if (qobject_cast<Bone *>(parent)) {
-        // TODO: FIX: Why is casting to BoneBox not working?!
+    } else if (qobject_cast<BoneBox *>(parent)) {
         m_type = BrainiacGlobals::BOX;
         qWarning() << "No pic implemented!";
     }

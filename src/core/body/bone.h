@@ -109,6 +109,8 @@ public:
 
     // QTC_TEMP
 protected:
+    EditorItem *m_editorItem;
+
 private:
     Body *m_body;
     BrainiacGlobals::ItemType m_type;
@@ -140,8 +142,6 @@ private:
     BrainiacGlobals::BrainiacId m_channelID_RX;
     BrainiacGlobals::BrainiacId m_channelID_RY;
     BrainiacGlobals::BrainiacId m_channelID_RZ;
-
-    EditorItem *m_editorItem;
 
 private:
 signals:

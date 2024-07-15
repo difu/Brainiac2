@@ -6,9 +6,8 @@
 #include <QPainter>
 
 BodyEditorItem::BodyEditorItem(Bone *parent)
-    : EditorItem{parent} {
-    qDebug() << "Created";
-}
+    : EditorItem{parent}
+{}
 
 void BodyEditorItem::paint(QPainter *painter,
                             const QStyleOptionGraphicsItem *option,

@@ -84,7 +84,11 @@ AgentTest::AgentTest() {}
 
 AgentTest::~AgentTest() {}
 
-void AgentTest::initTestCase() {}
+void AgentTest::initTestCase()
+{
+    qSetMessagePattern(
+        "%{file}:%{line} %{function} -> %{if-category}%{category}: %{endif}%{message}");
+}
 
 void AgentTest::cleanupTestCase() {}
 

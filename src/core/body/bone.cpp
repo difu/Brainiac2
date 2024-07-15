@@ -18,7 +18,6 @@ Bone::Bone(QObject *parent, const BrainiacGlobals::ItemType type, const Brainiac
     if (id == 0) {
         qFatal() << "Id must not be 0, reserved as root!";
     }
-    m_editorItem = new BodyEditorItem(this);
     setBoneName(name);
     m_body->addBone(this);
 
