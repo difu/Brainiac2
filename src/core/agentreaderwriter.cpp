@@ -41,9 +41,7 @@ bool AgentReaderWriter::loadFromBAF() {
                 }
                 if (field == "endSegment") {
                     if (confBlock.lines.count() > 0) {
-                        qDebug() << "new segment, dispatching current.";
                         addSegment(confBlock);
-                        qDebug() << "Dispatched. Emptying.";
                         confBlock.lines.clear();
                         confBlock.type = AgentReaderWriter::UNKNOWN;
                     } else {
@@ -183,7 +181,6 @@ void AgentReaderWriter::addSegment(ConfigBlock &confBlock) {
     bool primitiveKeyFound = false;
     foreach(auto line, confBlock.lines) {
         // QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(BrainiacGlobals::BOX)
-        qDebug() << line;
         QStringList fields = line.split(" ");
         foreach(auto field, fields) {
             if (field == "primitive") {
@@ -196,7 +193,6 @@ void AgentReaderWriter::addSegment(ConfigBlock &confBlock) {
                     BrainiacGlobals::BOX)) {
                 confBlock.itemType = BrainiacGlobals::BOX;
                 primitiveKeyFound = false;
-                qDebug() << "Adding Box!";
                 continue;
             }
         }
@@ -206,15 +202,13 @@ void AgentReaderWriter::addSegment(ConfigBlock &confBlock) {
         case BrainiacGlobals::BOX: {
             BrainiacGlobals::BrainiacId newId = m_agent->body()->newId();
             newBone = new BoneBox(m_agent->body(), newId);
-            qDebug() << "Created BoneBox!";
             break;
         }
         default:
             break;
     }
     QString segmentName;
-    foreach(auto line, confBlock.lines) {
-        qDebug() << "Again: " << line;
+    foreach (auto line, confBlock.lines) {
         QStringList fields = line.split(" ");
         if (fields.count()
             == 3) {
