@@ -25,7 +25,7 @@ void MainWindow::setMainEditor(EditorBase *newEditor)
         m_graphicsView->setScene(newEditor);
 
         foreach (QGraphicsItem *item, newEditor->items()) {
-            qDebug() << item;
+            // qDebug() << item;
         }
         if (!newEditor->items().empty()) {
             QGraphicsItem *firstItem = newEditor->items().constFirst();

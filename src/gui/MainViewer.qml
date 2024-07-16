@@ -171,7 +171,7 @@ ApplicationWindow {
                     }
                 }
                 newAgentInstance.agentInstance = agentInstanceQVariant
-                console.debug("Position: ", newAgentInstance.position)
+                // console.debug("Position: ", newAgentInstance.position)
 
                 // let instance = shapeComponent.createObject(agentInstanceSpawner,
                 //    { "agentInstance": agentInstanceQVariant});

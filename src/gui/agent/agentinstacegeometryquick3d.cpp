@@ -170,8 +170,8 @@ void AgentInstaceGeometryQuick3D::setAgentInstance(AgentInstance *newAgentInstan
             if (qobject_cast<BoneBox *>(bone)) {
                 quint32 boneIndex = m_agentInstance->agent()->body()->boneOrder().indexOf(bone->id());
                 addCube(bone->translation(), QVector3D(10, 10, 10), boneIndex);
-                qDebug() << "Added Bone " << bone->objectName() << " Id " << bone->id()
-                        << " with boneIndex " << boneIndex;
+                // qDebug() << "Added Bone " << bone->objectName() << " Id " << bone->id()
+                //         << " with boneIndex " << boneIndex;
             }
 
             auto *joint = viewer->findChild<QObject *>(bone->objectName());
@@ -193,7 +193,7 @@ void AgentInstaceGeometryQuick3D::setAgentInstance(const QVariant &newAgentInsta
         this->setAgentInstance(inst);
         updateData();
     } else {
-        qWarning() << "newAgentInstance is nullpointer!";
+        // qWarning() << "newAgentInstance is nullpointer!";
     }
 }
 
@@ -273,10 +273,10 @@ QSSGRenderGraphObject *AgentInstaceGeometryQuick3D::updateSpatialNode(QSSGRender
     // }
     if (m_vertexDirty) {
         m_vertexDirty = false;
-        qDebug() << "Num of Verts" << m_vertexPositions.count();
-        qDebug() << "Num of Index" << m_indexes.count();
-        qDebug() << "Num of weights" << m_weights.count();
-        qDebug() << "Num of joints" << m_joints.count();
+        // qDebug() << "Num of Verts" << m_vertexPositions.count();
+        // qDebug() << "Num of Index" << m_indexes.count();
+        // qDebug() << "Num of weights" << m_weights.count();
+        // qDebug() << "Num of joints" << m_joints.count();
         constexpr float maxFloat = std::numeric_limits<float>::max();
         auto boundsMin = QVector3D(maxFloat, maxFloat, maxFloat);
         auto boundsMax = QVector3D(-maxFloat, -maxFloat, -maxFloat);
@@ -313,7 +313,7 @@ QSSGRenderGraphObject *AgentInstaceGeometryQuick3D::updateSpatialNode(QSSGRender
     }
 
     if (m_indexDirty) {
-        qDebug() << "IndexDirty";
+        // qDebug() << "IndexDirty";
         m_indexDirty = false;
         m_indexBuffer = QByteArray(reinterpret_cast<char *>(m_indexes.data()), m_indexes.size() * sizeof(quint32));
         setIndexData(m_indexBuffer);
@@ -325,7 +325,7 @@ QSSGRenderGraphObject *AgentInstaceGeometryQuick3D::updateSpatialNode(QSSGRender
 }
 
 void AgentInstaceGeometryQuick3D::addCube(QVector3D position, QVector3D dimensions, quint32 joint) {
-    qDebug() << "Adding weights for joint:" << joint;
+    // qDebug() << "Adding weights for joint:" << joint;
     QList<float> temp_weights;
     QList<qint32> temp_joints;
     for (int i = 0; i < 8; i++) {
@@ -426,10 +426,10 @@ void AgentInstaceGeometryQuick3D::addCube(QVector3D position,
             m_joints.append(joints);
             m_weights.append(weights);
         } else {
-            qDebug() << "Num of Verts" << verts.count();
-            qDebug() << "Num of Index" << indexes.count();
-            qDebug() << "Num of weights" << m_weights.count();
-            qDebug() << "Num of joints" << m_joints.count();
+            // qDebug() << "Num of Verts" << verts.count();
+            // qDebug() << "Num of Index" << indexes.count();
+            // qDebug() << "Num of weights" << m_weights.count();
+            // qDebug() << "Num of joints" << m_joints.count();
             qFatal() << "Number of weights or joints does not match number of vertices!";
         }
     }

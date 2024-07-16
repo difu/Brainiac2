@@ -55,7 +55,7 @@ AgentInstance::AgentInstance(Locator *locator, Agent *parent)
     addOutputChannel(BrainiacGlobals::CO_TY, channeldefaults);
     channeldefaults = m_agent->outputChannelDefaults().value(BrainiacGlobals::CO_TZ);
     addOutputChannel(BrainiacGlobals::CO_TZ, channeldefaults);
-    qDebug() << "CI_RX" << BrainiacGlobals::CI_RX;
+
     channeldefaults = m_agent->inputChannelDefaults().value(BrainiacGlobals::CI_RX);
     addInputChannel(BrainiacGlobals::CI_RX, channeldefaults);
     channeldefaults = m_agent->inputChannelDefaults().value(BrainiacGlobals::CI_RY);

@@ -66,7 +66,7 @@ AgentInstance *Agent::addAgentInstance(Locator *locator) {
     auto *newAgentInstance = new AgentInstance(locator, this);
     m_agentInstances.append(newAgentInstance);
     this->scene()->addAgentInstance(newAgentInstance);
-    qDebug()  << "Added new AgentInstance to Scene";
+    // qDebug()  << "Added new AgentInstance to Scene";
     return newAgentInstance;
 }
 

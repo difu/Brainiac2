@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
         rootBone->setTranslation(QVector3D(0, 0, 0));
         leftBone->setTranslation(QVector3D(30, -20, 0));
         rightBone->setTranslation(QVector3D(-30, -20, 0));
-        qDebug().noquote() << "Body QML :" << agent->body()->skeletonQML();
+        // qDebug().noquote() << "Body QML :" << agent->body()->skeletonQML();
     }
     {
         BoneBox *rootBone = agent2->body()->addBoneBox(1, 0, "root2");
@@ -109,7 +109,7 @@ int main(int argc, char *argv[]) {
         rootBone->setTranslation(QVector3D(0, 0, 0));
         leftBone->setTranslation(QVector3D(10, 30, 0));
         rightBone->setTranslation(QVector3D(-10, 30, 0));
-        qDebug().noquote() << "Body QML :" << agent2->body()->skeletonQML();
+        // qDebug().noquote() << "Body QML :" << agent2->body()->skeletonQML();
     }
 
     // End Body
