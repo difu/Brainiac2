@@ -4,9 +4,10 @@
 #include "src/gui/editoritem.h"
 #include "src/gui/editoritemconnector.h"
 
-FuzzyBase::FuzzyBase(QObject *parent)
-    : QObject{parent}
+FuzzyBase::FuzzyBase(LogicType type, QObject *parent)
+    : QObject{parent}, m_type{type}
 {
+
     m_id=0;
     m_brain = qobject_cast<Brain *>(parent);
     if (!m_brain) {

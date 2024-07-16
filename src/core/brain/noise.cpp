@@ -11,9 +11,8 @@
 #include "src/gui/agent/brain/braineditoritem.h"
 
 Noise::Noise(QObject *parent, BrainiacGlobals::BrainiacId id)
-    : FuzzyBase{parent}
+    : FuzzyBase{FuzzyBase::NOISE, parent}
 {
-    m_type = LogicType::NOISE;
     m_rate = 0;
     setId(id);
     setMinValue(0.0);

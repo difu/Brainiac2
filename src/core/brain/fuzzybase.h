@@ -37,7 +37,7 @@ public:
         FuzzyBase *parent;
         bool inverted;
     };
-    explicit FuzzyBase(QObject *parent = nullptr);
+    explicit FuzzyBase(LogicType type, QObject *parent);
 
     qreal minValue() const;
     void setMinValue(qreal newMinValue);

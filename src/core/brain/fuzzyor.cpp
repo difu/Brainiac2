@@ -9,9 +9,8 @@
 #include "src/core/agentinstance.h"
 
 FuzzyOr::FuzzyOr(QObject *parent, BrainiacGlobals::BrainiacId id)
-    : FuzzyBase{parent}
+    : FuzzyBase{FuzzyBase::OR, parent}
 {
-    m_type = FuzzyBase::OR;
     m_mode = MAX;
     setId(id);
     setMinValue(0.0);

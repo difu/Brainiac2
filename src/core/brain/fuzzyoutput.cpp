@@ -7,9 +7,8 @@
 #include "src/core/agentinstance.h"
 
 FuzzyOutput::FuzzyOutput(QObject *parent, BrainiacGlobals::BrainiacId id)
-    : FuzzyBase{parent} {
+    : FuzzyBase{FuzzyBase::OUTPUT, parent} {
     m_channelId = 0;
-    m_type = FuzzyBase::OUTPUT;
     setId(id);
     setMinValue(0.0);
     setMaxValue(1.0);

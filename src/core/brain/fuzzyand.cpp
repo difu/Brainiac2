@@ -9,9 +9,8 @@
 #include "src/core/agentinstance.h"
 
 FuzzyAnd::FuzzyAnd(QObject *parent, BrainiacGlobals::BrainiacId id)
-    : FuzzyBase{parent}
+    : FuzzyBase{FuzzyBase::AND, parent}
 {
-    m_type = FuzzyBase::AND;
     m_mode = MIN;
     setId(id);
     setMinValue(0.0);

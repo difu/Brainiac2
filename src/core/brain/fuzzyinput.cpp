@@ -1,10 +1,9 @@
 #include "fuzzyinput.h"
 
 FuzzyInput::FuzzyInput(QObject *parent)
-    : FuzzyBase{parent}
+    : FuzzyBase{FuzzyBase::INPUT, parent}
 {
     m_channelId = 0;
-    m_type = FuzzyBase::INPUT;
 }
 
 void FuzzyInput::fromJson(QJsonObject obj) {}
