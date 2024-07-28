@@ -14,10 +14,10 @@
 
 struct Vertex {
     QVector3D position;
-    qint32 joints[4];
-    float weights[4];
+    qint32 joints[4]{};
+    float weights[4]{};
 
-    float pad;
+    float pad{};
 };
 
 static const int s_vertexSize = sizeof(Vertex);
