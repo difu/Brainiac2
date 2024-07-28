@@ -6,6 +6,8 @@
 #include "brain/fuzzybase.h"
 #include "src/core/agent.h"
 
+class Bone;
+
 class AgentReaderWriter : public QObject
 {
     Q_OBJECT
@@ -50,25 +52,24 @@ private:
     /**
      * Adds a segment to the agent.
      *
-     * This method is used to add a segment to the agent based on the provided ConfigBlock.
-     * The ConfigBlock contains information about the segment, such as its type and properties.
+     * This method adds a segment to the agent based on the configuration block provided.
+     * It first identifies the primitive type from the configuration block.
+     * If the primitive type is a box, it creates a new bone of type BoneBox and adds it to the agent's body.
+     * The bone is then processed to set its information using the provided configuration block.
      *
-     * The method iterates over each line in the ConfigBlock and processes the fields in each line.
-     * If a field with the value "segment" is found, it indicates the start of a new segment. The name
-     * of the segment is stored in the variable 'segmentName'.
-     *
-     * If a field with the value "parent" is found, it indicates the parent of the current segment.
-     * The parent is used to determine the hierarchical relationship between segments.
-     *
-     * If fields with the values "translation", "rotation", and "size" are found, they represent the
-     * position, orientation, and size of the segment, respectively.
-     *
-     * After processing all the lines in the ConfigBlock, the method creates a new BoneBox with the
-     * specified segment properties. The BoneBox is then added to the agent's body.
-     *
-     * @param confBlock The ConfigBlock containing information about the segment.
+     * @param confBlock The configuration block containing the segment information.
      */
     void addSegment(ConfigBlock &confBlock) const;
+
+    void processBoneInformation(ConfigBlock &confBlock, Bone *newBone) const;
+
+    void handleTwoFields(const QStringList &fields, Bone *newBone, QString &segmentName) const;
+
+    static void handleThreeFields(const QStringList &fields, Bone *newBone) ;
+
+    static void handleFourFields(const QStringList &fields, Bone *newBone) ;
+
+    static QVector3D createVectorFromFields(const QStringList &fields);
 
     /**
      * Adds a fuzz to the agent.
@@ -94,6 +95,8 @@ private:
     void addFuzz(ConfigBlock &confBlock) const;
 
     void checkAgentEmpty() const;
+
+    static void identifyPrimitive(ConfigBlock &confBlock);
 
     /**
      * Parses the fields of the agent and updates the given configuration block.
