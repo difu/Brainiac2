@@ -80,43 +80,58 @@ bool AgentReaderWriter::saveAsBAF() const {
         QTextStream stream(&file);
 
         foreach (auto boneId, m_agent->body()->boneOrder()) {
-            auto *bone = m_agent->body()->bones().value(boneId);
-            stream << "segment " << bone->objectName() << Qt::endl;
-            BrainiacGlobals::BrainiacId parentId = bone->parentBoneId();
-            QString parentName;
-            if (parentId == 0) {
-                parentName = bone->objectName();
-            } else {
-                parentName = m_agent->body()->bones().value(parentId)->objectName();
-            }
-
-            stream << _indent << "parent " << parentName << Qt::endl;
-            stream << _indent << "translation " << bone->translation().x() << " "
-                   << bone->translation().y() << " " << bone->translation().z() << Qt::endl;
-            stream << _indent << "rotation " << bone->rotation().x() << " " << bone->rotation().y()
-                   << " " << bone->rotation().z() << Qt::endl;
-
-            //QMetaEnum qEnum(BrainiacGlobals::ItemType);
-            switch (bone->type()) {
-            case BrainiacGlobals::BOX: {
-                auto *box = dynamic_cast<BoneBox *>(bone);
-                stream << _indent << "primitive "
-                       << QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
-                              BrainiacGlobals::BOX)
-                       << Qt::endl;
-                stream << _indent << "size " << box->size().x() << " " << box->size().y() << " "
-                       << box->size().z() << Qt::endl;
-                break;
-            }
-            default:
-                break;
-            }
-            stream << _indent << "editorpos " << bone->editorPos().x() << " " << bone->editorPos().y() << Qt::endl;
-            stream << "endSegment" << Qt::endl;
+            writeSegment(boneId, stream);
         }
 
         foreach(auto fuzz, m_agent->brain()->fuzzies()) {
-            stream << "fuzz " << fuzz->name() << Qt::endl;
+            writeFuzz(fuzz, stream);
+        }
+
+        stream << "End" << Qt::endl;
+        success = true;
+    }
+    file.close();
+    return success;
+}
+
+void AgentReaderWriter::writeSegment(const BrainiacGlobals::BrainiacId boneId, QTextStream& stream) const {
+    auto *bone = m_agent->body()->bones().value(boneId);
+    stream << "segment " << bone->objectName() << Qt::endl;
+    const BrainiacGlobals::BrainiacId parentId = bone->parentBoneId();
+    QString parentName;
+    if (parentId == 0) {
+        parentName = bone->objectName();
+    } else {
+        parentName = m_agent->body()->bones().value(parentId)->objectName();
+    }
+
+    stream << _indent << "parent " << parentName << Qt::endl;
+    stream << _indent << "translation " << bone->translation().x() << " "
+           << bone->translation().y() << " " << bone->translation().z() << Qt::endl;
+    stream << _indent << "rotation " << bone->rotation().x() << " " << bone->rotation().y()
+           << " " << bone->rotation().z() << Qt::endl;
+
+    //QMetaEnum qEnum(BrainiacGlobals::ItemType);
+    switch (bone->type()) {
+        case BrainiacGlobals::BOX: {
+            auto *box = dynamic_cast<BoneBox *>(bone);
+            stream << _indent << "primitive "
+                   << QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
+                          BrainiacGlobals::BOX)
+                   << Qt::endl;
+            stream << _indent << "size " << box->size().x() << " " << box->size().y() << " "
+                   << box->size().z() << Qt::endl;
+            break;
+        }
+        default:
+            break;
+    }
+    stream << _indent << "editorpos " << bone->editorPos().x() << " " << bone->editorPos().y() << Qt::endl;
+    stream << "endSegment" << Qt::endl;
+}
+
+void AgentReaderWriter::writeFuzz(FuzzyBase *fuzz, QTextStream& stream) const {
+                stream << "fuzz " << fuzz->name() << Qt::endl;
             switch (fuzz->type()) {
             case FuzzyBase::AND: {
                 auto *fuzzAnd = dynamic_cast<FuzzyAnd *>(fuzz);
@@ -179,13 +194,6 @@ bool AgentReaderWriter::saveAsBAF() const {
             stream << _indent << "editorpos "
                     << fuzz->editorPos().x() << " " << fuzz->editorPos().y() << Qt::endl;
             stream << "endFuzz" << Qt::endl;
-        }
-
-        stream << "End" << Qt::endl;
-        success = true;
-    }
-    file.close();
-    return success;
 }
 
 void AgentReaderWriter::addSegment(ConfigBlock &confBlock) {

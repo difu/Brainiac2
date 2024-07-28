@@ -2,6 +2,8 @@
 #define AGENTREADERWRITER_H
 
 #include <QObject>
+
+#include "brain/fuzzybase.h"
 #include "src/core/agent.h"
 
 class AgentReaderWriter : public QObject
@@ -21,21 +23,11 @@ public:
     /**
      * Loads the agent from a BAF file.
      *
-     * This method reads agent data from a Brainiac Agent File (BAF) format. The BAF format is a plain ASCII based format
-     * that is human readable and easily editable. It can be understood by external tools or scripts as well.
+     * The method reads a BAF (Brainiac Agent File) format file, which is a plain ASCII based format.
+     * It checks if the agent's bones and fuzzies are empty before loading a new agent,
+     * otherwise it logs a warning message and aborts the loading process.
      *
-     * Before loading, this method checks if the agent has any bones or fuzzies. A new agent can only be loaded if it is empty,
-     * i.e., if it doesn't have any bones or fuzzies. If the agent has bones or fuzzies, an error message will be logged and
-     * loading will be aborted.
-     *
-     * The method opens the BAF file in read-only mode using QFile and creates a QTextStream to read the contents of the file.
-     * It then iterates over each line in the file and processes the fields in each line. If a field with the value "segment"
-     * is found, a new ConfigBlock is created with the type set to ConfigBlockType::SEGMENT. If a field with the value "endSegment"
-     * is found, the current ConfigBlock is dispatched and a new one is created. The lines of the ConfigBlock are appended to
-     * the ConfigBlock and the type is set. Once all lines are processed, the file is closed and the method returns whether the
-     * loading was successful or not.
-     *
-     * @return true if the agent was successfully loaded, false otherwise.
+     * @return true if the agent is successfully loaded from the file, false otherwise.
      */
     [[nodiscard]] bool loadFromBAF();
 
@@ -100,7 +92,31 @@ public:
 private:
     Agent *m_agent;
     inline static const QString _indent = "    ";
+    /**
+     * Writes the segment of a bone to the QTextStream.
+     *
+     * The method writes the segment details of the specified bone to the QTextStream.
+     *
+     * @param boneId The ID of the bone whose segment is to be written.
+     * @param stream The QTextStream object to write the segment to.
+     */
+    void writeSegment(BrainiacGlobals::BrainiacId boneId, QTextStream& stream) const;
 
+    /**
+     * Writes the given fuzz to the provided QTextStream.
+     *
+     * The method writes the information of the fuzz object to the stream in a specific format.
+     * It starts by outputting the fuzz token followed by the fuzz's name.
+     * Then, it determines the type of the fuzz and writes the corresponding type token and additional
+     * information specific to that type. For example, if the fuzz is an AND type, it writes
+     * the mode token and the mode value of the fuzzAnd object.
+     * After that, it outputs the editor position of the fuzz. Finally, it outputs the endFuzz token
+     * to indicate the end of the fuzz information.
+     *
+     * @param fuzz A pointer to the FuzzyBase object to be written.
+     * @param stream The QTextStream to write the fuzz information to.
+     */
+    void writeFuzz(FuzzyBase *fuzz, QTextStream& stream) const;
 signals:
 };
 
