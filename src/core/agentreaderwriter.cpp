@@ -36,20 +36,17 @@ bool AgentReaderWriter::loadFromBAF() {
 }
 
 void AgentReaderWriter::parseFields(const QStringList& fields, ConfigBlock& confBlock) {
+    using Action = std::function<void(void)>;
+    const std::map<QString, Action> actionMap = {
+        {"segment", [&confBlock, this] {checkUnknown(confBlock); confBlock.type = AgentReaderWriter::SEGMENT;}},
+        {"endSegment", [&confBlock, this] {processSegment(confBlock);}},
+        {"fuzz", [&confBlock, this] {checkUnknown(confBlock); confBlock.type = AgentReaderWriter::FUZZY;}},
+        {"endFuzz", [&confBlock, this] {processFuzzy(confBlock);}},
+    };
+
     foreach(auto field, fields) {
-        if (field == "segment") {
-            checkUnknown(confBlock);
-            confBlock.type = AgentReaderWriter::SEGMENT;
-        }
-        if (field == "endSegment") {
-            processSegment(confBlock);
-        }
-        if (field == "fuzz") {
-            checkUnknown(confBlock);
-            confBlock.type = AgentReaderWriter::FUZZY;
-        }
-        if (field == "endFuzz") {
-            processFuzzy(confBlock);
+        if (actionMap.find(field) != actionMap.end()) {
+            actionMap.at(field)();
         }
     }
 }
