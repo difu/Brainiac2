@@ -6,3 +6,4 @@ Brainiac Manual
     :glob:
 
     agent/index
+    structure/index

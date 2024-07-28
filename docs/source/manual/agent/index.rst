@@ -8,7 +8,8 @@ Each AgentInstance has its own state, and can interact with other AgentInstances
 AgentInstances are created by locators.
 
 Agent Characteristics
-=====================
+*********************
+
 Examples of the characteristics of an agent are:
 
 - **Body**:
