@@ -7,10 +7,15 @@ The actual individual entities can be created from the agent description.
 Each AgentInstance has its own state, and can interact with other AgentInstances of different Agents in the simulation.
 AgentInstances are created by locators.
 
+Agent Characteristics
+=====================
 Examples of the characteristics of an agent are:
 
-- **Body**: The physical representation of the agent.
-- **Brain**: How the agent makes decisions.
+- **Body**:
+    - The physical representation of the agent.
+
+- **Brain**:
+    - How the agent makes decisions.
 
 
 
