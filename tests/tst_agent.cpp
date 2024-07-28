@@ -31,28 +31,28 @@ void testAgent1(Agent *agent)
         // Brain
         auto *newNoise = agent->brain()->addNoiseNode();
         newNoise->setRate(1.0);
-        newNoise->setName("Noise 1");
+        newNoise->setName("Noise_1");
         newNoise->setEditorPos(100, 100);
         auto *newNoise2 = agent->brain()->addNoiseNode();
         newNoise2->setRate(1.0);
-        newNoise2->setName("Noise 2");
+        newNoise2->setName("Noise_2");
         newNoise2->setEditorPos(100, 150);
 
         auto *newAnd = agent->brain()->addAndNode();
-        newAnd->setName("And 1");
+        newAnd->setName("And_1");
         newAnd->setEditorPos(400, 75);
 
         auto *newOr = agent->brain()->addOrNode();
-        newOr->setName("Or 1");
+        newOr->setName("Or_1");
         newOr->setEditorPos(400, 175);
 
         FuzzyOutput *newOutput = agent->brain()->addOutputNode();
         newOutput->setChannelId(BrainiacGlobals::CO_COLOR);
-        newOutput->setName("Output 1 (color)");
+        newOutput->setName("Output_(color)");
         newOutput->setEditorPos(400, 225);
         auto *newNoise3 = agent->brain()->addNoiseNode();
         newNoise3->setRate(0.5);
-        newNoise3->setName("Color Noise");
+        newNoise3->setName("Color_Noise");
         newNoise3->setEditorPos(100, 225);
 
         FuzzyBase::connectFuzzies(newNoise, newAnd);
