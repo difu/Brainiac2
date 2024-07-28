@@ -10,11 +10,15 @@ AgentReaderWriter::AgentReaderWriter(Agent *parent)
     , m_agent(parent)
 {}
 
-bool AgentReaderWriter::loadFromBAF() {
+void AgentReaderWriter::checkAgentEmpty() const {
     if (!m_agent->body()->bones().isEmpty() || !m_agent->brain()->fuzzies().isEmpty()) {
         qCritical() << "Agent has bones or fuzzies. A new agent can currently only be loaded if it "
                 "is empty!";
     }
+}
+
+bool AgentReaderWriter::loadFromBAF() {
+    checkAgentEmpty();
     bool success = false;
     QFile file(m_agent->fileName());
     if (file.open(QIODevice::ReadOnly)) {
@@ -23,49 +27,60 @@ bool AgentReaderWriter::loadFromBAF() {
         while (!stream.atEnd()) {
             QString line = stream.readLine().simplified();
             QStringList fields = line.split(" ");
-            foreach(auto field, fields) {
-                if (field == "segment") {
-                    if (confBlock.type != AgentReaderWriter::UNKNOWN) {
-                        qCritical() << "Parsing error!";
-                    }
-                    confBlock.type = AgentReaderWriter::SEGMENT;
-                    //qDebug() << "Found segment!";
-                }
-                if (field == "endSegment") {
-                    if (confBlock.lines.count() > 0) {
-                        addSegment(confBlock);
-                        confBlock.lines.clear();
-                        // cleanLine.clear();
-                        confBlock.type = AgentReaderWriter::UNKNOWN;
-                    } else {
-                        qDebug() << "End of segment reached but empty?";
-                    }
-                }
-
-                if (field == "fuzz") {
-                    if (confBlock.type != AgentReaderWriter::UNKNOWN) {
-                        qCritical() << "Parsing error!";
-                    }
-                    confBlock.type = AgentReaderWriter::FUZZY;
-                    //qDebug() << "Found segment!";
-                }
-                if (field == "endFuzz") {
-                    if (confBlock.lines.count() > 0) {
-                        addFuzz(confBlock);
-                        confBlock.lines.clear();
-                        // cleanLine.clear();
-                        confBlock.type = AgentReaderWriter::UNKNOWN;
-                    } else {
-                        qDebug() << "End of segment reached but empty?";
-                    }
-                }
-            }
+            parseFields(fields, confBlock);
             confBlock.lines.append(line);
-            //qDebug() << "next line";
         }
     }
     file.close();
     return success;
+}
+
+void AgentReaderWriter::parseFields(const QStringList& fields, ConfigBlock& confBlock) {
+    foreach(auto field, fields) {
+        if (field == "segment") {
+            checkUnknown(confBlock);
+            confBlock.type = AgentReaderWriter::SEGMENT;
+        }
+        if (field == "endSegment") {
+            processSegment(confBlock);
+        }
+        if (field == "fuzz") {
+            checkUnknown(confBlock);
+            confBlock.type = AgentReaderWriter::FUZZY;
+        }
+        if (field == "endFuzz") {
+            processFuzzy(confBlock);
+        }
+    }
+}
+
+void AgentReaderWriter::checkUnknown(const ConfigBlock& confBlock) {
+    if (confBlock.type != AgentReaderWriter::UNKNOWN) {
+        qCritical() << "Parsing error!";
+    }
+}
+
+void AgentReaderWriter::processSegment(ConfigBlock& confBlock) const {
+    if (confBlock.lines.count() > 0) {
+        addSegment(confBlock);
+        clearConfigBlock(confBlock);
+    } else {
+        qDebug() << "End of segment reached but empty?";
+    }
+}
+
+void AgentReaderWriter::processFuzzy(ConfigBlock& confBlock) const {
+    if (confBlock.lines.count() > 0) {
+        addFuzz(confBlock);
+        clearConfigBlock(confBlock);
+    } else {
+        qDebug() << "End of segment reached but empty?";
+    }
+}
+
+void AgentReaderWriter::clearConfigBlock(ConfigBlock& confBlock) {
+    confBlock.lines.clear();
+    confBlock.type = AgentReaderWriter::UNKNOWN;
 }
 
 bool AgentReaderWriter::save()
@@ -196,7 +211,7 @@ void AgentReaderWriter::writeFuzz(FuzzyBase *fuzz, QTextStream& stream) const {
             stream << "endFuzz" << Qt::endl;
 }
 
-void AgentReaderWriter::addSegment(ConfigBlock &confBlock) {
+void AgentReaderWriter::addSegment(ConfigBlock &confBlock) const {
     bool primitiveKeyFound = false;
     foreach(auto line, confBlock.lines) {
         // QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(BrainiacGlobals::BOX)
@@ -231,8 +246,8 @@ void AgentReaderWriter::addSegment(ConfigBlock &confBlock) {
         QStringList fields = line.split(" ");
         if (fields.count() == 2) {
             if (fields.at(0) == "segment") {
-                const QString &segmentName = fields.at(1);
-                newBone->setBoneName(segmentName);
+                const QString &new_name = fields.at(1);
+                newBone->setBoneName(new_name);
                 continue;
             }
         }
@@ -289,8 +304,7 @@ void AgentReaderWriter::addSegment(ConfigBlock &confBlock) {
     }
 }
 
-void AgentReaderWriter::addFuzz(ConfigBlock &confBlock)
-{
+void AgentReaderWriter::addFuzz(ConfigBlock &confBlock) const {
     bool fuzzTypeFound = false;
     foreach (auto line, confBlock.lines) {
         // QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(BrainiacGlobals::BOX)
@@ -346,18 +360,18 @@ void AgentReaderWriter::addFuzz(ConfigBlock &confBlock)
             break;
         }
         case BrainiacGlobals::OR: {
-        BrainiacGlobals::BrainiacId newId = m_agent->brain()->newId();
-        fuzz = m_agent->brain()->addOrNode(newId);
+            const BrainiacGlobals::BrainiacId newId = m_agent->brain()->newId();
+            fuzz = m_agent->brain()->addOrNode(newId);
         break;
         }
         case BrainiacGlobals::AND: {
-        BrainiacGlobals::BrainiacId newId = m_agent->brain()->newId();
-        fuzz = m_agent->brain()->addAndNode(newId);
+            const BrainiacGlobals::BrainiacId newId = m_agent->brain()->newId();
+            fuzz = m_agent->brain()->addAndNode(newId);
         break;
         }
         case BrainiacGlobals::OUTPUT: {
-        BrainiacGlobals::BrainiacId newId = m_agent->brain()->newId();
-        fuzz = m_agent->brain()->addOutputNode(newId);
+            const BrainiacGlobals::BrainiacId newId = m_agent->brain()->newId();
+            fuzz = m_agent->brain()->addOutputNode(newId);
         break;
         }
 

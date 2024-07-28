@@ -43,6 +43,10 @@ public:
      */
     [[nodiscard]] bool saveAsBAF() const;
 
+private:
+    Agent *m_agent;
+    inline static const QString _indent = "    ";
+
     /**
      * Adds a segment to the agent.
      *
@@ -64,7 +68,7 @@ public:
      *
      * @param confBlock The ConfigBlock containing information about the segment.
      */
-    void addSegment(ConfigBlock &confBlock);
+    void addSegment(ConfigBlock &confBlock) const;
 
     /**
      * Adds a fuzz to the agent.
@@ -87,11 +91,28 @@ public:
      *
      * @see FuzzyBase, BrainiacGlobals::ItemType, addNoiseNode
      */
-    void addFuzz(ConfigBlock &confBlock);
+    void addFuzz(ConfigBlock &confBlock) const;
 
-private:
-    Agent *m_agent;
-    inline static const QString _indent = "    ";
+    void checkAgentEmpty() const;
+
+    /**
+     * Parses the fields of the agent and updates the given configuration block.
+     *
+     * The method takes a list of fields as input and iterates through each field.
+     * If the field is equal to "segment", it checks if there are any unknown fields in the configuration block and updates the block's type to SEGMENT.
+     * If the field is equal to "endSegment", it processes the segment in the configuration block.
+     * If the field is equal to "fuzz", it checks if there are any unknown fields in the configuration block and updates the block's type to FUZZY.
+     * If the field is equal to "endFuzz", it processes the fuzzy in the configuration block.
+     *
+     * @param fields The list of fields to parse.
+     * @param confBlock The configuration block to update.
+     */
+    void parseFields(const QStringList &fields, ConfigBlock &confBlock);
+    static void checkUnknown(const ConfigBlock &confBlock);
+    void processSegment(ConfigBlock &confBlock) const;
+    void processFuzzy(ConfigBlock &confBlock) const;
+    static void clearConfigBlock(ConfigBlock &confBlock);
+
     /**
      * Writes the segment of a bone to the QTextStream.
      *
