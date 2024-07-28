@@ -19,3 +19,5 @@ Examples of the characteristics of an agent are:
     :glob:
 
     *
+    brain/index
+    body/index

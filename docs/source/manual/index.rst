@@ -2,9 +2,7 @@ Brainiac Manual
 ===============
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
     :glob:
 
     agent/index
-    body/index
-    brain/index
