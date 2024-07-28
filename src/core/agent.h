@@ -115,6 +115,30 @@ public:
 
     void dumpChannels();
 
+    /**
+     * @brief Returns the input channels of the agent.
+     *
+     * This method returns a QHash<QString, BrainiacGlobals::BrainiacId> object representing
+     * the input channels of the agent. The keys of the hash map are the names of the input channels,
+     * and the values are the corresponding BrainiacIds.
+     *
+     * @return A QHash<QString, BrainiacGlobals::BrainiacId> object containing the input channels of the agent.
+     * @note Each input channel is associated with a unique identifier (BrainiacId).
+     */
+    [[nodiscard]] QHash<QString, BrainiacGlobals::BrainiacId> inputChannels() const;
+
+    /**
+     * @brief Returns the output channels of the agent.
+     *
+     * This method returns a QHash<QString, BrainiacGlobals::BrainiacId> object representing
+     * the output channels of the agent. The keys of the hash map are the names of the output channels,
+     * and the values are the corresponding BrainiacIds.
+     *
+     * @return A QHash<QString, BrainiacGlobals::BrainiacId> object containing the output channels of the agent.
+     * @note Each output channel is associated with a unique identifier (BrainiacId).
+     */
+    [[nodiscard]] QHash<QString, BrainiacGlobals::BrainiacId> outputChannels() const;
+
     ~Agent() override;
 
 protected:

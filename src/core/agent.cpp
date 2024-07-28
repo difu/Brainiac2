@@ -304,3 +304,13 @@ AgentReaderWriter *Agent::agentReaderWriter() const
 {
     return m_agentReaderWriter;
 }
+
+QHash<QString, BrainiacGlobals::BrainiacId> Agent::outputChannels() const
+{
+    return m_outputChannels;
+}
+
+QHash<QString, BrainiacGlobals::BrainiacId> Agent::inputChannels() const
+{
+    return m_inputChannels;
+}

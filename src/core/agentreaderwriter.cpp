@@ -20,18 +20,10 @@ bool AgentReaderWriter::loadFromBAF() {
     if (file.open(QIODevice::ReadOnly)) {
         QTextStream stream(&file);
         ConfigBlock confBlock;
-        ConfigBlockType confType = AgentReaderWriter::UNKNOWN;
         while (!stream.atEnd()) {
-            QString line = stream.readLine();
+            QString line = stream.readLine().simplified();
             QStringList fields = line.split(" ");
-            QString cleanLine;
             foreach(auto field, fields) {
-                if (field.isEmpty()) {
-                    // skip blanks
-                    continue;
-                }
-                //qDebug() << "Field:" << field;
-                cleanLine.append(field).append(" ");
                 if (field == "segment") {
                     if (confBlock.type != AgentReaderWriter::UNKNOWN) {
                         qCritical() << "Parsing error!";
@@ -43,13 +35,32 @@ bool AgentReaderWriter::loadFromBAF() {
                     if (confBlock.lines.count() > 0) {
                         addSegment(confBlock);
                         confBlock.lines.clear();
+                        // cleanLine.clear();
+                        confBlock.type = AgentReaderWriter::UNKNOWN;
+                    } else {
+                        qDebug() << "End of segment reached but empty?";
+                    }
+                }
+
+                if (field == "fuzz") {
+                    if (confBlock.type != AgentReaderWriter::UNKNOWN) {
+                        qCritical() << "Parsing error!";
+                    }
+                    confBlock.type = AgentReaderWriter::FUZZY;
+                    //qDebug() << "Found segment!";
+                }
+                if (field == "endFuzz") {
+                    if (confBlock.lines.count() > 0) {
+                        addFuzz(confBlock);
+                        confBlock.lines.clear();
+                        // cleanLine.clear();
                         confBlock.type = AgentReaderWriter::UNKNOWN;
                     } else {
                         qDebug() << "End of segment reached but empty?";
                     }
                 }
             }
-            confBlock.lines.append(cleanLine);
+            confBlock.lines.append(line);
             //qDebug() << "next line";
         }
     }
@@ -64,6 +75,7 @@ bool AgentReaderWriter::save()
 
 bool AgentReaderWriter::saveAsBAF() const {
     QFile file(m_agent->fileName());
+    bool success = false;
     if (file.open(QIODevice::ReadWrite)) {
         QTextStream stream(&file);
 
@@ -106,61 +118,59 @@ bool AgentReaderWriter::saveAsBAF() const {
         foreach(auto fuzz, m_agent->brain()->fuzzies()) {
             stream << "fuzz " << fuzz->name() << Qt::endl;
             switch (fuzz->type()) {
-                case BrainiacGlobals::AND: {
-                    auto *fuzzAnd = dynamic_cast<FuzzyAnd *>(fuzz);
-                    stream << _indent << "type "
-                            << QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
-                                BrainiacGlobals::AND)
-                            << Qt::endl;
-                    stream << _indent << "mode "
-                            << QMetaEnum::fromType<FuzzyAnd::Mode>().valueToKey(
-                                fuzzAnd->mode())
-                            << Qt::endl;
-                    // stream << _indent << "size " << fuzzAnd-> << " " << box->size().y() << " "
-                    //         << box->size().z() << Qt::endl;
-                    break;
-                }
-                case BrainiacGlobals::OR: {
-                    auto *fuzzyOr = dynamic_cast<FuzzyOr *>(fuzz);
-                    stream << _indent << "type "
-                            << QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
-                                BrainiacGlobals::OR)
-                            << Qt::endl;
-                    stream << _indent << "mode "
-                            << QMetaEnum::fromType<FuzzyOr::Mode>().valueToKey(
-                                fuzzyOr->mode())
-                            << Qt::endl;
-                    // stream << _indent << "size " << fuzzAnd-> << " " << box->size().y() << " "
-                    //         << box->size().z() << Qt::endl;
-                    break;
-                }
-                case BrainiacGlobals::NOISE: {
-                    auto *noise = dynamic_cast<Noise *>(fuzz);
-                    stream << _indent << "type "
-                            << QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
-                                BrainiacGlobals::NOISE)
-                            << Qt::endl;
-                    stream << _indent << "rate "
-                            << noise->rate()
-                            << Qt::endl;
-                    // stream << _indent << "size " << fuzzAnd-> << " " << box->size().y() << " "
-                    //         << box->size().z() << Qt::endl;
-                    break;
-                }
-                case BrainiacGlobals::OUTPUT: {
-                    auto *outout = dynamic_cast<FuzzyOutput *>(fuzz);
-                    stream << _indent << "type "
-                            << QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
-                                BrainiacGlobals::OUTPUT)
-                            << Qt::endl;
-                    // stream << _indent << "mode "
-                    //         << QMetaEnum::fromType<FuzzyOr::Mode>().valueToKey(
-                    //             fuzzyOr->mode())
-                    //         << Qt::endl;
-                    // stream << _indent << "size " << fuzzAnd-> << " " << box->size().y() << " "
-                    //         << box->size().z() << Qt::endl;
-                    break;
-                }
+            case FuzzyBase::AND: {
+                auto *fuzzAnd = dynamic_cast<FuzzyAnd *>(fuzz);
+                stream << _indent << "type "
+                       << QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
+                              BrainiacGlobals::AND)
+                       << Qt::endl;
+                stream << _indent << "mode "
+                       << QMetaEnum::fromType<FuzzyAnd::Mode>().valueToKey(fuzzAnd->mode())
+                       << Qt::endl;
+                // stream << _indent << "size " << fuzzAnd-> << " " << box->size().y() << " "
+                //         << box->size().z() << Qt::endl;
+                break;
+            }
+            case FuzzyBase::OR: {
+                auto *fuzzyOr = dynamic_cast<FuzzyOr *>(fuzz);
+                stream << _indent << "type "
+                       << QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
+                              BrainiacGlobals::OR)
+                       << Qt::endl;
+                stream << _indent << "mode "
+                       << QMetaEnum::fromType<FuzzyOr::Mode>().valueToKey(fuzzyOr->mode())
+                       << Qt::endl;
+                // stream << _indent << "size " << fuzzAnd-> << " " << box->size().y() << " "
+                //         << box->size().z() << Qt::endl;
+                break;
+            }
+            case FuzzyBase::NOISE: {
+                auto *noise = dynamic_cast<Noise *>(fuzz);
+                stream << _indent << "type "
+                       << QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
+                              BrainiacGlobals::NOISE)
+                       << Qt::endl;
+                stream << _indent << "rate " << noise->rate() << Qt::endl;
+                // stream << _indent << "size " << fuzzAnd-> << " " << box->size().y() << " "
+                //         << box->size().z() << Qt::endl;
+                break;
+            }
+            case FuzzyBase::OUTPUT: {
+                auto *output = dynamic_cast<FuzzyOutput *>(fuzz);
+                stream << _indent << "type "
+                       << QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
+                              BrainiacGlobals::OUTPUT)
+                       << Qt::endl;
+                stream << _indent << "channel " << m_agent->outputChannelName(output->channelId())
+                       << Qt::endl;
+                ;
+                //         << QMetaEnum::fromType<FuzzyOr::Mode>().valueToKey(
+                //             fuzzyOr->mode())
+                //         << Qt::endl;
+                // stream << _indent << "size " << fuzzAnd-> << " " << box->size().y() << " "
+                //         << box->size().z() << Qt::endl;
+                break;
+            }
 
                 default:
                     break;
@@ -172,9 +182,10 @@ bool AgentReaderWriter::saveAsBAF() const {
         }
 
         stream << "End" << Qt::endl;
-        return true;
+        success = true;
     }
-    return false;
+    file.close();
+    return success;
 }
 
 void AgentReaderWriter::addSegment(ConfigBlock &confBlock) {
@@ -210,18 +221,14 @@ void AgentReaderWriter::addSegment(ConfigBlock &confBlock) {
     QString segmentName;
     foreach (auto line, confBlock.lines) {
         QStringList fields = line.split(" ");
-        if (fields.count()
-            == 3) {
-            // Actually, there are 2 elements, last one is empty (because of blank at the end?
+        if (fields.count() == 2) {
             if (fields.at(0) == "segment") {
-                QString segmentName = fields.at(1);
+                const QString &segmentName = fields.at(1);
                 newBone->setBoneName(segmentName);
                 continue;
             }
         }
-        if (fields.count()
-            == 3) {
-            // Actually, there are 2 elements, last one is empty (because of blank at the end?
+        if (fields.count() == 2) {
             if (fields.at(0) == "parent") {
                 QString parentName = fields.at(1);
                 if (segmentName == parentName) {
@@ -234,8 +241,14 @@ void AgentReaderWriter::addSegment(ConfigBlock &confBlock) {
                 continue;
             }
         }
-        if (fields.count() == 5) {
-            // Actually 4 elements... see above.
+        if (fields.count() == 3) {
+            if (fields.at(0) == "editorpos") {
+                float x = fields.at(1).toFloat();
+                float y = fields.at(2).toFloat();
+                newBone->setEditorPos(x, y);
+            }
+        }
+        if (fields.count() == 4) {
             if (fields.at(0) == "translation") {
                 float x = fields.at(1).toFloat();
                 float y = fields.at(2).toFloat();
@@ -263,6 +276,144 @@ void AgentReaderWriter::addSegment(ConfigBlock &confBlock) {
                     qFatal() << "Unexpected key SIZE for this segment!";
                 }
                 continue;
+            }
+        }
+    }
+}
+
+void AgentReaderWriter::addFuzz(ConfigBlock &confBlock)
+{
+    bool fuzzTypeFound = false;
+    foreach (auto line, confBlock.lines) {
+        // QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(BrainiacGlobals::BOX)
+        QStringList fields = line.split(" ");
+        foreach (auto field, fields) {
+            if (field == "type") {
+                fuzzTypeFound = true;
+                continue;
+            }
+            if (fuzzTypeFound
+                && field
+                       == QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
+                           BrainiacGlobals::AND)) {
+                confBlock.itemType = BrainiacGlobals::AND;
+                fuzzTypeFound = false;
+                continue;
+            } else if (fuzzTypeFound
+                       && field
+                              == QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
+                                  BrainiacGlobals::OR)) {
+                confBlock.itemType = BrainiacGlobals::OR;
+                fuzzTypeFound = false;
+                continue;
+            } else if (fuzzTypeFound
+                       && field
+                              == QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
+                                  BrainiacGlobals::INPUT)) {
+                confBlock.itemType = BrainiacGlobals::INPUT;
+                fuzzTypeFound = false;
+                continue;
+            } else if (fuzzTypeFound
+                       && field
+                              == QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
+                                  BrainiacGlobals::OUTPUT)) {
+                confBlock.itemType = BrainiacGlobals::OUTPUT;
+                fuzzTypeFound = false;
+                continue;
+            } else if (fuzzTypeFound
+                       && field
+                              == QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
+                                  BrainiacGlobals::NOISE)) {
+                confBlock.itemType = BrainiacGlobals::NOISE;
+                fuzzTypeFound = false;
+                continue;
+            }
+        }
+    }
+    FuzzyBase *fuzz = nullptr;
+    switch (confBlock.itemType) {
+        case BrainiacGlobals::NOISE: {
+            BrainiacGlobals::BrainiacId newId = m_agent->brain()->newId();
+            fuzz = m_agent->brain()->addNoiseNode(newId);
+            break;
+        }
+        case BrainiacGlobals::OR: {
+        BrainiacGlobals::BrainiacId newId = m_agent->brain()->newId();
+        fuzz = m_agent->brain()->addOrNode(newId);
+        break;
+        }
+        case BrainiacGlobals::AND: {
+        BrainiacGlobals::BrainiacId newId = m_agent->brain()->newId();
+        fuzz = m_agent->brain()->addAndNode(newId);
+        break;
+        }
+        case BrainiacGlobals::OUTPUT: {
+        BrainiacGlobals::BrainiacId newId = m_agent->brain()->newId();
+        fuzz = m_agent->brain()->addOutputNode(newId);
+        break;
+        }
+
+    default:
+        qWarning() << "Not implemented: "
+                   << QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
+                          confBlock.itemType);
+        return;
+    }
+
+    foreach (auto line, confBlock.lines) {
+        QStringList fields = line.split(" ");
+
+        if (fields.count() == 2) {
+            if (fields.at(0) == "fuzz") {
+                const QString &fuzzName = fields.at(1);
+                fuzz->setName(fuzzName);
+                continue;
+            }
+        }
+
+        if (fields.count() == 2) {
+            if (fields.at(0) == "rate") {
+                if (auto *noise = dynamic_cast<Noise *>(fuzz)) {
+                    noise->setRate(fields.at(1).toDouble());
+                } else {
+                    qFatal() << "Could not cast to Noise!";
+                }
+            }
+            if (fields.at(0) == "channel") {
+                if(fuzz->type()==FuzzyBase::OUTPUT) {
+                    if (auto *out=dynamic_cast<FuzzyOutput *>(fuzz)) {
+                        BrainiacGlobals::BrainiacId channelId=m_agent->outputChannels().value(fields.at(1));
+                        out->setChannelId(channelId);
+                    }
+                }
+            }
+            if (fields.at(0) == "mode") {
+                if(fuzz->type()==FuzzyBase::OR) {
+                    if (auto *orFuzz=dynamic_cast<FuzzyOr *>(fuzz)) {
+                        if(QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
+                              FuzzyOr::MAX)) {
+                            orFuzz->setMode(FuzzyOr::MAX);
+                        } else {
+                            orFuzz->setMode(FuzzyOr::SUM);
+                        }
+                    }
+                } else if(fuzz->type()==FuzzyBase::AND) {
+                    if (auto *andFuzz=dynamic_cast<FuzzyAnd *>(fuzz)) {
+                        if(QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
+                              FuzzyOr::MAX)) {
+                            andFuzz->setMode(FuzzyAnd::MIN);
+                              } else {
+                                  andFuzz->setMode(FuzzyAnd::PRODUCT);
+                              }
+                    }
+                }
+            }
+        }
+        if (fields.count() == 3) {
+            if (fields.at(0) == "editorpos") {
+                float x = fields.at(1).toFloat();
+                float y = fields.at(2).toFloat();
+                fuzz->setEditorPos(x, y);
             }
         }
     }

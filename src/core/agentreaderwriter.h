@@ -46,7 +46,7 @@ public:
      *
      * A BAF file is the "Brainiac Agent File" format. The BAF format is a plain ASCII based format
      * that is human readable and easily editable. It can be understood by external tools or scripts as well.
-     * 
+     *
      * @return true if the agent was successfully saved, false otherwise.
      */
     [[nodiscard]] bool saveAsBAF() const;
@@ -73,6 +73,29 @@ public:
      * @param confBlock The ConfigBlock containing information about the segment.
      */
     void addSegment(ConfigBlock &confBlock);
+
+    /**
+     * Adds a fuzz to the agent.
+     *
+     * This method adds a fuzz to the agent based on the provided ConfigBlock. The ConfigBlock should contain the necessary
+     * information to create the fuzz, including its type and attributes.
+     *
+     * The method first checks if the fuzz type is found in the ConfigBlock. If it is not found, the method does nothing.
+     *
+     * If the fuzz type is found, the method creates a FuzzyBase pointer, fuzz, and initializes it to nullptr. The method then
+     * checks the itemType of the ConfigBlock to determine which type of fuzz to create.
+     *
+     * For example, if the itemType is BrainiacGlobals::NOISE, the method calls the addNoiseNode method of the agent's brain, passing in
+     * the newId parameter, and assigns the returned fuzz to the fuzz pointer.
+     *
+     * After creating the fuzz, the method iterates over each line in the ConfigBlock. For each line, the method splits the line
+     * into fields using a space as the delimiter.
+     *
+     * @param confBlock The ConfigBlock containing the information to create the fuzz.
+     *
+     * @see FuzzyBase, BrainiacGlobals::ItemType, addNoiseNode
+     */
+    void addFuzz(ConfigBlock &confBlock);
 
 private:
     Agent *m_agent;
