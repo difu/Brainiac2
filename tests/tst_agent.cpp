@@ -74,6 +74,9 @@ public:
 private slots:
     void initTestCase();
     void cleanupTestCase();
+
+    void test_equal();
+
     void test_loadSave();
 
     // void test_outputChannels();
@@ -91,6 +94,30 @@ void AgentTest::initTestCase()
 }
 
 void AgentTest::cleanupTestCase() {}
+
+void AgentTest::test_equal() {
+    Scene myScene;
+    auto *agent1 = new Agent(&myScene);
+    auto *agent2 = new Agent(&myScene);
+    ::testAgent1(agent1);
+    ::testAgent1(agent2);
+
+    QStringList errors;
+    bool equal = Agent::compare(agent1, agent2, errors);
+    if (!equal) {
+        qInfo() << errors;
+    }
+    QVERIFY2(equal, "Agents are not the same!");
+
+    agent2->brain()->addAndNode(12);
+    equal = Agent::compare(agent1, agent2, errors);
+    QVERIFY2(!equal, "Agents are not expected to be the same!");
+
+    if (!equal) {
+        qInfo() << "This is expected: " << errors;
+    }
+}
+
 
 void AgentTest::test_loadSave()
 {
