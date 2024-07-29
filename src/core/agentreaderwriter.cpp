@@ -60,7 +60,7 @@ void AgentReaderWriter::parseFields(const QStringList &fields, ConfigBlock &conf
                 confBlock.type = AgentReaderWriter::CONNECTIONS;
             }
         },
-        {"endconnections", [&confBlock, this] { processConnections(confBlock); }},
+        {"endConnections", [&confBlock, this] { processConnections(confBlock); }},
     };
 
     foreach (auto field, fields) {
@@ -266,7 +266,7 @@ void AgentReaderWriter::writeConnections(FuzzyBase *fuzz, QTextStream &stream) c
         }
         // stream << _indent << "child " << childFuzz->name() << " " << QString();
     }
-    stream << "endconnections" << Qt::endl;
+    stream << "endConnections" << Qt::endl;
 }
 
 void AgentReaderWriter::addSegment(ConfigBlock &confBlock) const
