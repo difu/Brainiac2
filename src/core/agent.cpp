@@ -220,6 +220,7 @@ BrainiacGlobals::BrainiacId Agent::addInputChannel(const QString channelName,
 BrainiacGlobals::BrainiacId Agent::addOutputChannel(const QString channelName,
                                                     qreal channelMinVal, qreal channelMaxVal, qreal channelDefaultVal,
                                                     BrainiacGlobals::BrainiacId id) {
+    Q_ASSERT(!channelName.isEmpty());
     // if channel already exists, return its ID
     if (m_outputChannels.contains(channelName)) {
         return m_outputChannels.value(channelName);
@@ -264,6 +265,8 @@ BrainiacGlobals::BrainiacId Agent::addOutputChannel(const QString channelName,
 
     m_outputChannels.insert(channelName, returnId);
     m_outputChannelDefaults.insert(returnId, cDefault);
+
+    // TODO: Check, if this is neccesary. Instances should not exist in the current implementation...
     foreach(AgentInstance *agentInstance, m_agentInstances) {
         agentInstance->addOutputChannel(returnId, cDefault);
     }
@@ -308,6 +311,34 @@ AgentReaderWriter *Agent::agentReaderWriter() const
 QHash<QString, BrainiacGlobals::BrainiacId> Agent::outputChannels() const
 {
     return m_outputChannels;
+}
+
+void Agent::renameOutputChannel(const QString &oldName, const QString &newName) {
+    if (m_outputChannels.contains(oldName)) {
+        BrainiacGlobals::BrainiacId id = m_outputChannels.value(oldName);
+        m_outputChannels.remove(oldName);
+        m_outputChannels.insert(newName, id);
+    } else {
+        qDebug() << "Output channel does not exist:" << oldName;
+    }
+}
+
+bool Agent::compare(Agent *agent1, Agent *agent2, QStringList &differences) {
+    bool equal = true;
+    if (agent1->name() != agent2->name()) {
+        equal = false;
+        differences.append(QString("Name differs: %1 vs %2.").arg(agent1->name()).arg(agent2->name()));
+    }
+    if (agent1->inputChannels() != agent2->inputChannels()) {
+        equal = false;
+        differences.append(QString("Different input channels"));
+    }
+    if (agent1->outputChannels() != agent2->outputChannels()) {
+        equal = false;
+        differences.append(QString("Different output channels"));
+    }
+
+    return equal;
 }
 
 QHash<QString, BrainiacGlobals::BrainiacId> Agent::inputChannels() const

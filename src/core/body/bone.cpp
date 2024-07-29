@@ -19,6 +19,7 @@ Bone::Bone(QObject *parent, const BrainiacGlobals::ItemType type, const Brainiac
         qFatal() << "Id must not be 0, reserved as root!";
     }
     setBoneName(name);
+    Q_ASSERT(!this->objectName().isEmpty());
     m_body->addBone(this);
 
     m_channelID_TX = m_body->agent()->addOutputChannel(this->objectName().append(":tx"),
@@ -61,20 +62,45 @@ BrainiacGlobals::BrainiacId Bone::parentBoneId() const {
 }
 
 QString Bone::setBoneName(const QString &newName) {
-    if (newName.isEmpty()) {
-        this->setBoneName(QString("newBone.").append(QString::number(this->id())));
-    }
-    foreach(Bone * bone, m_body->bones()) {
+    foreach(Bone *bone, m_body->bones()) {
         if (bone == this) {
             continue;
         }
-        if (bone->objectName() == newName) {
-            this->setBoneName(QString(newName).append(QString::number(this->id())));
+        if (bone->objectName() == this->objectName()) {
+            return this->setBoneName(this->objectName().append(QString::number(this->id())));
         }
+    }
+    if (newName.isEmpty()) {
+        return this->setBoneName(QString("newBone.").append(QString::number(this->id())));
+    } else {
+        // this->setBoneNamePriv(newName);
+    }
+    Q_ASSERT(!newName.isEmpty());
+    this->setBoneNamePriv(newName);
+
+
+    //this->setObjectName(newName);
+    Q_ASSERT(!this->objectName().isEmpty());
+    return this->objectName();
+}
+
+void Bone::setBoneNamePriv(const QString &newName) {
+    if (newName == this->objectName()) {
+        qDebug() << "New bone name is the same as the old: " << newName;
+        return;
+    }
+    // if objectName is empty, then this is a new bone and no channels have been created yet, we may skip the renaming.
+    if (!objectName().isEmpty()) {
+        m_body->agent()->renameOutputChannel(objectName().append(":tx"), QString(newName).append(":tx"));
+        m_body->agent()->renameOutputChannel(objectName().append(":tz"), QString(newName).append(":tz"));
+        m_body->agent()->renameOutputChannel(objectName().append(":ty"), QString(newName).append(":ty"));
+
+        m_body->agent()->renameOutputChannel(objectName().append(":rx"), QString(newName).append(":rx"));
+        m_body->agent()->renameOutputChannel(objectName().append(":rz"), QString(newName).append(":rz"));
+        m_body->agent()->renameOutputChannel(objectName().append(":ry"), QString(newName).append(":ry"));
     }
 
     this->setObjectName(newName);
-    return newName;
 }
 
 QVector3D Bone::translation() const {

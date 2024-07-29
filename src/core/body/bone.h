@@ -144,6 +144,8 @@ private:
     BrainiacGlobals::BrainiacId m_channelID_RZ;
 
 private:
+    void setBoneNamePriv(const QString &newName);
+
 signals:
 };
 

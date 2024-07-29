@@ -107,6 +107,13 @@ void AgentTest::test_loadSave()
 
     loadAgent->setFileName("/tmp/difu2.baf");
     loadAgent->save();
+
+    QStringList errors;
+    bool equal = Agent::compare(agent, loadAgent, errors);
+    if (!equal) {
+        qInfo() << errors;
+    }
+    QVERIFY2(equal, "Agents are not the same!");
 }
 
 // void AgentTest::test_outputChannels()

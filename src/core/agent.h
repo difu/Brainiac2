@@ -139,6 +139,10 @@ public:
      */
     [[nodiscard]] QHash<QString, BrainiacGlobals::BrainiacId> outputChannels() const;
 
+    void renameOutputChannel(const QString &oldName, const QString &newName);
+
+    [[nodiscard]] static bool compare(Agent *agent1, Agent *agent2, QStringList &differences);
+
     ~Agent() override;
 
 protected:
