@@ -82,9 +82,11 @@ QString FuzzyBase::name() const
 
 void FuzzyBase::setName(const QString &newName)
 {
-    if (m_name == newName)
+    QString newNameNoBlanks = newName;
+    newNameNoBlanks.replace(" ", "_");
+    if (m_name == newNameNoBlanks)
         return;
-    m_name = newName;
+    m_name = newNameNoBlanks;
     emit nameChanged();
 }
 
