@@ -17,7 +17,7 @@ Indices and tables
 Table of Contents
 ^^^^^^^^^^^^^^^^^
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 4
 
     self
     manual/index
