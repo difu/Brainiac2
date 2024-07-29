@@ -94,18 +94,23 @@ void Brain::compare(Brain *brain1, Brain *brain2, QStringList &differences) {
         differences.append(QString("Different number of fuzzies"));
     } else {
         foreach(auto *fuzz, brain1->fuzzies()) {
-            bool otherFuzzFound = false;
-            foreach(auto *otherFuzz, brain2->fuzzies()) {
-                if (otherFuzz->type() == fuzz->type() && otherFuzz->name() == fuzz->name()) {
-                    otherFuzzFound = true;
-                    if (!(fuzz->editorPos() == otherFuzz->editorPos())) {
-                        differences.append(QString("EditorPos differs: ").append(std::to_string(fuzz->id())));
-                    }
-                }
-            }
-            if (!otherFuzzFound) {
-                differences.append(QString("No corresponding fuzz found: ").append(std::to_string(fuzz->id())));
+            compareFuzzies(fuzz, brain2->fuzzies(), differences);
+        }
+    }
+}
+
+void Brain::compareFuzzies(const FuzzyBase *fuzz, const QHash<BrainiacGlobals::BrainiacId, FuzzyBase *> &brain2Fuzzies,
+                           QStringList &differences) {
+    bool otherFuzzFound = false;
+    foreach(auto *otherFuzz, brain2Fuzzies) {
+        if (otherFuzz->type() == fuzz->type() && otherFuzz->name() == fuzz->name()) {
+            otherFuzzFound = true;
+            if (!(fuzz->editorPos() == otherFuzz->editorPos())) {
+                differences.append(QString("EditorPos differs: ").append(std::to_string(fuzz->id())));
             }
         }
+    }
+    if (!otherFuzzFound) {
+        differences.append(QString("No corresponding fuzz found: ").append(std::to_string(fuzz->id())));
     }
 }

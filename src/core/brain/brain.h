@@ -93,10 +93,14 @@ public:
 
     static void compare(Brain *brain1, Brain *brain2, QStringList &differences);
 
-private:
+   private:
     Agent *m_agent;
     QHash<BrainiacGlobals::BrainiacId, FuzzyBase *> m_fuzzies;
     BrainEditor *m_brainEditor;
+
+    static void compareFuzzies(const FuzzyBase *fuzz,
+                               const QHash<BrainiacGlobals::BrainiacId, FuzzyBase *> &brain2Fuzzies,
+                               QStringList &differences);
 };
 
 #endif // BRAIN_H
