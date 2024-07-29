@@ -91,6 +91,8 @@ public:
 
     BrainEditor *brainEditor() const;
 
+    static void compare(Brain *brain1, Brain *brain2, QStringList &differences);
+
 private:
     Agent *m_agent;
     QHash<BrainiacGlobals::BrainiacId, FuzzyBase *> m_fuzzies;

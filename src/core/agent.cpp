@@ -332,8 +332,9 @@ bool Agent::compare(Agent *agent1, Agent *agent2, QStringList &differences) {
         equal = false;
         differences.append(QString("Different output channels"));
     }
+    Brain::compare(agent1->brain(), agent2->brain(), differences);
 
-    return equal;
+    return differences.empty();
 }
 
 QHash<QString, BrainiacGlobals::BrainiacId> Agent::inputChannels() const

@@ -88,3 +88,24 @@ BrainEditor *Brain::brainEditor() const
 {
     return m_brainEditor;
 }
+
+void Brain::compare(Brain *brain1, Brain *brain2, QStringList &differences) {
+    if (brain1->fuzzies().count() != brain2->fuzzies().count()) {
+        differences.append(QString("Different number of fuzzies"));
+    } else {
+        foreach(auto *fuzz, brain1->fuzzies()) {
+            bool otherFuzzFound = false;
+            foreach(auto *otherFuzz, brain2->fuzzies()) {
+                if (otherFuzz->type() == fuzz->type() && otherFuzz->name() == fuzz->name()) {
+                    otherFuzzFound = true;
+                    if (!(fuzz->editorPos() == otherFuzz->editorPos())) {
+                        differences.append(QString("EditorPos differs: ").append(std::to_string(fuzz->id())));
+                    }
+                }
+            }
+            if (!otherFuzzFound) {
+                differences.append(QString("No corresponding fuzz found: ").append(std::to_string(fuzz->id())));
+            }
+        }
+    }
+}
