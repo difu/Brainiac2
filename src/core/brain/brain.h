@@ -91,6 +91,21 @@ public:
 
     BrainEditor *brainEditor() const;
 
+    /**
+     * @brief Finds a FuzzyBase object in the Brain by its name.
+     *
+     * This method searches for a FuzzyBase object in the Brain's QHash of fuzzies by matching the provided name.
+     * It iterates over all the fuzzies and checks if their name matches the provided name.
+     * If a match is found, the corresponding FuzzyBase object is returned.
+     * If a match is not found, nullptr is returned.
+     *
+     * @param fuzzName The name of the FuzzyBase object to find.
+     * @return A pointer to the FuzzyBase object with the matching name, or nullptr if no match is found.
+     *
+     * @note The ownership of the returned FuzzyBase object is not transferred.
+     */
+    [[nodiscard]] FuzzyBase *fuzzyByName(const QString &fuzzName);
+
     static void compare(Brain *brain1, Brain *brain2, QStringList &differences);
 
    private:

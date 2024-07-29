@@ -89,6 +89,15 @@ BrainEditor *Brain::brainEditor() const
     return m_brainEditor;
 }
 
+FuzzyBase *Brain::fuzzyByName(const QString &fuzzName) {
+    foreach(auto *fuzz, m_fuzzies) {
+        if (fuzz->name() == fuzzName) {
+            return fuzz;
+        }
+    }
+    return nullptr;
+}
+
 void Brain::compare(Brain *brain1, Brain *brain2, QStringList &differences) {
     if (brain1->fuzzies().count() != brain2->fuzzies().count()) {
         differences.append(QString("Different number of fuzzies"));

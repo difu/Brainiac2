@@ -104,12 +104,7 @@ void AgentReaderWriter::processConnections(ConfigBlock &confBlock) const {
             QStringList fields = line.split(" ");
             if (fields.count() == 2) {
                 if (fields.at(0) == "connections") {
-                    foreach(FuzzyBase *fuzz, m_agent->brain()->fuzzies()) {
-                        if (fuzz->name() == fields.at(1)) {
-                            parentFuzz = fuzz;
-                            break;
-                        }
-                    }
+                    parentFuzz = m_agent->brain()->fuzzyByName(fields.at(1));
                 }
             }
             if (fields.count() == 3) {
@@ -117,12 +112,12 @@ void AgentReaderWriter::processConnections(ConfigBlock &confBlock) const {
                     if (!parentFuzz) {
                         qCritical("No parent found!");
                     }
-                    foreach(FuzzyBase *fuzz, m_agent->brain()->fuzzies()) {
-                        if (fuzz->name() == fields.at(1)) {
-                            bool inverted = fields.at(2).toInt() == 1;
-                            FuzzyBase::connectFuzzies(parentFuzz, fuzz, inverted);
-                        }
+                    FuzzyBase *childFuzz = m_agent->brain()->fuzzyByName(fields.at(1));
+                    if (!childFuzz) {
+                        qCritical("No child found!");
                     }
+                    bool inverted = fields.at(2).toInt() == 1;
+                    FuzzyBase::connectFuzzies(parentFuzz, childFuzz, inverted);
                 }
             }
         }
