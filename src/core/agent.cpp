@@ -266,11 +266,6 @@ BrainiacGlobals::BrainiacId Agent::addOutputChannel(const QString channelName,
     m_outputChannels.insert(channelName, returnId);
     m_outputChannelDefaults.insert(returnId, cDefault);
 
-    // TODO: Check, if this is neccesary. Instances should not exist in the current implementation...
-    foreach(AgentInstance *agentInstance, m_agentInstances) {
-        agentInstance->addOutputChannel(returnId, cDefault);
-    }
-
     if (m_defaultAgentInstance)
         Q_ASSERT(m_outputChannels.count() == m_defaultAgentInstance->outputChannels().count());
     Q_ASSERT(m_outputChannels.count() == m_outputChannelDefaults.count());
