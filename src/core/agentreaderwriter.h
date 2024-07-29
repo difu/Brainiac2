@@ -12,7 +12,7 @@ class AgentReaderWriter : public QObject
 {
     Q_OBJECT
 public:
-    enum ConfigBlockType { UNKNOWN, FUZZY, SEGMENT };
+    enum ConfigBlockType { UNKNOWN, FUZZY, SEGMENT, CONNECTIONS };
 
     struct ConfigBlock {
         ConfigBlockType type = AgentReaderWriter::UNKNOWN;
@@ -114,6 +114,9 @@ private:
     static void checkUnknown(const ConfigBlock &confBlock);
     void processSegment(ConfigBlock &confBlock) const;
     void processFuzzy(ConfigBlock &confBlock) const;
+
+    void processConnections(ConfigBlock &confBlock) const;
+
     static void clearConfigBlock(ConfigBlock &confBlock);
 
     /**
@@ -141,7 +144,10 @@ private:
      * @param stream The QTextStream to write the fuzz information to.
      */
     void writeFuzz(FuzzyBase *fuzz, QTextStream& stream) const;
-signals:
+
+    void writeConnections(FuzzyBase *fuzz, QTextStream &stream) const;
+
+   signals:
 };
 
 #endif // AGENTREADERWRITER_H

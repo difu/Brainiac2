@@ -55,7 +55,7 @@ void testAgent1(Agent *agent)
         newNoise3->setName("Color_Noise");
         newNoise3->setEditorPos(100, 225);
 
-        FuzzyBase::connectFuzzies(newNoise, newAnd);
+        FuzzyBase::connectFuzzies(newNoise, newAnd,true);
         FuzzyBase::connectFuzzies(newNoise2, newAnd);
         FuzzyBase::connectFuzzies(newNoise, newOr);
         FuzzyBase::connectFuzzies(newNoise2, newOr);

@@ -53,6 +53,14 @@ void AgentReaderWriter::parseFields(const QStringList &fields, ConfigBlock &conf
              confBlock.type = AgentReaderWriter::FUZZY;
          }},
         {"endFuzz", [&confBlock, this] { processFuzzy(confBlock); }},
+        {
+            "connections",
+            [&confBlock, this] {
+                checkUnknown(confBlock);
+                confBlock.type = AgentReaderWriter::CONNECTIONS;
+            }
+        },
+        {"endconnections", [&confBlock, this] { processConnections(confBlock); }},
     };
 
     foreach (auto field, fields) {
@@ -85,7 +93,42 @@ void AgentReaderWriter::processFuzzy(ConfigBlock &confBlock) const
         addFuzz(confBlock);
         clearConfigBlock(confBlock);
     } else {
-        qDebug() << "End of segment reached but empty?";
+        qDebug() << "End of Fuzzy reached but empty?";
+    }
+}
+
+void AgentReaderWriter::processConnections(ConfigBlock &confBlock) const {
+    if (confBlock.lines.count() > 0) {
+        FuzzyBase *parentFuzz = nullptr;
+        foreach (auto line, confBlock.lines) {
+            QStringList fields = line.split(" ");
+            if (fields.count() == 2) {
+                if (fields.at(0) == "connections") {
+                    foreach (FuzzyBase *fuzz, m_agent->brain()->fuzzies()) {
+                        if (fuzz->name() == fields.at(1)) {
+                            parentFuzz = fuzz;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (fields.count() == 3) {
+                if (fields.at(0) == "child") {
+                    if (!parentFuzz) {
+                        qCritical("No parent found!");
+                    }
+                    foreach (FuzzyBase *fuzz, m_agent->brain()->fuzzies()) {
+                        if (fuzz->name() == fields.at(1)) {
+                            bool inverted = fields.at(2).toInt() == 1;
+                            FuzzyBase::connectFuzzies(parentFuzz, fuzz, inverted);
+                        }
+                    }
+                }
+            }
+        }
+        clearConfigBlock(confBlock);
+    } else {
+        qDebug() << "End of connections reached but empty?";
     }
 }
 
@@ -104,7 +147,7 @@ bool AgentReaderWriter::saveAsBAF() const
 {
     QFile file(m_agent->fileName());
     bool success = false;
-    if (file.open(QIODevice::ReadWrite)) {
+    if (file.open(QIODevice::ReadWrite | QIODevice::Truncate)) {
         QTextStream stream(&file);
 
         foreach (auto boneId, m_agent->body()->boneOrder()) {
@@ -113,6 +156,12 @@ bool AgentReaderWriter::saveAsBAF() const
 
         foreach (auto fuzz, m_agent->brain()->fuzzies()) {
             writeFuzz(fuzz, stream);
+        }
+
+        foreach(auto fuzz, m_agent->brain()->fuzzies()) {
+            if (fuzz->children().count() > 0) {
+                writeConnections(fuzz, stream);
+            }
         }
 
         stream << "End" << Qt::endl;
@@ -208,6 +257,21 @@ void AgentReaderWriter::writeFuzz(FuzzyBase *fuzz, QTextStream &stream) const
     stream << _indent << "editorpos " << fuzz->editorPos().x() << " " << fuzz->editorPos().y()
            << Qt::endl;
     stream << "endFuzz" << Qt::endl;
+}
+
+void AgentReaderWriter::writeConnections(FuzzyBase *fuzz, QTextStream &stream) const {
+    stream << "connections " << fuzz->name() << Qt::endl;
+    foreach(auto *childFuzz, fuzz->children()) {
+        foreach(FuzzyBase::Parent par, childFuzz->parents()) {
+            if (par.parent == fuzz) {
+                stream << _indent << "child " << childFuzz->name() << " " << QString::number((int) par.inverted) <<
+                        Qt::endl;;
+                break;
+            }
+        }
+        // stream << _indent << "child " << childFuzz->name() << " " << QString();
+    }
+    stream << "endconnections" << Qt::endl;
 }
 
 void AgentReaderWriter::addSegment(ConfigBlock &confBlock) const

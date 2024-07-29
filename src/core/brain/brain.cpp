@@ -108,6 +108,13 @@ void Brain::compareFuzzies(const FuzzyBase *fuzz, const QHash<BrainiacGlobals::B
             if (!(fuzz->editorPos() == otherFuzz->editorPos())) {
                 differences.append(QString("EditorPos differs: ").append(std::to_string(fuzz->id())));
             }
+            if (!(fuzz->children().count() == otherFuzz->children().count())) {
+                differences.append(QString("Number of children differs: ").append(std::to_string(fuzz->id())));
+            } else {
+            }
+            if (!(fuzz->parents().count() == otherFuzz->parents().count())) {
+                differences.append(QString("Number of parents differs: ").append(std::to_string(fuzz->id())));
+            }
         }
     }
     if (!otherFuzzFound) {
