@@ -95,26 +95,42 @@ void AgentTest::initTestCase()
 
 void AgentTest::cleanupTestCase() {}
 
-void AgentTest::test_equal() {
-    Scene myScene;
-    auto *agent1 = new Agent(&myScene);
-    auto *agent2 = new Agent(&myScene);
-    ::testAgent1(agent1);
-    ::testAgent1(agent2);
+void AgentTest::test_equal() { {
+        Scene myScene;
+        auto *agent1 = new Agent(&myScene);
+        auto *agent2 = new Agent(&myScene);
+        ::testAgent1(agent1);
+        ::testAgent1(agent2);
 
-    QStringList errors;
-    bool equal = Agent::compare(agent1, agent2, errors);
-    if (!equal) {
-        qInfo() << errors;
-    }
-    QVERIFY2(equal, "Agents are not the same!");
+        QStringList errors;
+        bool equal = Agent::compare(agent1, agent2, errors);
+        if (!equal) {
+            qInfo() << errors;
+        }
+        QVERIFY2(equal, "Agents are not the same!");
 
-    agent2->brain()->addAndNode(12);
-    equal = Agent::compare(agent1, agent2, errors);
-    QVERIFY2(!equal, "Agents are not expected to be the same!");
+        agent2->brain()->addAndNode(12);
+        equal = Agent::compare(agent1, agent2, errors);
+        QVERIFY2(!equal, "Agents are not expected to be the same!");
 
-    if (!equal) {
-        qInfo() << "This is expected: " << errors;
+        if (!equal) {
+            qInfo() << "This is expected: " << errors;
+        }
+    } {
+        Scene myScene;
+        auto *agent1 = new Agent(&myScene);
+        auto *agent2 = new Agent(&myScene);
+        ::testAgent1(agent1);
+        ::testAgent1(agent2);
+        auto fuzz = agent1->brain()->fuzzies().value(1);
+        fuzz->setEditorPos(0, 0);
+        QStringList errors;
+        bool equal = Agent::compare(agent1, agent2, errors);
+        QVERIFY2(!equal, "Agents are not expected to be the same!");
+
+        if (!equal) {
+            qInfo() << "This is expected: " << errors;
+        }
     }
 }
 
