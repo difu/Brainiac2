@@ -8,15 +8,27 @@ GeneratorBase::GeneratorBase(QObject *parent)
 }
 
 void GeneratorBase::addAgent(Agent *newAgent, const qsizetype position) {
+    if (m_agents.contains(newAgent)) {
+        return;
+    }
     m_agents.insert(position, newAgent);
     recalculateRatios();
 }
 
+void GeneratorBase::removeAgent(Agent *agent) {
+    m_agents.removeAll(agent);
+    m_agentRatios.remove(agent);
+    recalculateRatios();
+}
+
+
 void GeneratorBase::recalculateRatios() {
     const auto totalAgents = m_agents.size();
-    const qreal equalRatio = 1.0 / totalAgents;
-    for (auto it = m_agentRatios.begin(); it != m_agentRatios.end(); ++it) {
-        it.value() = equalRatio;
+    if (totalAgents > 0) {
+        const qreal equalRatio = 1.0 / totalAgents;
+        for (auto it = m_agentRatios.begin(); it != m_agentRatios.end(); ++it) {
+            it.value() = equalRatio;
+        }
     }
 }
 

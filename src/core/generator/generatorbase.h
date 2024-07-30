@@ -17,6 +17,8 @@ public:
 
     void addAgent(Agent *newAgent, qsizetype position);
 
+    void removeAgent(Agent *agent);
+
     virtual void apply() = 0;
 
     [[nodiscard]] QList<Locator *> locators() const;
