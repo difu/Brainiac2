@@ -3,6 +3,10 @@
 
 #include <QDebug>
 
+#include "locator.h"
+#include "src/core/brainiaclogger.h"
+#include "src/core/brain/brain.h"
+
 GeneratorBase::GeneratorBase(QObject *parent)
     : QObject{parent}
       , m_numTotalAgents(0)
@@ -29,15 +33,16 @@ void GeneratorBase::removeAgent(Agent *agent) {
     m_agents.removeAll(agent);
     m_agentRatios.remove(agent);
     recalculateRatios();
+    // TODO: handle locators that still referencing this agent!
 }
-
 
 void GeneratorBase::recalculateRatios() {
     const auto totalAgents = m_agents.size();
     if (totalAgents > 0) {
         const qreal equalRatio = (1.0 - m_gap) / totalAgents;
-        for (auto it = m_agentRatios.begin(); it != m_agentRatios.end(); ++it) {
-            it.value() = equalRatio;
+        m_agentRatios.clear();
+        foreach(auto *agent, agents()) {
+            m_agentRatios.insert(agent, equalRatio);
         }
     }
 }
@@ -152,6 +157,44 @@ void GeneratorBase::setGap(qreal newGap) {
 QList<Agent *> GeneratorBase::agents() const
 {
     return m_agents;
+}
+
+QList<quint32> GeneratorBase::shuffeldList(const quint32 numberOfItems) {
+    if (numberOfItems > BrainiacGlobals::NUMBER_OF_SHUFFLES) {
+        qFatal() << "Out of shuffle range!";
+    }
+    QList<quint32> shuffelIds;
+    for (int i = 0; i < numberOfItems; i++) {
+        shuffelIds.append(BrainiacGlobals::shuffles[i]);
+    }
+    int n = shuffelIds.size();
+    QVector<QPair<int, int> > valueIndexPairs(n);
+
+    // Store value and original indices as pairs
+    for (int i = 0; i < n; ++i) {
+        valueIndexPairs[i] = qMakePair(shuffelIds[i], i);
+    }
+
+    // Sort pairs based on values
+    std::sort(valueIndexPairs.begin(),
+              valueIndexPairs.end(),
+              [](const QPair<int, int> &a, const QPair<int, int> &b) { return a.first < b.first; });
+
+    // Create a ranks list initialized with zeroes
+    QList<quint32> ranks(n);
+    for (int rank = 0; rank < n; ++rank) {
+        ranks[valueIndexPairs[rank].second] = rank;
+    }
+
+    return ranks;
+}
+
+void GeneratorBase::removeLastNLocators(const int n) {
+    if (n <= m_locators.size()) {
+        m_locators.erase(m_locators.end() - n, m_locators.end());
+    } else {
+        qDebug() << "Error: n is greater than the size of the list.";
+    }
 }
 
 GeneratorBase::~GeneratorBase() {}

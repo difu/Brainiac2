@@ -86,6 +86,35 @@ public:
 protected:
     QList<Locator *> m_locators;
 
+    /**
+     * @brief Shuffles a list of numbers and returns the shuffled list.
+     *
+     * This method shuffles a list of numbers and returns the shuffled list. The size of the resulting
+     * list is equal to the provided number of items.
+     *
+     * If the number of items exceeds the defined range, a fatal error is logged using qFatal().
+     *
+     * @param numberOfItems The number of items in the list.
+     * @return The shuffled list of numbers.
+     */
+    static QList<quint32> shuffeldList(const quint32 numberOfItems);
+
+    /**
+     * @brief Removes the last n locators from the GeneratorBase.
+     *
+     * This method removes the last n locators from the list of locators associated with the GeneratorBase.
+     * If n is greater than the size of the list, an error message is outputted using qDebug().
+     *
+     * IMPORTANT:
+     * Also locators will be deleted, even if they are in LOCKED state!
+     *
+     * @param n The number of locators to remove.
+     *
+     * @see GeneratorBase
+     * @see Locator
+     */
+    void removeLastNLocators(int n);
+
 private:
     QHash<Agent *, qreal> m_agentRatios;
     QList<Agent *> m_agents;

@@ -24,6 +24,8 @@ public:
     void setCenterPoint(const QVector3D &newCenterPoint);
 
 private:
+    void alignLocatorsInRowsCols();
+
     QVector3D m_centerPoint;
     bool m_allignInRowsColumns;
 };
