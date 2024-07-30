@@ -8,8 +8,7 @@ void GeneratorPoint::apply() {
 }
 
 void GeneratorPoint::updateLocators() {
-    if(numTotalAgents()==locators().count()) {
-
+    if (numTotalAgents() == locators().count()) {
     }
 }
 

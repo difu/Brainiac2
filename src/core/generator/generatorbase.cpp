@@ -128,8 +128,7 @@ void GeneratorBase::setHeightVariation(qreal newHeightVariation) {
     m_heightVariation = newHeightVariation;
 }
 
-qreal GeneratorBase::gap() const
-{
+qreal GeneratorBase::gap() const {
     return m_gap;
 }
 
@@ -139,8 +138,7 @@ qreal GeneratorBase::gap() const
  *
  * @param newGap The new gap value to set. Must be between 0.0 and 1.0.
  */
-void GeneratorBase::setGap(qreal newGap)
-{
+void GeneratorBase::setGap(qreal newGap) {
     m_gap = qBound(0.0, newGap, 1.0);
     recalculateRatios();
 }

@@ -78,6 +78,7 @@ public:
      * @see GeneratorBase
      */
     qreal gap() const;
+
     void setGap(qreal newGap);
 
 protected:

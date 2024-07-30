@@ -11,7 +11,9 @@ class GeneratorPoint : public GeneratorBase
 public:
     explicit GeneratorPoint(QObject *parent = nullptr);
     void apply() override;
+
     void updateLocators() override;
+
     [[nodiscard]] QVector3D centerPoint() const;
 
     /**
