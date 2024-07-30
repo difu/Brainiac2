@@ -25,6 +25,7 @@ public:
 
 private:
     QVector3D m_centerPoint;
+    bool m_allignInRowsColumns;
 };
 
 #endif // GENERATORPOINT_H

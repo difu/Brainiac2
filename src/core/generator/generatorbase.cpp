@@ -58,6 +58,9 @@ quint32 GeneratorBase::rows() const {
 
 void GeneratorBase::setRows(quint32 newRows) {
     m_rows = newRows;
+    if(m_rows*m_columns < m_numTotalAgents) {
+        this->setNumTotalAgents(m_columns*m_rows);
+    }
 }
 
 quint32 GeneratorBase::columns() const {
@@ -66,6 +69,9 @@ quint32 GeneratorBase::columns() const {
 
 void GeneratorBase::setColumns(quint32 newColumns) {
     m_columns = newColumns;
+    if(m_rows*m_columns < m_numTotalAgents) {
+        this->setNumTotalAgents(m_columns*m_rows);
+    }
 }
 
 quint32 GeneratorBase::numTotalAgents() const {
@@ -141,6 +147,11 @@ qreal GeneratorBase::gap() const {
 void GeneratorBase::setGap(qreal newGap) {
     m_gap = qBound(0.0, newGap, 1.0);
     recalculateRatios();
+}
+
+QList<Agent *> GeneratorBase::agents() const
+{
+    return m_agents;
 }
 
 GeneratorBase::~GeneratorBase() {}

@@ -81,6 +81,8 @@ public:
 
     void setGap(qreal newGap);
 
+    QList<Agent *> agents() const;
+
 protected:
     QList<Locator *> m_locators;
 
