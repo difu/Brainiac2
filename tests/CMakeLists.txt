@@ -54,6 +54,8 @@ add_executable(
         ../src/core/body/agentinstancebone.h ../src/core/body/agentinstancebone.cpp
         ../src/core/body/agentinstancebonebox.h ../src/core/body/agentinstancebonebox.cpp
         ../src/gui/agent/agentinstacegeometryquick3d.h ../src/gui/agent/agentinstacegeometryquick3d.cpp
+        ../src/core/brainiaclogger.cpp
+        ../src/core/brainiaclogger.h
 
 )
 

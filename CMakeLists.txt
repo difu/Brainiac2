@@ -48,6 +48,8 @@ qt_add_executable(Brainiac
     src/core/body/agentinstancebody.h src/core/body/agentinstancebody.cpp
     src/core/body/agentinstancebone.h src/core/body/agentinstancebone.cpp
     src/core/body/agentinstancebonebox.h src/core/body/agentinstancebonebox.cpp
+        src/core/brainiaclogger.cpp
+        src/core/brainiaclogger.h
 
 )
 
