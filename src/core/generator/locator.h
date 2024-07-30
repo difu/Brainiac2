@@ -44,19 +44,24 @@ public:
      * @sa Locator
      */
     enum LocatorState { DEFAULT, DELETED, LOCKED, GAP };
+
     explicit Locator(Agent *agent, QObject *parent);
 
     [[nodiscard]] LocatorState locatorState() const;
+
     void setLocatorState(const LocatorState &newLocatorState);
 
     [[nodiscard]] QVector3D location() const;
+
     void setLocation(const QVector3D &newLocation);
 
     [[nodiscard]] QVector3D rotation() const;
+
     void setRotation(const QVector3D &newRotation);
     virtual ~Locator();
 
     [[nodiscard]] Agent *agent() const;
+
     void setAgent(Agent *newAgent);
 
     [[nodiscard]] bool isLocked() const;
