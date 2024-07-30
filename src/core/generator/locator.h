@@ -33,37 +33,38 @@ public:
      *
      * @brief The LocatorState enum represents the possible states of a locator.
      *
-     * The enum defines three possible states for a locator: DEFAULT, DELETED, and LOCKED.
+     * The enum defines the follwing possible states for a locator: DEFAULT, DELETED, LOCKED, GAP.
      * The DEFAULT state represents the default state of a locator. The DELETED state represents
      * the state of a locator that has been deleted. The LOCKED state represents the state of a
-     * locator that is locked and cannot be modified.
+     * locator that is locked and cannot be modified. GAP is a locator that is not instanciated because
+     * of a gap ratio. If a locator is in GAP or DELETED state, no instance will be created.
      *
      * @ingroup GroupName
      *
      * @sa Locator
      */
-    enum LocatorState { DEFAULT, DELETED, LOCKED };
+    enum LocatorState { DEFAULT, DELETED, LOCKED, GAP };
     explicit Locator(Agent *agent, QObject *parent);
 
-    LocatorState locatorState() const;
+    [[nodiscard]] LocatorState locatorState() const;
     void setLocatorState(const LocatorState &newLocatorState);
 
-    QVector3D location() const;
+    [[nodiscard]] QVector3D location() const;
     void setLocation(const QVector3D &newLocation);
 
-    QVector3D rotation() const;
+    [[nodiscard]] QVector3D rotation() const;
     void setRotation(const QVector3D &newRotation);
     virtual ~Locator();
 
-    Agent *agent() const;
+    [[nodiscard]] Agent *agent() const;
     void setAgent(Agent *newAgent);
 
-    bool isLocked() const;
+    [[nodiscard]] bool isLocked() const;
 
-    AgentInstance *agentInstance() const;
+    [[nodiscard]] AgentInstance *agentInstance() const;
     void setAgentInstance(AgentInstance *newAgentInstance);
 
-    quint32 seed() const;
+    [[nodiscard]] quint32 seed() const;
     void setSeed(quint32 newSeed);
 
 private:
