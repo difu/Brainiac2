@@ -4,16 +4,17 @@
 #include <QDebug>
 
 GeneratorBase::GeneratorBase(QObject *parent)
-    : QObject{parent},
-      m_numTotalAgents(0),
-      m_angle(0.0),
-      m_angleVariation(0.0),
-      m_columns(1),
-      m_rows(1),
-      m_distance(1.0),
-      m_height(0.0),
-      m_heightVariation(0),
-      m_noise(0) {
+    : QObject{parent}
+      , m_numTotalAgents(0)
+      , m_gap(0)
+      , m_rows(1)
+      , m_columns(1)
+      , m_distance(1.0)
+      , m_noise(0)
+      , m_angle(0.0)
+      , m_angleVariation(0.0)
+      , m_height(0.0)
+      , m_heightVariation(0) {
 }
 
 void GeneratorBase::addAgent(Agent *newAgent, const qsizetype position) {
@@ -34,7 +35,7 @@ void GeneratorBase::removeAgent(Agent *agent) {
 void GeneratorBase::recalculateRatios() {
     const auto totalAgents = m_agents.size();
     if (totalAgents > 0) {
-        const qreal equalRatio = 1.0 / totalAgents;
+        const qreal equalRatio = (1.0 - m_gap) / totalAgents;
         for (auto it = m_agentRatios.begin(); it != m_agentRatios.end(); ++it) {
             it.value() = equalRatio;
         }
@@ -125,6 +126,23 @@ qreal GeneratorBase::heightVariation() const {
 
 void GeneratorBase::setHeightVariation(qreal newHeightVariation) {
     m_heightVariation = newHeightVariation;
+}
+
+qreal GeneratorBase::gap() const
+{
+    return m_gap;
+}
+
+/**
+ * @brief Setter method for the gap.
+ * The value should be between 0.0 and 1.0.
+ *
+ * @param newGap The new gap value to set. Must be between 0.0 and 1.0.
+ */
+void GeneratorBase::setGap(qreal newGap)
+{
+    m_gap = qBound(0.0, newGap, 1.0);
+    recalculateRatios();
 }
 
 GeneratorBase::~GeneratorBase() {}

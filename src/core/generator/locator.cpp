@@ -29,7 +29,9 @@ QVector3D Locator::location() const
 
 void Locator::setLocation(const QVector3D &newLocation)
 {
-    m_location = newLocation;
+    if(m_locatorState!=LocatorState::LOCKED) {
+        m_location = newLocation;
+    }
 }
 
 QVector3D Locator::rotation() const
@@ -39,7 +41,9 @@ QVector3D Locator::rotation() const
 
 void Locator::setRotation(const QVector3D &newRotation)
 {
-    m_rotation = newRotation;
+    if(m_locatorState!=LocatorState::LOCKED) {
+        m_rotation = newRotation;
+    }
 }
 
 Locator::~Locator()
@@ -71,7 +75,9 @@ AgentInstance *Locator::agentInstance() const
 
 void Locator::setAgentInstance(AgentInstance *newAgentInstance)
 {
-    m_agentInstance = newAgentInstance;
+    if(m_locatorState!=LocatorState::LOCKED) {
+        m_agentInstance = newAgentInstance;
+    }
 }
 
 quint32 Locator::seed() const
@@ -81,5 +87,7 @@ quint32 Locator::seed() const
 
 void Locator::setSeed(quint32 newSeed)
 {
-    m_seed = newSeed;
+    if(m_locatorState!=LocatorState::LOCKED) {
+        m_seed = newSeed;
+    }
 }

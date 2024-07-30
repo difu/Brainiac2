@@ -7,6 +7,12 @@ GeneratorPoint::GeneratorPoint(QObject *parent)
 void GeneratorPoint::apply() {
 }
 
+void GeneratorPoint::updateLocators() {
+    if(numTotalAgents()==locators().count()) {
+
+    }
+}
+
 QVector3D GeneratorPoint::centerPoint() const {
     return m_centerPoint;
 }

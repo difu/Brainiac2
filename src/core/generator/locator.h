@@ -26,7 +26,22 @@ class AgentInstance;
 class Locator : public QObject
 {
     Q_OBJECT
+
 public:
+    /**
+     * @enum LocatorState
+     *
+     * @brief The LocatorState enum represents the possible states of a locator.
+     *
+     * The enum defines three possible states for a locator: DEFAULT, DELETED, and LOCKED.
+     * The DEFAULT state represents the default state of a locator. The DELETED state represents
+     * the state of a locator that has been deleted. The LOCKED state represents the state of a
+     * locator that is locked and cannot be modified.
+     *
+     * @ingroup GroupName
+     *
+     * @sa Locator
+     */
     enum LocatorState { DEFAULT, DELETED, LOCKED };
     explicit Locator(Agent *agent, QObject *parent);
 

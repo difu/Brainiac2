@@ -7,3 +7,4 @@ Brainiac Manual
 
     agent/index
     structure/index
+    generator/index

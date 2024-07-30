@@ -77,6 +77,9 @@ public:
      * @see Locator
      * @see GeneratorBase
      */
+    qreal gap() const;
+    void setGap(qreal newGap);
+
 protected:
     QList<Locator *> m_locators;
 
@@ -84,6 +87,7 @@ private:
     QHash<Agent *, qreal> m_agentRatios;
     QList<Agent *> m_agents;
     quint32 m_numTotalAgents;
+    qreal m_gap;
 
     quint32 m_rows;
     quint32 m_columns;

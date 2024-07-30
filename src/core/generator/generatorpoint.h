@@ -11,7 +11,14 @@ class GeneratorPoint : public GeneratorBase
 public:
     explicit GeneratorPoint(QObject *parent = nullptr);
     void apply() override;
+    void updateLocators() override;
     [[nodiscard]] QVector3D centerPoint() const;
+
+    /**
+    * @brief Sets the center of this generator.
+    *
+    * All created locators will be created around the specified point.
+    */
     void setCenterPoint(const QVector3D &newCenterPoint);
 
 private:
