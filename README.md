@@ -4,10 +4,10 @@
 
 ### Generate documentation
 
-**Prerequisites:** Install *doxygen*, *sphinx* and *breathe*.
+**Prerequisites:** set up *doxygen*, *sphinx* and *breathe*.
 Read [breathe documentation](https://breathe.readthedocs.io/en/latest/quickstart.html) for details.
 
-Navigate to the ```docs```-folder and simply run
+Navigate to the ```docs```-folder and run
 
 ```shell
 make html
