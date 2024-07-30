@@ -28,6 +28,7 @@ qt_add_executable(Brainiac
     src/core/channel.h src/core/channel.cpp
     src/core/generator/generatorbase.h src/core/generator/generatorbase.cpp
     src/core/generator/generatormanual.h src/core/generator/generatormanual.cpp
+        src/core/generator/generatorpoint.h src/core/generator/generatorpoint.cpp
     src/core/generator/locator.h src/core/generator/locator.cpp
     src/gui/agent/agentinstacegeometryquick3d.h src/gui/agent/agentinstacegeometryquick3d.cpp
     src/gui/editorbase.h src/gui/editorbase.cpp

@@ -33,6 +33,7 @@ add_executable(
         ../src/core/channel.h ../src/core/channel.cpp
         ../src/core/generator/generatorbase.h ../src/core/generator/generatorbase.cpp
         ../src/core/generator/generatormanual.h ../src/core/generator/generatormanual.cpp
+        ../src/core/generator/generatorpoint.h ../src/core/generator/generatorpoint.cpp
         ../src/core/generator/locator.h ../src/core/generator/locator.cpp
         ../src/gui/agent/agentinstacegeometryquick3d.h ../src/gui/agent/agentinstacegeometryquick3d.cpp
         ../src/gui/editorbase.h ../src/gui/editorbase.cpp
@@ -52,6 +53,8 @@ add_executable(
         ../src/core/body/agentinstancebody.h ../src/core/body/agentinstancebody.cpp
         ../src/core/body/agentinstancebone.h ../src/core/body/agentinstancebone.cpp
         ../src/core/body/agentinstancebonebox.h ../src/core/body/agentinstancebonebox.cpp
+        ../src/gui/agent/agentinstacegeometryquick3d.h ../src/gui/agent/agentinstacegeometryquick3d.cpp
+
 )
 
 
@@ -68,7 +71,6 @@ qt_add_qml_module(test_agent
     IMPORTS
         QtQuick3D
     NO_RESOURCE_TARGET_PATH
-    SOURCES ../src/gui/agent/agentinstacegeometryquick3d.h ../src/gui/agent/agentinstacegeometryquick3d.cpp
     QML_FILES ../src/gui/AgentInstance.qml
 )
 

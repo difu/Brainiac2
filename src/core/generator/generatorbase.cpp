@@ -4,8 +4,21 @@
 #include <QDebug>
 
 GeneratorBase::GeneratorBase(QObject *parent)
-    : QObject{parent}
-{}
+    : QObject{parent}, m_numTotalAgents(0) {
+}
+
+void GeneratorBase::addAgent(Agent *newAgent, const qsizetype position) {
+    m_agents.insert(position, newAgent);
+    recalculateRatios();
+}
+
+void GeneratorBase::recalculateRatios() {
+    const auto totalAgents = m_agents.size();
+    const qreal equalRatio = 1.0 / totalAgents;
+    for (auto it = m_agentRatios.begin(); it != m_agentRatios.end(); ++it) {
+        it.value() = equalRatio;
+    }
+}
 
 Scene *GeneratorBase::scene()
 {
