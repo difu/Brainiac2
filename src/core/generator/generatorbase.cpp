@@ -4,7 +4,16 @@
 #include <QDebug>
 
 GeneratorBase::GeneratorBase(QObject *parent)
-    : QObject{parent}, m_numTotalAgents(0) {
+    : QObject{parent},
+      m_numTotalAgents(0),
+      m_angle(0.0),
+      m_angleVariation(0.0),
+      m_columns(1),
+      m_rows(1),
+      m_distance(1.0),
+      m_height(0.0),
+      m_heightVariation(0),
+      m_noise(0) {
 }
 
 void GeneratorBase::addAgent(Agent *newAgent, const qsizetype position) {
@@ -40,6 +49,82 @@ Scene *GeneratorBase::scene()
     }
     qCritical() << "parent is not a Scene!";
     return nullptr;
+}
+
+quint32 GeneratorBase::rows() const {
+    return m_rows;
+}
+
+void GeneratorBase::setRows(quint32 newRows) {
+    m_rows = newRows;
+}
+
+quint32 GeneratorBase::columns() const {
+    return m_columns;
+}
+
+void GeneratorBase::setColumns(quint32 newColumns) {
+    m_columns = newColumns;
+}
+
+quint32 GeneratorBase::numTotalAgents() const {
+    return m_numTotalAgents;
+}
+
+void GeneratorBase::setNumTotalAgents(quint32 newNumTotalAgents) {
+    m_numTotalAgents = newNumTotalAgents;
+}
+
+QHash<Agent *, qreal> GeneratorBase::agentRatios() const {
+    return m_agentRatios;
+}
+
+qreal GeneratorBase::distance() const {
+    return m_distance;
+}
+
+void GeneratorBase::setDistance(qreal newDistance) {
+    m_distance = newDistance;
+}
+
+qreal GeneratorBase::noise() const {
+    return m_noise;
+}
+
+void GeneratorBase::setNoise(qreal newNoise) {
+    m_noise = newNoise;
+}
+
+qreal GeneratorBase::angle() const {
+    return m_angle;
+}
+
+void GeneratorBase::setAngle(qreal newAngle) {
+    m_angle = newAngle;
+}
+
+qreal GeneratorBase::angleVariation() const {
+    return m_angleVariation;
+}
+
+void GeneratorBase::setAngleVariation(qreal newAngleVariation) {
+    m_angleVariation = newAngleVariation;
+}
+
+qreal GeneratorBase::height() const {
+    return m_height;
+}
+
+void GeneratorBase::setHeight(qreal newHeight) {
+    m_height = newHeight;
+}
+
+qreal GeneratorBase::heightVariation() const {
+    return m_heightVariation;
+}
+
+void GeneratorBase::setHeightVariation(qreal newHeightVariation) {
+    m_heightVariation = newHeightVariation;
 }
 
 GeneratorBase::~GeneratorBase() {}

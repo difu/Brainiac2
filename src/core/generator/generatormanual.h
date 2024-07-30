@@ -21,6 +21,9 @@ public:
     explicit GeneratorManual(QObject *parent);
     Locator *addLocator(Agent *agent);
     virtual void apply();
+
+    void updateLocators() override;
+
     virtual ~GeneratorManual();
 };
 #endif // GENERATORMANUAL_H

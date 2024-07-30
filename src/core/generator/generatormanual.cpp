@@ -32,4 +32,7 @@ void GeneratorManual::apply()
     }
 }
 
+void GeneratorManual::updateLocators() {
+}
+
 GeneratorManual::~GeneratorManual() {}
