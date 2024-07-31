@@ -9,7 +9,7 @@ GeneratorPoint::GeneratorPoint(QObject *parent)
 }
 
 void GeneratorPoint::apply() {
-    foreach (Locator *loc, m_locators) {
+    foreach(Locator *loc, m_locators) {
         if (loc->agent()) {
             Agent *agent = loc->agent();
             if (!loc->isLocked() && loc->agentInstance() == nullptr) {
@@ -48,16 +48,16 @@ void GeneratorPoint::updateLocators() {
         QList<quint32> locatorOrder = this->shuffeldList(m_locators.count());
 
         foreach(auto *agent, agents()) {
-            const int numberOfInstances=this->agentRatios().value(agent)*m_locators.count();
+            const int numberOfInstances = this->agentRatios().value(agent) * m_locators.count();
             qCDebug(bGenerator()) << "Assigning locators for agent " << agent->name() << ", ratio " << this->
-agentRatios().value(agent) << ", numOfInstances:"<< numberOfInstances;
+agentRatios().value(agent) << ", numOfInstances:" << numberOfInstances;
             for (int i = 0; i < numberOfInstances; i++) {
                 auto *locator = m_locators.at(locatorOrder.at(actualInstance));
                 locator->setAgent(agent);
                 actualInstance++;
             }
         }
-        qCDebug(bGenerator()) << "Processed" << actualInstance << "instances for"  << m_locators.count() << "locators.";
+        qCDebug(bGenerator()) << "Processed" << actualInstance << "instances for" << m_locators.count() << "locators.";
 
         return;
     }
