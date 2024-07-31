@@ -9,6 +9,18 @@ GeneratorPoint::GeneratorPoint(QObject *parent)
 }
 
 void GeneratorPoint::apply() {
+    foreach (Locator *loc, m_locators) {
+        if (loc->agent()) {
+            Agent *agent = loc->agent();
+            if (!loc->isLocked() && loc->agentInstance() == nullptr) {
+                AgentInstance *inst = agent->addAgentInstance(loc);
+                loc->setAgentInstance(inst);
+                //this->scene()->addAgentInstance(inst);
+            }
+        } else {
+            qCritical() << "No Agent in Locator found!";
+        }
+    }
 }
 
 void GeneratorPoint::updateLocators() {
@@ -28,16 +40,24 @@ void GeneratorPoint::updateLocators() {
         qCDebug(bGenerator()) << "Too many locators, deleting some.";
         this->removeLastNLocators(numLocators - numAgents);
     }
+
     if (numTotalAgents() == locators().count()) {
         qCDebug(bGenerator()) << "Number of locators matches the number of requested agent instances.";
         this->alignLocatorsInRowsCols();
-        int numInstancesProcessed = 0;
-        QList<quint32> locatorOrder = this->shuffeldList(this->numTotalAgents());
+        int actualInstance = 0;
+        QList<quint32> locatorOrder = this->shuffeldList(m_locators.count());
 
         foreach(auto *agent, agents()) {
+            const int numberOfInstances=this->agentRatios().value(agent)*m_locators.count();
             qCDebug(bGenerator()) << "Assigning locators for agent " << agent->name() << ", ratio " << this->
-agentRatios().value(agent);
+agentRatios().value(agent) << ", numOfInstances:"<< numberOfInstances;
+            for (int i = 0; i < numberOfInstances; i++) {
+                auto *locator = m_locators.at(locatorOrder.at(actualInstance));
+                locator->setAgent(agent);
+                actualInstance++;
+            }
         }
+        qCDebug(bGenerator()) << "Processed" << actualInstance << "instances for"  << m_locators.count() << "locators.";
 
         return;
     }
@@ -52,15 +72,17 @@ void GeneratorPoint::alignLocatorsInRowsCols() {
     int currentLocatorIndex = 0;
     qCDebug(bGenerator()) << "Rows " << rows() << ", cols " << columns() << " #locators to process " <<
  numLocatorsToProcess;
-    for (int row = 0; row < rows(); row++) {
-        for (int col = 0; col < columns(); col++) {
+    const int halfRow = rows() / 2;
+    const int halfCol = columns() / 2;
+    for (int row = -halfRow; row < halfRow; row++) {
+        for (int col = -halfCol; col < halfCol; col++) {
             if (currentLocatorIndex >= numLocatorsToProcess) {
                 break;
             }
             auto *locator = m_locators.at(currentLocatorIndex);
             if (locator->locatorState() != Locator::LOCKED) {
-                auto pos = QVector3D(col * distance() - m_centerPoint.x() / 2, row * distance() - m_centerPoint.y() / 2,
-                                     0 - m_centerPoint.z() / 2);
+                auto pos = QVector3D(col * distance() - m_centerPoint.x() / 2, 0 - m_centerPoint.y() / 2,
+                                     row * distance() - m_centerPoint.z() / 2);
                 locator->setLocation(pos);
             }
             currentLocatorIndex++;

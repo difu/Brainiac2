@@ -60,7 +60,9 @@ Agent *Locator::agent() const
 
 void Locator::setAgent(Agent *newAgent)
 {
-    m_agent = newAgent;
+    if(m_locatorState!=LocatorState::LOCKED) {
+        m_agent = newAgent;
+    }
 }
 
 bool Locator::isLocked() const
