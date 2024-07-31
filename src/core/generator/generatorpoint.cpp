@@ -18,7 +18,7 @@ void GeneratorPoint::apply() {
                 //this->scene()->addAgentInstance(inst);
             }
         } else {
-            qCritical() << "No Agent in Locator found!";
+            qCWarning(bGenerator()) << "No Agent in Locator found!";
         }
     }
 }
@@ -58,6 +58,9 @@ agentRatios().value(agent) << ", numOfInstances:" << numberOfInstances;
             }
         }
         qCDebug(bGenerator()) << "Processed" << actualInstance << "instances for" << m_locators.count() << "locators.";
+        if(actualInstance<=m_locators.count()) {
+            qCWarning(bGenerator()) << "TODO: Add additional filling instance";
+        }
 
         return;
     }
@@ -72,22 +75,28 @@ void GeneratorPoint::alignLocatorsInRowsCols() {
     int currentLocatorIndex = 0;
     qCDebug(bGenerator()) << "Rows " << rows() << ", cols " << columns() << " #locators to process " <<
  numLocatorsToProcess;
-    const int halfRow = rows() / 2;
-    const int halfCol = columns() / 2;
-    for (int row = -halfRow; row < halfRow; row++) {
-        for (int col = -halfCol; col < halfCol; col++) {
+
+    const float halfRow = rows() / 2;
+    const float halfCol = columns() / 2;
+    for (int row = 0; row < rows(); row++) {
+        for (int col = 0; col < columns(); col++) {
             if (currentLocatorIndex >= numLocatorsToProcess) {
                 break;
             }
             auto *locator = m_locators.at(currentLocatorIndex);
             if (locator->locatorState() != Locator::LOCKED) {
-                auto pos = QVector3D(col * distance() - m_centerPoint.x() / 2, 0 - m_centerPoint.y() / 2,
-                                     row * distance() - m_centerPoint.z() / 2);
+                const float xPos=(col - halfCol) * distance() - m_centerPoint.x() / 2;
+                const float yPos=0 - m_centerPoint.y() / 2;
+                const float zPos = (row - halfRow) * distance() - m_centerPoint.z() / 2;
+                auto pos = QVector3D(xPos,
+                                     yPos,
+                                     zPos);
                 locator->setLocation(pos);
             }
             currentLocatorIndex++;
         }
     }
+    qCDebug(bGenerator()) << "Processed" << currentLocatorIndex << "locators.";
 }
 
 QVector3D GeneratorPoint::centerPoint() const {
