@@ -58,7 +58,7 @@ agentRatios().value(agent) << ", numOfInstances:" << numberOfInstances;
             }
         }
         qCDebug(bGenerator()) << "Processed" << actualInstance << "instances for" << m_locators.count() << "locators.";
-        if(actualInstance<=m_locators.count()) {
+        if (actualInstance <= m_locators.count()) {
             qCWarning(bGenerator()) << "TODO: Add additional filling instance";
         }
 
@@ -85,8 +85,8 @@ void GeneratorPoint::alignLocatorsInRowsCols() {
             }
             auto *locator = m_locators.at(currentLocatorIndex);
             if (locator->locatorState() != Locator::LOCKED) {
-                const float xPos=(col - halfCol) * distance() - m_centerPoint.x() / 2;
-                const float yPos=0 - m_centerPoint.y() / 2;
+                const float xPos = (col - halfCol) * distance() - m_centerPoint.x() / 2;
+                const float yPos = 0 - m_centerPoint.y() / 2;
                 const float zPos = (row - halfRow) * distance() - m_centerPoint.z() / 2;
                 auto pos = QVector3D(xPos,
                                      yPos,
