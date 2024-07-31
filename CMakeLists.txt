@@ -7,6 +7,9 @@ add_subdirectory(tests)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
+
 find_package(Qt6 REQUIRED COMPONENTS Concurrent Core Gui Quick Quick3D Widgets)
 
 qt_add_executable(Brainiac
