@@ -114,7 +114,7 @@ void AgentTest::test_equal() { {
         QVERIFY2(!equal, "Agents are not expected to be the same!");
 
         if (!equal) {
-            qInfo() << "This is expected: " << errors;
+            qInfo() << "This is expected, because the tests shall check if there are differences: " << errors;
         }
     } {
         Scene myScene;
