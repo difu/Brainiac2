@@ -19,7 +19,7 @@ public:
 
     void removeAgent(Agent *agent);
 
-    virtual void apply() = 0;
+    virtual void instanciateAgentInstances() = 0;
 
     [[nodiscard]] QList<Locator *> locators() const;
 

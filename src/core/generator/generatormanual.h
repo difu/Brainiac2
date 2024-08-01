@@ -20,7 +20,7 @@ class GeneratorManual : public GeneratorBase
 public:
     explicit GeneratorManual(QObject *parent);
     Locator *addLocator(Agent *agent);
-    virtual void apply();
+    virtual void instanciateAgentInstances();
 
     void updateLocators() override;
 

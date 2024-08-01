@@ -10,7 +10,8 @@ class GeneratorPoint : public GeneratorBase
     Q_OBJECT
 public:
     explicit GeneratorPoint(QObject *parent = nullptr);
-    void apply() override;
+
+    void instanciateAgentInstances() override;
 
     void updateLocators() override;
 

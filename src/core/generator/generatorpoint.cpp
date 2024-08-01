@@ -8,7 +8,7 @@ GeneratorPoint::GeneratorPoint(QObject *parent)
     : GeneratorBase{parent}, m_allignInRowsColumns(true) {
 }
 
-void GeneratorPoint::apply() {
+void GeneratorPoint::instanciateAgentInstances() {
     foreach(Locator *loc, m_locators) {
         if (loc->agent()) {
             Agent *agent = loc->agent();

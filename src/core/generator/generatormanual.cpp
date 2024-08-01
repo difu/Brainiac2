@@ -16,7 +16,7 @@ Locator *GeneratorManual::addLocator(Agent *agent)
     return loc;
 }
 
-void GeneratorManual::apply()
+void GeneratorManual::instanciateAgentInstances()
 {
     foreach (Locator *loc, m_locators) {
         if (loc->agent()) {
