@@ -53,6 +53,10 @@ void GeneratorPoint::updateLocators() {
 agentRatios().value(agent) << ", numOfInstances:" << numberOfInstances;
             for (int i = 0; i < numberOfInstances; i++) {
                 auto *locator = m_locators.at(locatorOrder.at(actualInstance));
+                if (locator->locatorState() == Locator::LOCKED) {
+                    qCDebug(bGenerator()) << "current locator is in LOCKED state and will be skipped. Agent: " << agent
+->name() << ", numberOfInstance:" << i;
+                }
                 locator->setAgent(agent);
                 actualInstance++;
             }
