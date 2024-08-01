@@ -3,14 +3,15 @@
 
 #include <QObject>
 
+#include "basereaderwriter.h"
 #include "brain/fuzzybase.h"
 #include "src/core/agent.h"
 
 class Bone;
 
-class AgentReaderWriter : public QObject
-{
-    Q_OBJECT
+class AgentReaderWriter : public BaseReaderWriter {
+ Q_OBJECT
+
 public:
     enum ConfigBlockType { UNKNOWN, FUZZY, SEGMENT, CONNECTIONS };
 
@@ -47,7 +48,6 @@ public:
 
 private:
     Agent *m_agent;
-    inline static const QString _indent = "    ";
 
     /**
      * Adds a segment to the agent.
@@ -96,58 +96,72 @@ private:
 
     void checkAgentEmpty() const;
 
-    static void identifyPrimitive(ConfigBlock &confBlock);
+ /**
+  * Identifies the primitive type specified in the given configuration block.
+  *
+  * The method iterates over each line in the configuration block and checks if the line contains the keyword "primitive".
+  * If found, it sets the flag `primitiveKeyFound` to true and continues to the next line.
+  *
+  * If `primitiveKeyFound` is true and the current field matches the string representation of, for example, the `ItemType` enum value `BOX`,
+  * it sets the `itemType` property of the `confBlock` to `BrainiacGlobals::BOX` and resets the `primitiveKeyFound` flag to false.
+  *
+  * @param confBlock The configuration block to identify the primitive type from.
+  */
+ static void identifyPrimitive(ConfigBlock &confBlock);
 
-    /**
-     * Parses the fields of the agent and updates the given configuration block.
-     *
-     * The method takes a list of fields as input and iterates through each field.
-     * If the field is equal to "segment", it checks if there are any unknown fields in the configuration block and updates the block's type to SEGMENT.
-     * If the field is equal to "endSegment", it processes the segment in the configuration block.
-     * If the field is equal to "fuzz", it checks if there are any unknown fields in the configuration block and updates the block's type to FUZZY.
-     * If the field is equal to "endFuzz", it processes the fuzzy in the configuration block.
-     *
-     * @param fields The list of fields to parse.
-     * @param confBlock The configuration block to update.
-     */
-    void parseFields(const QStringList &fields, ConfigBlock &confBlock);
-    static void checkUnknown(const ConfigBlock &confBlock);
-    void processSegment(ConfigBlock &confBlock) const;
-    void processFuzzy(ConfigBlock &confBlock) const;
+ /**
+  * Parses the fields of the agent and updates the given configuration block.
+  *
+  * The method takes a list of fields as input and iterates through each field.
+  * If the field is equal to "segment", it checks if there are any unknown fields in the configuration block and updates the block's type to SEGMENT.
+  * If the field is equal to "endSegment", it processes the segment in the configuration block.
+  * If the field is equal to "fuzz", it checks if there are any unknown fields in the configuration block and updates the block's type to FUZZY.
+  * If the field is equal to "endFuzz", it processes the fuzzy in the configuration block.
+  *
+  * @param fields The list of fields to parse.
+  * @param confBlock The configuration block to update.
+  */
+ void parseFields(const QStringList &fields, ConfigBlock &confBlock);
 
-    void processConnections(ConfigBlock &confBlock) const;
+ static void checkUnknown(const ConfigBlock &confBlock);
 
-    static void clearConfigBlock(ConfigBlock &confBlock);
+ void processSegment(ConfigBlock &confBlock) const;
 
-    /**
-     * Writes the segment of a bone to the QTextStream.
-     *
-     * The method writes the segment details of the specified bone to the QTextStream.
-     *
-     * @param boneId The ID of the bone whose segment is to be written.
-     * @param stream The QTextStream object to write the segment to.
-     */
-    void writeSegment(BrainiacGlobals::BrainiacId boneId, QTextStream& stream) const;
+ void processFuzzy(ConfigBlock &confBlock) const;
 
-    /**
-     * Writes the given fuzz to the provided QTextStream.
-     *
-     * The method writes the information of the fuzz object to the stream in a specific format.
-     * It starts by outputting the fuzz token followed by the fuzz's name.
-     * Then, it determines the type of the fuzz and writes the corresponding type token and additional
-     * information specific to that type. For example, if the fuzz is an AND type, it writes
-     * the mode token and the mode value of the fuzzAnd object.
-     * After that, it outputs the editor position of the fuzz. Finally, it outputs the endFuzz token
-     * to indicate the end of the fuzz information.
-     *
-     * @param fuzz A pointer to the FuzzyBase object to be written.
-     * @param stream The QTextStream to write the fuzz information to.
-     */
-    void writeFuzz(FuzzyBase *fuzz, QTextStream& stream) const;
+ void processConnections(ConfigBlock &confBlock) const;
 
-    void writeConnections(FuzzyBase *fuzz, QTextStream &stream) const;
+ static void clearConfigBlock(ConfigBlock &confBlock);
 
-   signals:
+ /**
+  * Writes the segment of a bone to the QTextStream.
+  *
+  * The method writes the segment details of the specified bone to the QTextStream.
+  *
+  * @param boneId The ID of the bone whose segment is to be written.
+  * @param stream The QTextStream object to write the segment to.
+  */
+ void writeSegment(BrainiacGlobals::BrainiacId boneId, QTextStream &stream) const;
+
+ /**
+  * Writes the given fuzz to the provided QTextStream.
+  *
+  * The method writes the information of the fuzz object to the stream in a specific format.
+  * It starts by outputting the fuzz token followed by the fuzz's name.
+  * Then, it determines the type of the fuzz and writes the corresponding type token and additional
+  * information specific to that type. For example, if the fuzz is an AND type, it writes
+  * the mode token and the mode value of the fuzzAnd object.
+  * After that, it outputs the editor position of the fuzz. Finally, it outputs the endFuzz token
+  * to indicate the end of the fuzz information.
+  *
+  * @param fuzz A pointer to the FuzzyBase object to be written.
+  * @param stream The QTextStream to write the fuzz information to.
+  */
+ void writeFuzz(FuzzyBase *fuzz, QTextStream &stream) const;
+
+ void writeConnections(FuzzyBase *fuzz, QTextStream &stream) const;
+
+signals:
 };
 
 #endif // AGENTREADERWRITER_H

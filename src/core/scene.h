@@ -4,6 +4,7 @@
 #include <QObject>
 
 #include "brainiacglobals.h"
+#include "scenereaderwriter.h"
 
 class QQmlApplicationEngine;
 class Agent;
@@ -66,6 +67,7 @@ private:
     QList<AgentInstance *> m_selectedAgentInstances;
     Q_PROPERTY(QList<AgentInstance *> selectedAgentInstances READ selectedAgentInstances WRITE
                    setSelectedAgentInstances NOTIFY selectedAgentInstancesChanged FINAL)
+    SceneReaderWriter *m_sceneReaderWriter;
 
 signals:
     void selectedAgentInstancesChanged();

@@ -21,6 +21,7 @@ qt_add_executable(Brainiac
     src/core/agentreaderwriter.h src/core/agentreaderwriter.cpp
     src/core/brain/brain.h src/core/brain/brain.cpp
     src/core/scene.h src/core/scene.cpp
+        src/core/scenereaderwriter.h src/core/scenereaderwriter.cpp
     src/core/simulation.h src/core/simulation.cpp
     src/core/brain/fuzzybase.h src/core/brain/fuzzybase.cpp
     src/core/brain/fuzzyoutput.h src/core/brain/fuzzyoutput.cpp
@@ -51,8 +52,8 @@ qt_add_executable(Brainiac
     src/core/body/agentinstancebody.h src/core/body/agentinstancebody.cpp
     src/core/body/agentinstancebone.h src/core/body/agentinstancebone.cpp
     src/core/body/agentinstancebonebox.h src/core/body/agentinstancebonebox.cpp
-        src/core/brainiaclogger.cpp
-        src/core/brainiaclogger.h
+        src/core/brainiaclogger.cpp src/core/brainiaclogger.h
+        src/core/basereaderwriter.h src/core/basereaderwriter.cpp
 
 )
 

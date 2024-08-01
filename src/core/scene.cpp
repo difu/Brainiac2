@@ -10,6 +10,7 @@
 Scene::Scene(QObject *parent)
     : QObject{parent}
 {
+    m_sceneReaderWriter = new SceneReaderWriter(this);
     setObjectName("Scene");
     m_simulation=new Simulation(this);
     m_agentInstanceSpawner = nullptr;

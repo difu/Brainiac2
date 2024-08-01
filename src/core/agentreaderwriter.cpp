@@ -6,9 +6,9 @@
 #include "brain/fuzzyor.h"
 
 AgentReaderWriter::AgentReaderWriter(Agent *parent)
-    : QObject{parent}
-    , m_agent(parent)
-{}
+    : BaseReaderWriter(static_cast<QObject *>(parent))
+      , m_agent(parent) {
+}
 
 void AgentReaderWriter::checkAgentEmpty() const
 {
