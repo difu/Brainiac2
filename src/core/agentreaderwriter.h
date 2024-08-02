@@ -13,13 +13,6 @@ class AgentReaderWriter : public BaseReaderWriter {
  Q_OBJECT
 
 public:
-    enum ConfigBlockType { UNKNOWN, FUZZY, SEGMENT, CONNECTIONS };
-
-    struct ConfigBlock {
-        ConfigBlockType type = AgentReaderWriter::UNKNOWN;
-        BrainiacGlobals::ItemType itemType = BrainiacGlobals::UNKNOWN;
-        QStringList lines;
-    };
 
     explicit AgentReaderWriter(Agent *parent);
 

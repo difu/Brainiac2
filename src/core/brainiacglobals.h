@@ -30,6 +30,7 @@ public:
         AGENT,
         ACTION,
         TRANSITION,
+        POINTGENERATOR,
         UNKNOWN
     };
     Q_ENUM(ItemType)
