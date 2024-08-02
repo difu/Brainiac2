@@ -70,7 +70,7 @@ public:
     void setFileName(const QString &newFileName);
 
 public slots:
-    void generatorDeleted(GeneratorBase *delGenerator);
+    void generatorDeleted(QObject *delGenerator);
 
 private:
     QQmlApplicationEngine *m_qQmlApplicationEngine;

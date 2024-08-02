@@ -22,7 +22,7 @@ GeneratorBase::GeneratorBase(Scene *parent)
       , m_editorPos(0, 0)
       , m_scene(parent) {
     m_scene->addGenerator(this);
-    connect(this, SIGNAL(destroyed(QObject *)), m_scene, SLOT(generatorDeleted(this)));
+    connect(this, SIGNAL(destroyed(QObject *)), m_scene, SLOT(generatorDeleted(QObject *)));
 }
 
 void GeneratorBase::addAgent(Agent *newAgent, const qsizetype position) {

@@ -110,7 +110,7 @@ void Scene::setFileName(const QString &newFileName) {
     m_fileName = newFileName;
 }
 
-void Scene::generatorDeleted(GeneratorBase *delGenerator) {
+void Scene::generatorDeleted(QObject *delGenerator) {
     int removed = m_generators.removeAll(delGenerator);
     if (!(removed == 1)) {
         qFatal() << "Unable to remove generator from Scene!";
