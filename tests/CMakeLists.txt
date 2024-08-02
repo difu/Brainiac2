@@ -68,6 +68,11 @@ add_executable(
         ${SOURCE_FILES}
 )
 
+add_executable(
+        test_scene tst_scene.cpp
+        ${SOURCE_FILES}
+)
+
 
 include_directories(
     ../src/gui/agent
@@ -99,6 +104,17 @@ target_link_libraries(test_agent PUBLIC
 add_test(NAME test_simulation COMMAND test_simulation)
 
 target_link_libraries(test_simulation PUBLIC
+        Qt::Widgets
+        Qt::Core
+        Qt::Gui
+        Qt::Quick
+        Qt::Quick3D
+        Qt::Test
+)
+
+add_test(NAME test_scene COMMAND test_scene)
+
+target_link_libraries(test_scene PUBLIC
         Qt::Widgets
         Qt::Core
         Qt::Gui
