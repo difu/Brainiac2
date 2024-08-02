@@ -4,6 +4,7 @@
 #include <QHash>
 #include <QList>
 #include <QObject>
+#include <QPointF>
 
 class Agent;
 class Locator;
@@ -77,11 +78,14 @@ public:
      * @see Locator
      * @see GeneratorBase
      */
-    qreal gap() const;
+    [[nodiscard]] qreal gap() const;
 
     void setGap(qreal newGap);
 
-    QList<Agent *> agents() const;
+    [[nodiscard]] QList<Agent *> agents() const;
+
+    [[nodiscard]] QPointF editorPos() const;
+    void setEditorPos(QPointF newEditorPos);
 
 protected:
     QList<Locator *> m_locators;
@@ -135,6 +139,8 @@ private:
     qreal m_heightVariation;
 
     void recalculateRatios();
+
+    QPointF m_editorPos; // TODO: make this obsolete by using an EditorItem!
 
 signals:
 };

@@ -19,8 +19,10 @@ GeneratorBase::GeneratorBase(Scene *parent)
       , m_angleVariation(0.0)
       , m_height(0.0)
       , m_heightVariation(0)
+      , m_editorPos(0, 0)
       , m_scene(parent) {
     m_scene->addGenerator(this);
+    connect(this, SIGNAL(destroyed(QObject *)), m_scene, SLOT(generatorDeleted(this)));
 }
 
 void GeneratorBase::addAgent(Agent *newAgent, const qsizetype position) {
@@ -47,6 +49,14 @@ void GeneratorBase::recalculateRatios() {
             m_agentRatios.insert(agent, equalRatio);
         }
     }
+}
+
+QPointF GeneratorBase::editorPos() const {
+    return m_editorPos;
+}
+
+void GeneratorBase::setEditorPos(QPointF newEditorPos) {
+    m_editorPos = newEditorPos;
 }
 
 Scene *GeneratorBase::scene()
@@ -199,8 +209,9 @@ void GeneratorBase::removeLastNLocators(const int n) {
     }
 }
 
-GeneratorBase::~GeneratorBase() {
-    m_scene->removeGenerator(this);
+GeneratorBase::~GeneratorBase()
+{
+    qCDebug(bGenerator()) << "Destructor GeneratorBase";
 }
 
 QList<Locator *> GeneratorBase::locators() const {

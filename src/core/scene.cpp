@@ -17,6 +17,11 @@ Scene::Scene(QObject *parent)
     m_qQmlApplicationEngine = nullptr;
 }
 
+Scene::~Scene()
+{
+    qDebug() << "Scene destructor";
+}
+
 void Scene::addAgent(Agent *agent) {
     m_agents.append(agent);
 }
@@ -94,15 +99,26 @@ void Scene::addGenerator(GeneratorBase *generator) {
     m_generators.append(generator);
 }
 
-void Scene::removeGenerator(GeneratorBase *generator) {
-    bool success = m_generators.removeAll(generator);
-    if (!success) {
-        qFatal() << "Unable to remove generator from Scene!";
-    }
-}
-
 QList<GeneratorBase *> Scene::generators() const {
     return m_generators;
+}
+
+QString Scene::fileName() const
+{
+    return m_fileName;
+}
+
+void Scene::setFileName(const QString &newFileName)
+{
+    m_fileName = newFileName;
+}
+
+void Scene::generatorDeleted(GeneratorBase *delGenerator)
+{
+    int removed = m_generators.removeAll(delGenerator);
+    if (!(removed == 1)) {
+        qFatal() << "Unable to remove generator from Scene!";
+    }
 }
 
 QList<Agent *> Scene::agents() const {

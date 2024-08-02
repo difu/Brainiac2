@@ -24,6 +24,8 @@ class Scene : public QObject
 public:
     explicit Scene(QObject *parent = nullptr);
 
+    virtual ~Scene();
+
     auto addAgent(Agent *agent) -> void;
 
     /**
@@ -61,9 +63,13 @@ public:
 
     void addGenerator(GeneratorBase *generator);
 
-    void removeGenerator(GeneratorBase *generator);
-
     [[nodiscard]] QList<GeneratorBase *> generators() const;
+
+    [[nodiscard]] QString fileName() const;
+
+    void setFileName(const QString &newFileName);
+public slots:
+    void generatorDeleted(GeneratorBase *delGenerator);
 
 private:
     QQmlApplicationEngine *m_qQmlApplicationEngine;
@@ -77,6 +83,7 @@ private:
     Q_PROPERTY(QList<AgentInstance *> selectedAgentInstances READ selectedAgentInstances WRITE
                    setSelectedAgentInstances NOTIFY selectedAgentInstancesChanged FINAL)
     SceneReaderWriter *m_sceneReaderWriter;
+    QString m_fileName;
 
 signals:
     void selectedAgentInstancesChanged();
