@@ -48,6 +48,6 @@ void SimulationTest::test_basicSimulation()
     QCOMPARE(spy_endReached.count(), 1); // make sure the signal was emitted exactly one time
 }
 
-QTEST_APPLESS_MAIN(SimulationTest)
+QTEST_MAIN(SimulationTest)
 
 #include "tst_simulation.moc"
