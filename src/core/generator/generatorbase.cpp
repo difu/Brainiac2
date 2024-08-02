@@ -209,8 +209,7 @@ void GeneratorBase::removeLastNLocators(const int n) {
     }
 }
 
-GeneratorBase::~GeneratorBase()
-{
+GeneratorBase::~GeneratorBase() {
     qCDebug(bGenerator()) << "Destructor GeneratorBase";
 }
 

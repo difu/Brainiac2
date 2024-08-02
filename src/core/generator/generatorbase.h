@@ -85,6 +85,7 @@ public:
     [[nodiscard]] QList<Agent *> agents() const;
 
     [[nodiscard]] QPointF editorPos() const;
+
     void setEditorPos(QPointF newEditorPos);
 
 protected:

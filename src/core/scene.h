@@ -68,6 +68,7 @@ public:
     [[nodiscard]] QString fileName() const;
 
     void setFileName(const QString &newFileName);
+
 public slots:
     void generatorDeleted(GeneratorBase *delGenerator);
 
