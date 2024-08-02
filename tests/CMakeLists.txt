@@ -14,8 +14,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(
-        test_agent tst_agent.cpp
+set(SOURCE_FILES
         ../src/gui/mainwindow.cpp
         ../src/gui/mainwindow.h
         ../src/core/agent.h ../src/core/agent.cpp
@@ -57,7 +56,11 @@ add_executable(
         ../src/gui/agent/agentinstacegeometryquick3d.h ../src/gui/agent/agentinstacegeometryquick3d.cpp
         ../src/core/brainiaclogger.cpp ../src/core/brainiaclogger.h
         ../src/core/basereaderwriter.h ../src/core/basereaderwriter.cpp
+)
 
+add_executable(
+        test_agent tst_agent.cpp
+        ${SOURCE_FILES}
 )
 
 
@@ -66,16 +69,16 @@ include_directories(
     ../
 )
 
-qt_add_qml_module(test_agent
-    URI "BrainiacViewer"
-    VERSION 1.0
-    QML_FILES
-        ../src/gui/MainViewer.qml
-    IMPORTS
-        QtQuick3D
-    NO_RESOURCE_TARGET_PATH
-    QML_FILES ../src/gui/AgentInstance.qml
-)
+#qt_add_qml_module(test_agent
+#    URI "BrainiacViewer"
+#    VERSION 1.0
+#    QML_FILES
+#        ../src/gui/MainViewer.qml
+#    IMPORTS
+#        QtQuick3D
+#    NO_RESOURCE_TARGET_PATH
+#    QML_FILES ../src/gui/AgentInstance.qml
+#)
 
 add_test(NAME test_agent COMMAND test_agent)
 
