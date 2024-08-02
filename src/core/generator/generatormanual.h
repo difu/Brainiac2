@@ -18,7 +18,8 @@ class GeneratorManual : public GeneratorBase
 {
     Q_OBJECT
 public:
-    explicit GeneratorManual(QObject *parent);
+    explicit GeneratorManual(Scene *parent);
+
     Locator *addLocator(Agent *agent);
     virtual void instanciateAgentInstances();
 

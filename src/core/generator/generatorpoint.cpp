@@ -4,7 +4,7 @@
 #include "../brainiaclogger.h"
 #include "src/core/agent.h"
 
-GeneratorPoint::GeneratorPoint(QObject *parent)
+GeneratorPoint::GeneratorPoint(Scene *parent)
     : GeneratorBase{parent}, m_allignInRowsColumns(true) {
 }
 

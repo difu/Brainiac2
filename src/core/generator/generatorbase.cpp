@@ -7,7 +7,7 @@
 #include "src/core/brainiaclogger.h"
 #include "src/core/brain/brain.h"
 
-GeneratorBase::GeneratorBase(QObject *parent)
+GeneratorBase::GeneratorBase(Scene *parent)
     : QObject{parent}
       , m_numTotalAgents(0)
       , m_gap(0)
@@ -18,7 +18,9 @@ GeneratorBase::GeneratorBase(QObject *parent)
       , m_angle(0.0)
       , m_angleVariation(0.0)
       , m_height(0.0)
-      , m_heightVariation(0) {
+      , m_heightVariation(0)
+      , m_scene(parent) {
+    m_scene->addGenerator(this);
 }
 
 void GeneratorBase::addAgent(Agent *newAgent, const qsizetype position) {
@@ -197,7 +199,9 @@ void GeneratorBase::removeLastNLocators(const int n) {
     }
 }
 
-GeneratorBase::~GeneratorBase() {}
+GeneratorBase::~GeneratorBase() {
+    m_scene->removeGenerator(this);
+}
 
 QList<Locator *> GeneratorBase::locators() const {
     return m_locators;

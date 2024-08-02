@@ -9,7 +9,7 @@ class GeneratorPoint : public GeneratorBase
 {
     Q_OBJECT
 public:
-    explicit GeneratorPoint(QObject *parent = nullptr);
+    explicit GeneratorPoint(Scene *parent);
 
     void instanciateAgentInstances() override;
 

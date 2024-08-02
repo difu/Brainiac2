@@ -5,6 +5,7 @@
 
 #include "brainiacglobals.h"
 #include "scenereaderwriter.h"
+#include "src/core/generator/generatorbase.h"
 
 class QQmlApplicationEngine;
 class Agent;
@@ -58,6 +59,12 @@ public:
     void setSelectedAgentInstances(const QList<AgentInstance *> &newSelectedAgentInstances);
     void setSelectedAgentInstance(AgentInstance *newSelectedAgentInstance);
 
+    void addGenerator(GeneratorBase *generator);
+
+    void removeGenerator(GeneratorBase *generator);
+
+    [[nodiscard]] QList<GeneratorBase *> generators() const;
+
 private:
     QQmlApplicationEngine *m_qQmlApplicationEngine;
     QObject *m_agentInstanceSpawner;
@@ -65,6 +72,8 @@ private:
     QList<Agent *> m_agents;
     QList<AgentInstance *> m_agentInstances;
     QList<AgentInstance *> m_selectedAgentInstances;
+
+    QList<GeneratorBase *> m_generators;
     Q_PROPERTY(QList<AgentInstance *> selectedAgentInstances READ selectedAgentInstances WRITE
                    setSelectedAgentInstances NOTIFY selectedAgentInstancesChanged FINAL)
     SceneReaderWriter *m_sceneReaderWriter;

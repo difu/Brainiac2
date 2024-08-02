@@ -90,6 +90,21 @@ void Scene::setSelectedAgentInstance(AgentInstance *newSelectedAgentInstance)
     emit selectedAgentInstancesChanged();
 }
 
+void Scene::addGenerator(GeneratorBase *generator) {
+    m_generators.append(generator);
+}
+
+void Scene::removeGenerator(GeneratorBase *generator) {
+    bool success = m_generators.removeAll(generator);
+    if (!success) {
+        qFatal() << "Unable to remove generator from Scene!";
+    }
+}
+
+QList<GeneratorBase *> Scene::generators() const {
+    return m_generators;
+}
+
 QList<Agent *> Scene::agents() const {
     return m_agents;
 }

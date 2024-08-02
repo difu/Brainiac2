@@ -13,7 +13,7 @@ class GeneratorBase : public QObject
 {
     Q_OBJECT
 public:
-    explicit GeneratorBase(QObject *parent);
+    explicit GeneratorBase(Scene *parent);
 
     void addAgent(Agent *newAgent, qsizetype position);
 
@@ -85,6 +85,7 @@ public:
 
 protected:
     QList<Locator *> m_locators;
+    Scene *m_scene;
 
     /**
      * @brief Shuffles a list of numbers and returns the shuffled list.

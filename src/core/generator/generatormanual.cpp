@@ -5,7 +5,7 @@
 #include "../agentinstance.h"
 #include "../scene.h"
 
-GeneratorManual::GeneratorManual(QObject *parent)
+GeneratorManual::GeneratorManual(Scene *parent)
     : GeneratorBase{parent}
 {}
 
