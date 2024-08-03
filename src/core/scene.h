@@ -69,6 +69,8 @@ public:
 
     void setFileName(const QString &newFileName);
 
+    [[nodiscard]] bool save();
+
 public slots:
     void generatorDeleted(QObject *delGenerator);
 

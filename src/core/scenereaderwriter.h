@@ -4,6 +4,7 @@
 #include <QObject>
 
 #include "basereaderwriter.h"
+class Agent;
 class Scene;
 
 class SceneReaderWriter : public BaseReaderWriter {
@@ -12,7 +13,11 @@ class SceneReaderWriter : public BaseReaderWriter {
 public:
     explicit SceneReaderWriter(Scene *parent);
 
+    bool saveAsBSF();
+
 private:
+    void writeAgent(Agent *agent, QTextStream &stream) const;
+
     Scene *m_scene;
 signals:
 };

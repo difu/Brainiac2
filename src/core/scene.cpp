@@ -110,6 +110,10 @@ void Scene::setFileName(const QString &newFileName) {
     m_fileName = newFileName;
 }
 
+bool Scene::save() {
+    return m_sceneReaderWriter->saveAsBSF();
+}
+
 void Scene::generatorDeleted(QObject *delGenerator) {
     int removed = m_generators.removeAll(delGenerator);
     if (!(removed == 1)) {
