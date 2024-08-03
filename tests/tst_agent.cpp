@@ -15,10 +15,9 @@
 #include "src/core/brain/noise.h"
 #include "src/core/brain/fuzzyoutput.h"
 #include "src/core/generator/generatormanual.h"
+#include "src/core/generator/generatorpoint.h"
 
-void testAgent1(Agent *agent)
-{
-    {
+void createTestAgent1(Agent *agent) { {
         BoneBox *rootBone = agent->body()->addBoneBox(1, 0, "root");
         BoneBox *leftBone = agent->body()->addBoneBox(2, 1, "left");
         BoneBox *rightBone = agent->body()->addBoneBox(3, 1, "right");
@@ -99,8 +98,8 @@ void AgentTest::test_equal() { {
         Scene myScene;
         auto *agent1 = new Agent(&myScene);
         auto *agent2 = new Agent(&myScene);
-        ::testAgent1(agent1);
-        ::testAgent1(agent2);
+        ::createTestAgent1(agent1);
+        ::createTestAgent1(agent2);
 
         QStringList errors;
         bool equal = Agent::compare(agent1, agent2, errors);
@@ -120,8 +119,8 @@ void AgentTest::test_equal() { {
         Scene myScene;
         auto *agent1 = new Agent(&myScene);
         auto *agent2 = new Agent(&myScene);
-        ::testAgent1(agent1);
-        ::testAgent1(agent2);
+        ::createTestAgent1(agent1);
+        ::createTestAgent1(agent2);
         auto fuzz = agent1->brain()->fuzzies().value(1);
         fuzz->setEditorPos(0, 0);
         QStringList errors;
@@ -140,7 +139,7 @@ void AgentTest::test_loadSave()
     Scene myScene;
 
     auto *agent = new Agent(&myScene);
-    ::testAgent1(agent);
+    ::createTestAgent1(agent);
     agent->setFileName("/tmp/difu.baf");
     agent->save();
 
