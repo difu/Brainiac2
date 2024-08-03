@@ -90,6 +90,8 @@ void SceneReaderWriter::clearConfigBlock(ConfigBlock &confBlock) {
 }
 
 void SceneReaderWriter::addAgent(ConfigBlock &confBlock) {
+    Agent *newAgent = nullptr;
+    QString agentName;
     foreach(auto line, confBlock.lines) {
         auto words = line.split(" ");
         const auto numOfWords = words.count();
@@ -98,10 +100,17 @@ void SceneReaderWriter::addAgent(ConfigBlock &confBlock) {
                 QDir scenePath = m_scene->fileName();
                 scenePath.setPath(scenePath.absolutePath());
                 scenePath.cdUp();
-                auto newAgent = new Agent(m_scene);
+                newAgent = new Agent(m_scene);
                 auto fileName = scenePath.path().append("/").append(words.at(1));
                 newAgent->setFileName(fileName);
+                bool successName = newAgent->setName(agentName);
+                if (!successName) {
+                    qWarning() << "Could not set name of agent";
+                }
                 newAgent->load();
+            }
+            if ((words.at(0) == "agent")) {
+                agentName = words.at(1);
             }
         }
     }
