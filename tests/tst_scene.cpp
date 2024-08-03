@@ -3,9 +3,21 @@
 
 #include "../src/core/scene.h"
 #include "src/core/agent.h"
+#include "src/core/body/body.h"
+#include "src/core/body/bonebox.h"
 #include "src/core/generator/generatorpoint.h"
 
 void createTestAgent1(Agent *agent) {
+    {
+        BoneBox *rootBone = agent->body()->addBoneBox(1, 0, "root");
+        BoneBox *leftBone = agent->body()->addBoneBox(2, 1, "left");
+        BoneBox *rightBone = agent->body()->addBoneBox(3, 1, "right");
+        rootBone->setTranslation(QVector3D(0, 0, 0));
+        rootBone->setSize(QVector3D(10, 20, 30));
+        rootBone->setEditorPos(100, 100);
+        leftBone->setTranslation(QVector3D(30, -20, 0));
+        rightBone->setTranslation(QVector3D(-30, -20, 0));
+    }
 }
 
 void createTestScene1(Scene *scene) {
@@ -71,7 +83,8 @@ void SceneTest::test_loadSaveScene() {
     qInfo() << "Testfiles will be written to: " << rootTestDir.path();
     Scene saveScene;
     ::createTestScene1(&saveScene);
-    saveScene.setFileName(QString(rootTestDir.path()).append("/scene.bsf"));
+    auto sceneFileName = QString(rootTestDir.path()).append("/scene.bsf");
+    saveScene.setFileName(sceneFileName);
     const int numOfAgents = saveScene.agents().count();
     QVERIFY2(numOfAgents==2, "Unexpected number of agents!");
     int agentIndex = 0;
@@ -86,6 +99,11 @@ void SceneTest::test_loadSaveScene() {
         agentIndex++;
     }
     QVERIFY2(saveScene.save(), "Could not save scene!");
+    Scene loadScene;
+    loadScene.setFileName(sceneFileName);
+    loadScene.load();
+    QVERIFY2(saveScene.agents().count() == loadScene.agents().count(),
+             "Different number of agents in loaded scene!");
 }
 
 QTEST_MAIN(SceneTest)

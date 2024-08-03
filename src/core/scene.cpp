@@ -114,6 +114,10 @@ bool Scene::save() {
     return m_sceneReaderWriter->saveAsBSF();
 }
 
+bool Scene::load() {
+    return m_sceneReaderWriter->loadFromBSF();
+}
+
 void Scene::generatorDeleted(QObject *delGenerator) {
     int removed = m_generators.removeAll(delGenerator);
     if (!(removed == 1)) {

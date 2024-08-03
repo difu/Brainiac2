@@ -13,10 +13,22 @@ class SceneReaderWriter : public BaseReaderWriter {
 public:
     explicit SceneReaderWriter(Scene *parent);
 
-    bool saveAsBSF();
+    [[nosdiscard]] bool saveAsBSF();
+
+    [[nodiscard]] bool loadFromBSF();
+
+    void parseFields(const QStringList &fields, ConfigBlock &confBlock);
 
 private:
+    void checkUnknown(const ConfigBlock &confBlock);
+
     void writeAgent(Agent *agent, QTextStream &stream) const;
+
+    void processAgent(ConfigBlock &confBlock);
+
+    void clearConfigBlock(ConfigBlock &confBlock);
+
+    void addAgent(ConfigBlock &confBlock);
 
     Scene *m_scene;
 signals:

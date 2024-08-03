@@ -71,6 +71,8 @@ public:
 
     [[nodiscard]] bool save();
 
+    bool load();
+
 public slots:
     void generatorDeleted(QObject *delGenerator);
 
