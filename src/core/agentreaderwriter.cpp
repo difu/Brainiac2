@@ -127,12 +127,6 @@ void AgentReaderWriter::processConnections(ConfigBlock &confBlock) const {
     }
 }
 
-void AgentReaderWriter::clearConfigBlock(ConfigBlock &confBlock)
-{
-    confBlock.lines.clear();
-    confBlock.type = AgentReaderWriter::UNKNOWN;
-}
-
 bool AgentReaderWriter::save()
 {
     return false;

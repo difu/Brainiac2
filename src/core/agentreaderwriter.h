@@ -124,8 +124,6 @@ private:
 
  void processConnections(ConfigBlock &confBlock) const;
 
- static void clearConfigBlock(ConfigBlock &confBlock);
-
  /**
   * Writes the segment of a bone to the QTextStream.
   *

@@ -9,7 +9,7 @@ class BaseReaderWriter : public QObject {
     Q_OBJECT
 
 public:
-    enum ConfigBlockType { UNKNOWN, FUZZY, SEGMENT, CONNECTIONS, GENERATOR };
+    enum ConfigBlockType { UNKNOWN, FUZZY, SEGMENT, CONNECTIONS, GENERATOR, AGENT };
 
     struct ConfigBlock {
         ConfigBlockType type = BaseReaderWriter::UNKNOWN;
@@ -18,6 +18,8 @@ public:
     };
 
     explicit BaseReaderWriter(QObject *parent = nullptr);
+
+    static void clearConfigBlock(ConfigBlock &confBlock);
 
 protected:
     inline static const QString _indent = "    ";
