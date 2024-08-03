@@ -6,6 +6,8 @@
 #include <QObject>
 #include <QPointF>
 
+#include "src/core/brainiacglobals.h"
+
 class Agent;
 class Locator;
 class Scene;
@@ -14,7 +16,7 @@ class GeneratorBase : public QObject
 {
     Q_OBJECT
 public:
-    explicit GeneratorBase(Scene *parent);
+    explicit GeneratorBase(Scene *parent, BrainiacGlobals::ItemType type);
 
     void addAgent(Agent *newAgent, qsizetype position);
 
@@ -88,6 +90,8 @@ public:
 
     void setEditorPos(QPointF newEditorPos);
 
+    BrainiacGlobals::ItemType type() const;
+
 protected:
     QList<Locator *> m_locators;
     Scene *m_scene;
@@ -142,6 +146,8 @@ private:
     void recalculateRatios();
 
     QPointF m_editorPos; // TODO: make this obsolete by using an EditorItem!
+
+    BrainiacGlobals::ItemType m_type;
 
 signals:
 };

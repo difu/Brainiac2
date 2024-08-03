@@ -3,6 +3,8 @@
 #include "agent.h"
 #include "scene.h"
 
+#include <src/core/generator/generatorpoint.h>
+
 SceneReaderWriter::SceneReaderWriter(Scene *parent)
     : BaseReaderWriter(static_cast<QObject *>(parent)), m_scene(parent) {
 }
@@ -14,6 +16,9 @@ bool SceneReaderWriter::saveAsBSF() {
         QTextStream stream(&file);
         foreach(auto *agent, m_scene->agents()) {
             writeAgent(agent, stream);
+        }
+        foreach(auto *generator, m_scene->generators()) {
+            writeGenerator(generator, stream);
         }
         stream << "End" << Qt::endl;
         success = true;
@@ -73,6 +78,33 @@ void SceneReaderWriter::writeAgent(Agent *agent, QTextStream &stream) const {
     stream << "agent " << agent->name() << Qt::endl;
     stream << _indent << "fileName " << agentRelativeFileName << Qt::endl;
     stream << "endAgent" << Qt::endl;
+}
+
+void SceneReaderWriter::writeGenerator(GeneratorBase *generator, QTextStream &stream) const {
+    stream << "generator " << Qt::endl;
+    stream << _indent << "type " << QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
+        generator->type()) << Qt::endl;
+    foreach(auto *agent, generator->agents()) {
+        stream << _indent << "agent " << agent->name() << " " << generator->agentRatios().value(agent) << Qt::endl;
+    }
+    if (generator->type() == BrainiacGlobals::GENERATORPOINT) {
+        auto genPoint = dynamic_cast<GeneratorPoint *>(generator);
+        stream << _indent << "centerPoint " << genPoint->centerPoint().x() << " "
+                << genPoint->centerPoint().y() << " " << genPoint->centerPoint().z() << Qt::endl;
+    }
+    stream << _indent << "gap " << generator->gap() << Qt::endl;
+    stream << _indent << "numAgents " << generator->numTotalAgents() << Qt::endl;
+
+    stream << _indent << "distance " << generator->distance() << Qt::endl;
+
+    stream << _indent << "rows " << generator->rows() << Qt::endl;
+    stream << _indent << "columns " << generator->columns() << Qt::endl;
+
+    stream << _indent << "angle " << generator->angle() << Qt::endl;
+    stream << _indent << "angleVariation " << generator->angleVariation() << Qt::endl;
+
+    stream << _indent << "height " << generator->height() << Qt::endl;
+    stream << _indent << "heightVariation " << generator->heightVariation() << Qt::endl;
 }
 
 void SceneReaderWriter::processAgent(ConfigBlock &confBlock) {

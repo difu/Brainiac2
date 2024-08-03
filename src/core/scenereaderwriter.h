@@ -4,6 +4,7 @@
 #include <QObject>
 
 #include "basereaderwriter.h"
+#include "generator/generatorbase.h"
 class Agent;
 class Scene;
 
@@ -23,6 +24,8 @@ private:
     void checkUnknown(const ConfigBlock &confBlock);
 
     void writeAgent(Agent *agent, QTextStream &stream) const;
+
+    void writeGenerator(GeneratorBase *generator, QTextStream &stream) const;
 
     void processAgent(ConfigBlock &confBlock);
 

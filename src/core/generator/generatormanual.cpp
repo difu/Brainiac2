@@ -4,10 +4,11 @@
 #include "../agent.h"
 #include "../agentinstance.h"
 #include "../scene.h"
+#include "src/core/brain/brain.h"
 
 GeneratorManual::GeneratorManual(Scene *parent)
-    : GeneratorBase{parent}
-{}
+    : GeneratorBase{parent, BrainiacGlobals::GENERATORMANUAL} {
+}
 
 Locator *GeneratorManual::addLocator(Agent *agent)
 {

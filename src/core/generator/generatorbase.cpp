@@ -7,7 +7,7 @@
 #include "src/core/brainiaclogger.h"
 #include "src/core/brain/brain.h"
 
-GeneratorBase::GeneratorBase(Scene *parent)
+GeneratorBase::GeneratorBase(Scene *parent, const BrainiacGlobals::ItemType type)
     : QObject{parent}
       , m_numTotalAgents(0)
       , m_gap(0)
@@ -20,7 +20,8 @@ GeneratorBase::GeneratorBase(Scene *parent)
       , m_height(0.0)
       , m_heightVariation(0)
       , m_editorPos(0, 0)
-      , m_scene(parent) {
+      , m_scene(parent)
+      , m_type(type) {
     m_scene->addGenerator(this);
     connect(this, SIGNAL(destroyed(QObject *)), m_scene, SLOT(generatorDeleted(QObject *)));
 }
@@ -49,6 +50,10 @@ void GeneratorBase::recalculateRatios() {
             m_agentRatios.insert(agent, equalRatio);
         }
     }
+}
+
+BrainiacGlobals::ItemType GeneratorBase::type() const {
+    return m_type;
 }
 
 QPointF GeneratorBase::editorPos() const {

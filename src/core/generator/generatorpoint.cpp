@@ -5,7 +5,7 @@
 #include "src/core/agent.h"
 
 GeneratorPoint::GeneratorPoint(Scene *parent)
-    : GeneratorBase{parent}, m_allignInRowsColumns(true) {
+    : GeneratorBase{parent, BrainiacGlobals::GENERATORPOINT}, m_allignInRowsColumns(true) {
 }
 
 void GeneratorPoint::instanciateAgentInstances() {
