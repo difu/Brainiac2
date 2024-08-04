@@ -29,9 +29,17 @@ private:
 
     void processAgent(ConfigBlock &confBlock);
 
+    void processGenerator(ConfigBlock &confBlock);
+
     void clearConfigBlock(ConfigBlock &confBlock);
 
     void addAgent(ConfigBlock &confBlock);
+
+    void addGenerator(ConfigBlock &confBlock);
+
+    void addGeneratorHandle2fields(GeneratorBase *generator,
+                                   const QString &field1,
+                                   const QString &field2);
 
     Scene *m_scene;
 signals:

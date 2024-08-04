@@ -26,5 +26,8 @@ public:
     void updateLocators() override;
 
     virtual ~GeneratorManual();
+
+    [[nodiscard]] static bool compare(GeneratorManual *generator1, GeneratorManual *generator2,
+                                      QStringList &differences);
 };
 #endif // GENERATORMANUAL_H
