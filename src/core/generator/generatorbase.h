@@ -92,6 +92,9 @@ public:
 
     BrainiacGlobals::ItemType type() const;
 
+    [[nodiscard]] static bool compare(GeneratorBase *generator1, GeneratorBase *generator2,
+                                      QStringList &differences);
+
 protected:
     QList<Locator *> m_locators;
     Scene *m_scene;
