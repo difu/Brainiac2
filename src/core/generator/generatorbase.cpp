@@ -35,6 +35,14 @@ void GeneratorBase::addAgent(Agent *newAgent, const qsizetype position) {
     recalculateRatios();
 }
 
+void GeneratorBase::appendAgent(Agent *newAgent) {
+    if (m_agents.contains(newAgent)) {
+        return;
+    }
+    m_agents.append(newAgent);
+    recalculateRatios();
+}
+
 void GeneratorBase::removeAgent(Agent *agent) {
     m_agents.removeAll(agent);
     m_agentRatios.remove(agent);
@@ -81,9 +89,9 @@ quint32 GeneratorBase::rows() const {
 
 void GeneratorBase::setRows(quint32 newRows) {
     m_rows = newRows;
-    if(m_rows*m_columns < m_numTotalAgents) {
-        this->setNumTotalAgents(m_columns*m_rows);
-    }
+    // if(m_rows*m_columns < m_numTotalAgents) {
+    //     this->setNumTotalAgents(m_columns*m_rows);
+    // }
 }
 
 quint32 GeneratorBase::columns() const {
@@ -92,9 +100,9 @@ quint32 GeneratorBase::columns() const {
 
 void GeneratorBase::setColumns(quint32 newColumns) {
     m_columns = newColumns;
-    if(m_rows*m_columns < m_numTotalAgents) {
-        this->setNumTotalAgents(m_columns*m_rows);
-    }
+    // if(m_rows*m_columns < m_numTotalAgents) {
+    //     this->setNumTotalAgents(m_columns*m_rows);
+    // }
 }
 
 quint32 GeneratorBase::numTotalAgents() const {

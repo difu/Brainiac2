@@ -41,6 +41,17 @@ private:
                                    const QString &field1,
                                    const QString &field2);
 
+    void addGeneratorHandle3fields(GeneratorBase *generator,
+                                   const QString &field1,
+                                   const QString &field2,
+                                   const QString &field3);
+
+    void addGeneratorHandle4fields(GeneratorBase *generator,
+                                   const QString &field1,
+                                   const QString &field2,
+                                   const QString &field3,
+                                   const QString &field4);
+
     Scene *m_scene;
 signals:
 };

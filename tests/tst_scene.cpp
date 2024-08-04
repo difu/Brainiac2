@@ -33,6 +33,11 @@ void createTestScene1(Scene *scene) {
     pointGen1->setColumns(4);
     pointGen1->setRows(3);
     pointGen1->setNumTotalAgents(10);
+    pointGen1->setAngle(2);
+    pointGen1->setAngleVariation(3);
+    pointGen1->setHeightVariation(4);
+    pointGen1->setHeight(-5);
+    pointGen1->setNoise(0.69);
     pointGen1->updateLocators();
 }
 
@@ -102,8 +107,14 @@ void SceneTest::test_loadSaveScene() {
     Scene loadScene;
     loadScene.setFileName(sceneFileName);
     loadScene.load();
+    QStringList errors;
     QVERIFY2(saveScene.agents().count() == loadScene.agents().count(),
              "Different number of agents in loaded scene!");
+    bool equal = Scene::compare(&saveScene, &loadScene, errors);
+    if (!equal) {
+        qInfo() << errors;
+    }
+    QVERIFY2(equal, "Scenes are not the same!");
 }
 
 QTEST_MAIN(SceneTest)

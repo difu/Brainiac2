@@ -20,6 +20,8 @@ public:
 
     void addAgent(Agent *newAgent, qsizetype position);
 
+    void appendAgent(Agent *newAgent);
+
     void removeAgent(Agent *agent);
 
     virtual void instanciateAgentInstances() = 0;

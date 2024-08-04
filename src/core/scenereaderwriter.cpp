@@ -114,6 +114,7 @@ void SceneReaderWriter::writeGenerator(GeneratorBase *generator, QTextStream &st
 
     stream << _indent << "height " << generator->height() << Qt::endl;
     stream << _indent << "heightVariation " << generator->heightVariation() << Qt::endl;
+    stream << _indent << "noise " << generator->noise() << Qt::endl;
     stream << "endGenerator" << Qt::endl;
 }
 
@@ -175,20 +176,30 @@ void SceneReaderWriter::addGenerator(ConfigBlock &confBlock) {
         auto words = line.split(" ");
         const auto numOfWords = words.count();
         if (numOfWords == 2) {
-            if (words.at(0) == "type"
-                && words.at(1)
-                == QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
-                    BrainiacGlobals::GENERATORPOINT)) {
-                if (!generator) {
-                    generator = new GeneratorPoint(m_scene);
+            if (words.at(0) == "type") {
+                if (words.at(1)
+                    == QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
+                        BrainiacGlobals::GENERATORPOINT)) {
+                    if (!generator) {
+                        generator = new GeneratorPoint(m_scene);
+                    } else {
+                        qCritical() << "generator has already been set!";
+                    }
+                    continue;
                 } else {
-                    qCritical() << "generator has already been set!";
+                    qFatal() << "Unknown generator type";
                 }
-                continue;
-            } else {
-                qCritical() << "Parsing error, unknown Generator Type!";
             }
             addGeneratorHandle2fields(generator, words.at(0), words.at(1));
+            continue;
+        }
+        if (numOfWords == 3) {
+            addGeneratorHandle3fields(generator, words.at(0), words.at(1), words.at(2));
+            continue;
+        }
+        if (numOfWords == 4) {
+            addGeneratorHandle4fields(generator, words.at(0), words.at(1), words.at(2), words.at(3));
+            continue;
         }
     }
 }
@@ -252,5 +263,37 @@ void SceneReaderWriter::addGeneratorHandle2fields(GeneratorBase *generator,
             generator->setHeightVariation(field2.toDouble());
         }
         return;
+    }
+    if (field1 == "noise") {
+        if (generator) {
+            generator->setNoise(field2.toDouble());
+        }
+        return;
+    }
+}
+
+void SceneReaderWriter::addGeneratorHandle3fields(GeneratorBase *generator, const QString &field1,
+                                                  const QString &field2, const QString &field3) {
+    if (field1 == "agentName") {
+        // Handles the ratios
+        if (generator) {
+            auto agent = m_scene->agentByName(field2);
+            if (agent) {
+                generator->appendAgent(agent);
+            } else {
+                qFatal() << "Unknown Agent!";
+            }
+        }
+        return;
+    }
+}
+
+void SceneReaderWriter::addGeneratorHandle4fields(GeneratorBase *generator, const QString &field1,
+                                                  const QString &field2, const QString &field3, const QString &field4) {
+    if (field1 == "centerPoint") {
+        if (auto genPoint = qobject_cast<GeneratorPoint *>(generator)) {
+            const QVector3D center(field2.toDouble(), field3.toDouble(), field4.toDouble());
+            genPoint->setCenterPoint(center);
+        }
     }
 }
