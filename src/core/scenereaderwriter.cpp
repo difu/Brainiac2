@@ -9,7 +9,7 @@ SceneReaderWriter::SceneReaderWriter(Scene *parent)
     : BaseReaderWriter(static_cast<QObject *>(parent)), m_scene(parent) {
 }
 
-bool SceneReaderWriter::saveAsBSF() {
+bool SceneReaderWriter::saveAsBSF() const {
     QFile file(m_scene->fileName());
     bool success = false;
     if (file.open(QIODevice::ReadWrite | QIODevice::Truncate)) {
@@ -39,6 +39,7 @@ bool SceneReaderWriter::loadFromBSF() {
             confBlock.lines.append(line);
             parseFields(fields, confBlock);
         }
+        success = true;
     }
     file.close();
     return success;
@@ -72,13 +73,8 @@ void SceneReaderWriter::parseFields(const QStringList &fields, ConfigBlock &conf
     }
 }
 
-void SceneReaderWriter::checkUnknown(const ConfigBlock &confBlock) {
-    if (confBlock.type != BaseReaderWriter::UNKNOWN) {
-        qCritical() << "Parsing error!";
-    }
-}
 
-void SceneReaderWriter::writeAgent(Agent *agent, QTextStream &stream) const {
+void SceneReaderWriter::writeAgent(const Agent *agent, QTextStream &stream) const {
     QDir scenePath = m_scene->fileName();
     scenePath.setPath(scenePath.absolutePath());
     scenePath.cdUp();
@@ -88,7 +84,7 @@ void SceneReaderWriter::writeAgent(Agent *agent, QTextStream &stream) const {
     stream << "endAgent" << Qt::endl;
 }
 
-void SceneReaderWriter::writeGenerator(GeneratorBase *generator, QTextStream &stream) const {
+void SceneReaderWriter::writeGenerator(GeneratorBase *generator, QTextStream &stream) {
     stream << "generator " << Qt::endl;
     stream << _indent << "type " << QMetaEnum::fromType<BrainiacGlobals::ItemType>().valueToKey(
         generator->type()) << Qt::endl;
@@ -141,7 +137,7 @@ void SceneReaderWriter::clearConfigBlock(ConfigBlock &confBlock) {
     confBlock.type = BaseReaderWriter::UNKNOWN;
 }
 
-void SceneReaderWriter::addAgent(ConfigBlock &confBlock) {
+void SceneReaderWriter::addAgent(const ConfigBlock &confBlock) {
     Agent *newAgent = nullptr;
     QString agentName;
     foreach(auto line, confBlock.lines) {
@@ -170,7 +166,7 @@ void SceneReaderWriter::addAgent(ConfigBlock &confBlock) {
     }
 }
 
-void SceneReaderWriter::addGenerator(ConfigBlock &confBlock) {
+void SceneReaderWriter::addGenerator(const ConfigBlock &confBlock) {
     GeneratorBase *generator = nullptr;
     foreach(auto line, confBlock.lines) {
         auto words = line.split(" ");
@@ -190,21 +186,21 @@ void SceneReaderWriter::addGenerator(ConfigBlock &confBlock) {
                     qFatal() << "Unknown generator type";
                 }
             }
-            addGeneratorHandle2fields(generator, words.at(0), words.at(1));
+            addGeneratorHandle2Fields(generator, words.at(0), words.at(1));
             continue;
         }
         if (numOfWords == 3) {
-            addGeneratorHandle3fields(generator, words.at(0), words.at(1), words.at(2));
+            addGeneratorHandle3Fields(generator, words.at(0), words.at(1), words.at(2));
             continue;
         }
         if (numOfWords == 4) {
-            addGeneratorHandle4fields(generator, words.at(0), words.at(1), words.at(2), words.at(3));
+            addGeneratorHandle4Fields(generator, words.at(0), words.at(1), words.at(2), words.at(3));
             continue;
         }
     }
 }
 
-void SceneReaderWriter::addGeneratorHandle2fields(GeneratorBase *generator,
+void SceneReaderWriter::addGeneratorHandle2Fields(GeneratorBase *generator,
                                                   const QString &field1,
                                                   const QString &field2) {
     if (field1 == "type") {
@@ -272,13 +268,12 @@ void SceneReaderWriter::addGeneratorHandle2fields(GeneratorBase *generator,
     }
 }
 
-void SceneReaderWriter::addGeneratorHandle3fields(GeneratorBase *generator, const QString &field1,
-                                                  const QString &field2, const QString &field3) {
+void SceneReaderWriter::addGeneratorHandle3Fields(GeneratorBase *generator, const QString &field1,
+                                                  const QString &field2, const QString &field3) const {
     if (field1 == "agentName") {
         // Handles the ratios
         if (generator) {
-            auto agent = m_scene->agentByName(field2);
-            if (agent) {
+            if (const auto agent = m_scene->agentByName(field2)) {
                 generator->appendAgent(agent);
             } else {
                 qFatal() << "Unknown Agent!";
@@ -288,7 +283,7 @@ void SceneReaderWriter::addGeneratorHandle3fields(GeneratorBase *generator, cons
     }
 }
 
-void SceneReaderWriter::addGeneratorHandle4fields(GeneratorBase *generator, const QString &field1,
+void SceneReaderWriter::addGeneratorHandle4Fields(GeneratorBase *generator, const QString &field1,
                                                   const QString &field2, const QString &field3, const QString &field4) {
     if (field1 == "centerPoint") {
         if (auto genPoint = qobject_cast<GeneratorPoint *>(generator)) {

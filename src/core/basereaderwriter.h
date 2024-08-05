@@ -22,6 +22,8 @@ public:
     static void clearConfigBlock(ConfigBlock &confBlock);
 
 protected:
+    static void checkUnknown(const ConfigBlock &confBlock);
+
     inline static const QString _indent = "    ";
 signals:
 };

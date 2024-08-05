@@ -112,7 +112,9 @@ void Scene::setFileName(const QString &newFileName) {
 }
 
 bool Scene::save() {
-    return m_sceneReaderWriter->saveAsBSF();
+    bool ok = m_sceneReaderWriter->saveAsBSF();
+    qWarning() << "Error while saving the scene!";
+    return ok;
 }
 
 bool Scene::load() {

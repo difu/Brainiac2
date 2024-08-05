@@ -37,8 +37,7 @@ bool AgentReaderWriter::loadFromBAF()
     return success;
 }
 
-void AgentReaderWriter::parseFields(const QStringList &fields, ConfigBlock &confBlock)
-{
+void AgentReaderWriter::parseFields(const QStringList &fields, ConfigBlock &confBlock) const {
     using Action = std::function<void(void)>;
     const std::map<QString, Action> actionMap = {
         {"segment",
@@ -67,13 +66,6 @@ void AgentReaderWriter::parseFields(const QStringList &fields, ConfigBlock &conf
         if (actionMap.find(field) != actionMap.end()) {
             actionMap.at(field)();
         }
-    }
-}
-
-void AgentReaderWriter::checkUnknown(const ConfigBlock &confBlock)
-{
-    if (confBlock.type != AgentReaderWriter::UNKNOWN) {
-        qCritical() << "Parsing error!";
     }
 }
 
@@ -248,7 +240,7 @@ void AgentReaderWriter::writeFuzz(FuzzyBase *fuzz, QTextStream &stream) const
     stream << "endFuzz" << Qt::endl;
 }
 
-void AgentReaderWriter::writeConnections(FuzzyBase *fuzz, QTextStream &stream) const {
+void AgentReaderWriter::writeConnections(const FuzzyBase *fuzz, QTextStream &stream) {
     stream << "connections " << fuzz->name() << Qt::endl;
     foreach(auto *childFuzz, fuzz->children()) {
         foreach(FuzzyBase::Parent par, childFuzz->parents()) {
@@ -294,8 +286,7 @@ void AgentReaderWriter::processBoneInformation(ConfigBlock &confBlock, Bone *new
 
 void AgentReaderWriter::handleTwoFields(const QStringList &fields,
                                         Bone *newBone,
-                                        QString &segmentName) const
-{
+                                        const QString &segmentName) const {
     if (fields.at(0) == "segment") {
         const QString &new_name = fields.at(1);
         newBone->setBoneName(new_name);

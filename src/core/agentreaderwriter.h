@@ -56,38 +56,38 @@ private:
 
     void processBoneInformation(ConfigBlock &confBlock, Bone *newBone) const;
 
-    void handleTwoFields(const QStringList &fields, Bone *newBone, QString &segmentName) const;
+ void handleTwoFields(const QStringList &fields, Bone *newBone, const QString &segmentName) const;
 
-    static void handleThreeFields(const QStringList &fields, Bone *newBone) ;
+ static void handleThreeFields(const QStringList &fields, Bone *newBone);
 
-    static void handleFourFields(const QStringList &fields, Bone *newBone) ;
+ static void handleFourFields(const QStringList &fields, Bone *newBone);
 
-    static QVector3D createVectorFromFields(const QStringList &fields);
+ static QVector3D createVectorFromFields(const QStringList &fields);
 
-    /**
-     * Adds a fuzz to the agent.
-     *
-     * This method adds a fuzz to the agent based on the provided ConfigBlock. The ConfigBlock should contain the necessary
-     * information to create the fuzz, including its type and attributes.
-     *
-     * The method first checks if the fuzz type is found in the ConfigBlock. If it is not found, the method does nothing.
-     *
-     * If the fuzz type is found, the method creates a FuzzyBase pointer, fuzz, and initializes it to nullptr. The method then
-     * checks the itemType of the ConfigBlock to determine which type of fuzz to create.
-     *
-     * For example, if the itemType is BrainiacGlobals::NOISE, the method calls the addNoiseNode method of the agent's brain, passing in
-     * the newId parameter, and assigns the returned fuzz to the fuzz pointer.
-     *
-     * After creating the fuzz, the method iterates over each line in the ConfigBlock. For each line, the method splits the line
-     * into fields using a space as the delimiter.
-     *
-     * @param confBlock The ConfigBlock containing the information to create the fuzz.
-     *
-     * @see FuzzyBase, BrainiacGlobals::ItemType, addNoiseNode
-     */
-    void addFuzz(ConfigBlock &confBlock) const;
+ /**
+  * Adds a fuzz to the agent.
+  *
+  * This method adds a fuzz to the agent based on the provided ConfigBlock. The ConfigBlock should contain the necessary
+  * information to create the fuzz, including its type and attributes.
+  *
+  * The method first checks if the fuzz type is found in the ConfigBlock. If it is not found, the method does nothing.
+  *
+  * If the fuzz type is found, the method creates a FuzzyBase pointer, fuzz, and initializes it to nullptr. The method then
+  * checks the itemType of the ConfigBlock to determine which type of fuzz to create.
+  *
+  * For example, if the itemType is BrainiacGlobals::NOISE, the method calls the addNoiseNode method of the agent's brain, passing in
+  * the newId parameter, and assigns the returned fuzz to the fuzz pointer.
+  *
+  * After creating the fuzz, the method iterates over each line in the ConfigBlock. For each line, the method splits the line
+  * into fields using a space as the delimiter.
+  *
+  * @param confBlock The ConfigBlock containing the information to create the fuzz.
+  *
+  * @see FuzzyBase, BrainiacGlobals::ItemType, addNoiseNode
+  */
+ void addFuzz(ConfigBlock &confBlock) const;
 
-    void checkAgentEmpty() const;
+ void checkAgentEmpty() const;
 
  /**
   * Identifies the primitive type specified in the given configuration block.
@@ -114,9 +114,7 @@ private:
   * @param fields The list of fields to parse.
   * @param confBlock The configuration block to update.
   */
- void parseFields(const QStringList &fields, ConfigBlock &confBlock);
-
- static void checkUnknown(const ConfigBlock &confBlock);
+ void parseFields(const QStringList &fields, ConfigBlock &confBlock) const;
 
  void processSegment(ConfigBlock &confBlock) const;
 
@@ -150,7 +148,7 @@ private:
   */
  void writeFuzz(FuzzyBase *fuzz, QTextStream &stream) const;
 
- void writeConnections(FuzzyBase *fuzz, QTextStream &stream) const;
+ static void writeConnections(const FuzzyBase *fuzz, QTextStream &stream);
 
 signals:
 };
