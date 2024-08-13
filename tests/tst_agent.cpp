@@ -5,7 +5,6 @@
 #include "src/core/body/body.h"
 // #include "../src/core/brain/brain.h"
 // #include "../src/core/brainiacglobals.h"
-#include <QGraphicsScene>
 
 #include "src/core/scene.h"
 #include "src/core/brain/brain.h"
@@ -14,7 +13,6 @@
 #include "src/core/brain/fuzzyor.h"
 #include "src/core/brain/noise.h"
 #include "src/core/brain/fuzzyoutput.h"
-#include "src/core/generator/generatormanual.h"
 #include "src/core/generator/generatorpoint.h"
 
 void createTestAgent1(Agent *agent) { {
