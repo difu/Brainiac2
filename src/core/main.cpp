@@ -114,7 +114,7 @@ int main(int argc, char *argv[]) {
 
     // End Body
 
-    constexpr int numberOfLocators = 25;
+    constexpr int numberOfLocators = 1000;
     for (int i = 0; i < numberOfLocators; i++) {
         Locator *loc = gen1->addLocator(agent);
         loc->setLocation(QVector3D(50 - cos(i) * 200, 0, 50 + sin(i) * 200));
@@ -128,11 +128,11 @@ int main(int argc, char *argv[]) {
         loc->setRotation(QVector3D(0, 70 + i * 12, 0));
         loc->setSeed((i + 1) * 4);
     }
-    gen1->apply();
-    gen2->apply();
+    gen1->instanciateAgentInstances();
+    gen2->instanciateAgentInstances();
 
+    float i = 0.0;
     foreach(auto loc, gen1->locators()) {
-        float i = 0.0;
         loc->agentInstance()->outputChannels().value(BrainiacGlobals::CO_TZ)->setValue(4 + i / numberOfLocators);
         loc->agentInstance()->outputChannels().value(BrainiacGlobals::CO_RY)->setValue(1);
         i += 1.0;
@@ -157,7 +157,7 @@ int main(int argc, char *argv[]) {
 
     mainWindow.setMainEditor(agent->brain()->brainEditor());
 
-    scene->simulation()->setEndFrame(200);
+    scene->simulation()->setEndFrame(2000);
     scene->simulation()->startSimulation();
 
     // Debug

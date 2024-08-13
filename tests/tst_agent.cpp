@@ -21,11 +21,13 @@ void createTestAgent1(Agent *agent) { {
         BoneBox *rootBone = agent->body()->addBoneBox(1, 0, "root");
         BoneBox *leftBone = agent->body()->addBoneBox(2, 1, "left");
         BoneBox *rightBone = agent->body()->addBoneBox(3, 1, "right");
+        BoneBox *rightChildBone = agent->body()->addBoneBox(4, 3, "right_child");
         rootBone->setTranslation(QVector3D(0, 0, 0));
         rootBone->setSize(QVector3D(10, 20, 30));
         rootBone->setEditorPos(100, 100);
         leftBone->setTranslation(QVector3D(30, -20, 0));
         rightBone->setTranslation(QVector3D(-30, -20, 0));
+        rightChildBone->setTranslation(QVector3D(-30, 30, 10));
     } {
         // Brain
         auto *newNoise = agent->brain()->addNoiseNode();
@@ -151,7 +153,7 @@ void AgentTest::test_loadSave()
     loadAgent->save();
 
     QStringList errors;
-    bool equal = Agent::compare(agent, loadAgent, errors);
+    const bool equal = Agent::compare(agent, loadAgent, errors);
     if (!equal) {
         qInfo() << errors;
     }

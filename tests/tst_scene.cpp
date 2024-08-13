@@ -12,11 +12,13 @@ void createTestAgent1(Agent *agent) {
         BoneBox *rootBone = agent->body()->addBoneBox(1, 0, "root");
         BoneBox *leftBone = agent->body()->addBoneBox(2, 1, "left");
         BoneBox *rightBone = agent->body()->addBoneBox(3, 1, "right");
+        BoneBox *rightChildBone = agent->body()->addBoneBox(4, 3, "right_child");
         rootBone->setTranslation(QVector3D(0, 0, 0));
         rootBone->setSize(QVector3D(10, 20, 30));
         rootBone->setEditorPos(100, 100);
         leftBone->setTranslation(QVector3D(30, -20, 0));
         rightBone->setTranslation(QVector3D(-30, -20, 0));
+        rightChildBone->setTranslation(QVector3D(-30, 30, 10));
     }
 }
 
@@ -90,14 +92,14 @@ void SceneTest::test_loadSaveScene() {
     ::createTestScene1(&saveScene);
     auto sceneFileName = QString(rootTestDir.path()).append("/scene.bsf");
     saveScene.setFileName(sceneFileName);
-    const int numOfAgents = saveScene.agents().count();
+    const auto numOfAgents = saveScene.agents().count();
     QVERIFY2(numOfAgents==2, "Unexpected number of agents!");
     int agentIndex = 0;
     QList<QString> agentNames;
     foreach(auto *agent, saveScene.agents()) {
         QString agentName = QString("Agent").append(QString::number(agentIndex));
         agentNames.append(agentName);
-        bool setOk = agent->setName(agentName);
+        QVERIFY2(agent->setName(agentName), "Error when setting name");
         QString fileName = QString(agentFileDir.path()).append("/").append(agentName).append(".baf");
         agent->setFileName(fileName);
         QVERIFY2(agent->save(), "Could not save agent!");
