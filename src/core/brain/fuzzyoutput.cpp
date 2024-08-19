@@ -19,7 +19,7 @@ void FuzzyOutput::fromJson(QJsonObject obj) {
 }
 
 QJsonObject FuzzyOutput::toJson() const {
-    return QJsonObject();
+    return {};
 }
 
 BrainiacGlobals::BrainiacId FuzzyOutput::channelId() const {

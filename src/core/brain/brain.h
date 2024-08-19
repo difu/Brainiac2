@@ -106,7 +106,7 @@ public:
      */
     [[nodiscard]] FuzzyBase *fuzzyByName(const QString &fuzzName);
 
-    static void compare(Brain *brain1, Brain *brain2, QStringList &differences);
+    static void compare(const Brain *brain1, const Brain *brain2, QStringList &differences);
 
    private:
     Agent *m_agent;

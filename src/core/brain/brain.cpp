@@ -98,7 +98,7 @@ FuzzyBase *Brain::fuzzyByName(const QString &fuzzName) {
     return nullptr;
 }
 
-void Brain::compare(Brain *brain1, Brain *brain2, QStringList &differences) {
+void Brain::compare(const Brain *brain1, const Brain *brain2, QStringList &differences) {
     if (brain1->fuzzies().count() != brain2->fuzzies().count()) {
         differences.append(QString("Different number of fuzzies"));
     } else {
@@ -114,14 +114,14 @@ void Brain::compareFuzzies(const FuzzyBase *fuzz, const QHash<BrainiacGlobals::B
     foreach(auto *otherFuzz, brain2Fuzzies) {
         if (otherFuzz->type() == fuzz->type() && otherFuzz->name() == fuzz->name()) {
             otherFuzzFound = true;
-            if (!(fuzz->editorPos() == otherFuzz->editorPos())) {
+            if (fuzz->editorPos() != otherFuzz->editorPos()) {
                 differences.append(QString("EditorPos differs: ").append(std::to_string(fuzz->id())));
             }
-            if (!(fuzz->children().count() == otherFuzz->children().count())) {
+            if (fuzz->children().count() != otherFuzz->children().count()) {
                 differences.append(QString("Number of children differs: ").append(std::to_string(fuzz->id())));
             } else {
             }
-            if (!(fuzz->parents().count() == otherFuzz->parents().count())) {
+            if (fuzz->parents().count() != otherFuzz->parents().count()) {
                 differences.append(QString("Number of parents differs: ").append(std::to_string(fuzz->id())));
             }
         }

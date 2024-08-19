@@ -24,7 +24,7 @@ void Noise::fromJson(QJsonObject obj) {}
 
 QJsonObject Noise::toJson() const
 {
-    return QJsonObject();
+    return {};
 }
 
 qreal Noise::rate() const
@@ -46,7 +46,7 @@ qreal Noise::result(const AgentInstance *agentInstance)
     if(agentInstance->instanceBrain()->hasResult(this->id())) {
         return agentInstance->instanceBrain()->fuzzyResults().value(this->id());
     }
-    qreal result=0.0;
+    qreal result = 0.0;
     const quint32 seed = agentInstance->locator()->seed() * this->id();
     if (!qFuzzyCompare(m_rate, 0.0)) {
         const quint32 currentFrame = m_brain->agent()->scene()->simulation()->currentFrame();

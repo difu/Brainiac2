@@ -2,7 +2,6 @@
 #include "brain.h"
 #include "src/core/agent.h"
 #include "src/core/agentinstance.h"
-#include "src/core/brain/fuzzyoutput.h"
 
 AgentInstanceBrain::AgentInstanceBrain(QObject *parent)
     : QObject{parent}
@@ -36,9 +35,10 @@ void AgentInstanceBrain::setResult(BrainiacGlobals::BrainiacId id, qreal result)
     m_fuzzyResults.insert(id, result);
 }
 
-void AgentInstanceBrain::think() {
+void AgentInstanceBrain::think() const {
     foreach(FuzzyBase *fuzz, m_brain->fuzzies()) {
         qreal result = fuzz->result(m_agentInstance);
+        Q_UNUSED(result);
         // qDebug() << "Fuzzy " << fuzz->name() << " result: " << result;
     }
 }

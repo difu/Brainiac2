@@ -10,7 +10,7 @@ void FuzzyInput::fromJson(QJsonObject obj) {}
 
 QJsonObject FuzzyInput::toJson() const
 {
-    return QJsonObject();
+    return {};
 }
 
 BrainiacGlobals::BrainiacId FuzzyInput::channelId() const
