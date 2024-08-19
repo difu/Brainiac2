@@ -22,7 +22,7 @@
 #include "src/gui/mainwindow.h"
 
 int main(int argc, char *argv[]) {
-    qSetMessagePattern("%{file}:%{line} %{function} -> %{if-category}%{category}: %{endif}%{message}");
+    qSetMessagePattern("%{file}:%{line} %{type} %{function} -> %{if-category}%{category}: %{endif}%{message}");
 
     QApplication app(argc, argv);
 
@@ -55,6 +55,11 @@ int main(int argc, char *argv[]) {
     }
     auto *agent2 = new Agent(scene);
     if (!agent2->setName("Agent2_NoBody")) {
+        qFatal("Agent with the same name exists");
+    }
+
+    auto *agent3 = new Agent(scene);
+    if (!agent3->setName("Agent3_NoBody")) {
         qFatal("Agent with the same name exists");
     }
 
@@ -106,45 +111,79 @@ int main(int argc, char *argv[]) {
         BoneBox *rootBone = agent2->body()->addBoneBox(1, 0, "root2");
         BoneBox *leftBone = agent2->body()->addBoneBox(2, 1, "left2");
         BoneBox *rightBone = agent2->body()->addBoneBox(3, 1, "right2");
+        BoneBox *topBone = agent2->body()->addBoneBox(4, 1, "top");
         rootBone->setTranslation(QVector3D(0, 0, 0));
         leftBone->setTranslation(QVector3D(10, 30, 0));
         rightBone->setTranslation(QVector3D(-10, 30, 0));
+        topBone->setTranslation(QVector3D(0, 50, 0));
+        // qDebug().noquote() << "Body QML :" << agent2->body()->skeletonQML();
+    } {
+        BoneBox *rootBone = agent3->body()->addBoneBox(1, 0, "root3");
+        BoneBox *leftBone = agent3->body()->addBoneBox(2, 1, "left3");
+        BoneBox *rightBone = agent3->body()->addBoneBox(3, 1, "right3");
+        BoneBox *topBone = agent3->body()->addBoneBox(4, 1, "top3");
+        rootBone->setTranslation(QVector3D(0, -100, 0));
+        leftBone->setTranslation(QVector3D(10, 30, 0));
+        rightBone->setTranslation(QVector3D(-10, 30, 0));
+        topBone->setTranslation(QVector3D(0, 50, 0));
         // qDebug().noquote() << "Body QML :" << agent2->body()->skeletonQML();
     }
 
     // End Body
 
-    constexpr int numberOfLocators = 1000;
-    for (int i = 0; i < numberOfLocators; i++) {
-        Locator *loc = gen1->addLocator(agent);
-        loc->setLocation(QVector3D(50 - cos(i) * 200, 0, 50 + sin(i) * 200));
-        loc->setRotation(QVector3D(0, 50 + i * 10, 0));
-        loc->setSeed((i + 1) * 4);
-    }
+    auto generatorPoint = new GeneratorPoint(scene);
+    generatorPoint->setCenterPoint(QVector3D(-1100, 0, 200));
+    generatorPoint->setColumns(20);
+    generatorPoint->setRows(20);
+    generatorPoint->setDistance(90);
+    generatorPoint->setNumTotalAgents(400);
+    generatorPoint->addAgent(agent, 0);
+    generatorPoint->addAgent(agent2, 1);
+    generatorPoint->addAgent(agent3, 2);
+    generatorPoint->updateLocators();
 
-    for (int i = 0; i < numberOfLocators; i++) {
-        Locator *loc = gen2->addLocator(agent2);
-        loc->setLocation(QVector3D(20 - cos(i) * 180, 0, 60 + sin(i) * 200));
-        loc->setRotation(QVector3D(0, 70 + i * 12, 0));
-        loc->setSeed((i + 1) * 4);
-    }
-    gen1->instanciateAgentInstances();
-    gen2->instanciateAgentInstances();
+    generatorPoint->instanciateAgentInstances();
+
+    auto generatorPoint2 = new GeneratorPoint(scene);
+    generatorPoint2->setCenterPoint(QVector3D(2500, 0, -200));
+    generatorPoint2->setColumns(20);
+    generatorPoint2->setRows(20);
+    generatorPoint2->setDistance(90);
+    generatorPoint2->setNumTotalAgents(400);
+    generatorPoint2->addAgent(agent, 0);
+    generatorPoint2->addAgent(agent2, 1);
+    generatorPoint2->addAgent(agent3, 2);
+    generatorPoint2->updateLocators();
+
+    generatorPoint2->instanciateAgentInstances();
 
     float i = 0.0;
-    foreach(auto loc, gen1->locators()) {
-        loc->agentInstance()->outputChannels().value(BrainiacGlobals::CO_TZ)->setValue(4 + i / numberOfLocators);
-        loc->agentInstance()->outputChannels().value(BrainiacGlobals::CO_RY)->setValue(1);
+    foreach(auto loc, generatorPoint->locators()) {
+        if (loc->agentInstance()) {
+            loc->agentInstance()
+                    ->outputChannels()
+                    .value(BrainiacGlobals::CO_TZ)
+                    ->setValue(4 + i / 10);
+            loc->agentInstance()
+                    ->outputChannels()
+                    .value(BrainiacGlobals::CO_RY)
+                    ->setValue(2 + i / 10);
+        }
         i += 1.0;
     }
-    foreach (auto loc, gen2->locators()) {
-        float i = 0.0;
-        loc->agentInstance()
-            ->outputChannels()
-            .value(BrainiacGlobals::CO_TZ)
-            ->setValue(5 + i / numberOfLocators);
-        loc->agentInstance()->outputChannels().value(BrainiacGlobals::CO_RY)->setValue(1);
-        i += 1.0;
+    i = -5.5;
+    foreach(auto loc, generatorPoint2->locators()) {
+        if (loc->agentInstance()) {
+            loc->agentInstance()
+                    ->outputChannels()
+                    .value(BrainiacGlobals::CO_TZ)
+                    ->setValue(0.2 + i / 12);
+            loc->agentInstance()
+                    ->outputChannels()
+                    .value(BrainiacGlobals::CO_RY)
+                    ->setValue(1.2 + i / 12);
+        }
+        i += 0.2;
     }
 
     AgentInstance *myInstance = scene->agentInstances().constFirst();
@@ -157,7 +196,7 @@ int main(int argc, char *argv[]) {
 
     mainWindow.setMainEditor(agent->brain()->brainEditor());
 
-    scene->simulation()->setEndFrame(2000);
+    scene->simulation()->setEndFrame(1600);
     scene->simulation()->startSimulation();
 
     // Debug
