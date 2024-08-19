@@ -4,7 +4,6 @@
 #include <QMetaObject>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include <QQuickView>
 #include <QtQuick3D/qquick3d.h>
 #include "agent.h"
 #include "agentinstance.h"
@@ -13,7 +12,6 @@
 #include "brain/fuzzyoutput.h"
 #include "brain/fuzzyand.h"
 #include "brainiacglobals.h"
-#include "generator/generatormanual.h"
 #include "generator/locator.h"
 #include "scene.h"
 #include "simulation.h"
@@ -31,24 +29,23 @@ int main(int argc, char *argv[]) {
 
     QQmlApplicationEngine engine;
     QQmlContext context(&engine);
-    QObject::connect(
+    const auto connection = QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreationFailed,
         &app,
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
+    Q_UNUSED(connection);
     engine.loadFromModule("BrainiacViewer", "MainViewer");
 
     //QWidget widget;
     //widget.show();
 
-    Scene *scene = new Scene;
+    auto *scene = new Scene;
     MainWindow mainWindow(scene);
     mainWindow.setGeometry(100, 100, 800, 500);
     mainWindow.show();
     scene->setQQmlApplivationEngine(&engine);
-    GeneratorManual *gen1 = new GeneratorManual(scene);
-    GeneratorManual *gen2 = new GeneratorManual(scene);
 
     auto *agent = new Agent(scene);
     if (!agent->setName("Agent1_Body")) {
