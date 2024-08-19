@@ -19,6 +19,7 @@
 #include "simulation.h"
 #include "body/body.h"
 #include "brain/fuzzyor.h"
+#include "generator/generatorpoint.h"
 #include "src/gui/mainwindow.h"
 
 int main(int argc, char *argv[]) {
