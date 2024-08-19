@@ -81,8 +81,8 @@ private:
      */
     void addCube(QVector3D position,
                  QVector3D dimensions,
-                 QList<qint32> joints,
-                 QList<float> weights);
+                 const QList<qint32> &joints,
+                 const QList<float> &weights);
 
     /**
      * @brief Add a cube to the skin geometry.

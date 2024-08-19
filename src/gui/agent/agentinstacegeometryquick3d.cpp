@@ -20,7 +20,7 @@ struct Vertex {
     float pad{};
 };
 
-static const int s_vertexSize = sizeof(Vertex);
+static constexpr int s_vertexSize = sizeof(Vertex);
 
 AgentInstaceGeometryQuick3D::AgentInstaceGeometryQuick3D()
 {
@@ -61,10 +61,10 @@ void AgentInstaceGeometryQuick3D::updateData()
 
         const QColor agentQColor = BrainiacGlobals::BrainiacColor(agentColor).toRgb();
 
-        const float red = (float) agentQColor.redF();
-        const float green = (float) agentQColor.greenF();
-        const float blue = (float) agentQColor.blueF();
-        const float alpha = (float) agentQColor.alphaF();
+        const auto red = (float) agentQColor.redF();
+        const auto green = (float) agentQColor.greenF();
+        const auto blue = (float) agentQColor.blueF();
+        const auto alpha = (float) agentQColor.alphaF();
 
         // qDebug() << "Color of agent r: " << red;
         // qDebug() << "Color of agent g: " << green;
@@ -75,7 +75,7 @@ void AgentInstaceGeometryQuick3D::updateData()
         static constexpr int stride = 7 * sizeof(float);
 
         QByteArray vertexData(3 * stride, Qt::Initialization::Uninitialized);
-        float *p = reinterpret_cast<float *>(vertexData.data());
+        auto *p = reinterpret_cast<float *>(vertexData.data());
         *p++ = -10.0f;
         *p++ = .0f;
         *p++ = -10.0f;
@@ -133,7 +133,7 @@ void AgentInstaceGeometryQuick3D::setMarkerGeometryIsDirty() {
 
 QVariant AgentInstaceGeometryQuick3D::agentInstance() const
 {
-    QPointer<AgentInstance> qp(m_agentInstance);
+    const QPointer<AgentInstance> qp(m_agentInstance);
     QVariant qv = QVariant::fromValue(qp);
     return qv;
 }
@@ -236,32 +236,36 @@ QList<quint32> AgentInstaceGeometryQuick3D::indexes() const {
 }
 
 void AgentInstaceGeometryQuick3D::setVertexPositions(const QList<QVector3D> &vertexPositions) {
-    if (vertexPositions == m_vertexPositions)
+    if (vertexPositions == m_vertexPositions) {
         return;
+    }
     m_vertexPositions = vertexPositions;
     // emit positionsChanged();
     m_vertexDirty = true;
 }
 
 void AgentInstaceGeometryQuick3D::setJoints(const QList<qint32> &joints) {
-    if (joints == m_joints)
+    if (joints == m_joints) {
         return;
+    }
     m_joints = joints;
     // emit jointsChanged();
     m_vertexDirty = true;
 }
 
 void AgentInstaceGeometryQuick3D::setWeights(const QList<float> &weights) {
-    if (weights == m_weights)
+    if (weights == m_weights) {
         return;
+    }
     m_weights = weights;
     // emit weightsChanged();
     m_vertexDirty = true;
 }
 
 void AgentInstaceGeometryQuick3D::setIndexes(const QList<quint32> &indexes) {
-    if (indexes == m_indexes)
+    if (indexes == m_indexes) {
         return;
+    }
     m_indexes = indexes;
     // emit indexesChanged();
     m_indexDirty = true;
@@ -281,21 +285,23 @@ QSSGRenderGraphObject *AgentInstaceGeometryQuick3D::updateSpatialNode(QSSGRender
         auto boundsMin = QVector3D(maxFloat, maxFloat, maxFloat);
         auto boundsMax = QVector3D(-maxFloat, -maxFloat, -maxFloat);
 
-        const int numVertexes = m_vertexPositions.size();
+        const auto numVertexes = m_vertexPositions.size();
         m_vertexBuffer.resize(numVertexes * s_vertexSize);
-        Vertex *vert = reinterpret_cast<Vertex *>(m_vertexBuffer.data());
+        auto *vert = reinterpret_cast<Vertex *>(m_vertexBuffer.data());
 
         for (int i = 0; i < numVertexes; ++i) {
             Vertex &v = vert[i];
             v.position = m_vertexPositions[i];
-            if (m_joints.size() >= 4 * (i + 1))
+            if (m_joints.size() >= 4 * (i + 1)) {
                 memcpy(v.joints, m_joints.constData() + 4 * i, 4 * sizeof(qint32));
-            else
+            } else {
                 v.joints[0] = v.joints[1] = v.joints[2] = v.joints[3] = 0;
-            if (m_weights.size() >= 4 * (i + 1))
+            }
+            if (m_weights.size() >= 4 * (i + 1)) {
                 memcpy(v.weights, m_weights.constData() + 4 * i, 4 * sizeof(float));
-            else
+            } else {
                 v.weights[0] = v.weights[1] = v.weights[2] = v.weights[3] = 0.0f;
+            }
 
             boundsMin.setX(std::min(boundsMin.x(), v.position.x()));
             boundsMin.setY(std::min(boundsMin.y(), v.position.y()));
@@ -342,10 +348,10 @@ void AgentInstaceGeometryQuick3D::addCube(QVector3D position, QVector3D dimensio
     addCube(position, dimensions, temp_joints, temp_weights);
 }
 
-void AgentInstaceGeometryQuick3D::addCube(QVector3D position,
-                                          QVector3D dimensions,
-                                          QList<qint32> joints,
-                                          QList<float> weights) {
+void AgentInstaceGeometryQuick3D::addCube(const QVector3D position,
+                                          const QVector3D dimensions,
+                                          const QList<qint32> &joints,
+                                          const QList<float> &weights) {
     QList<QVector3D> verts;
     quint32 newVertexIndexOffset = m_vertexPositions.size();
     verts.append((QVector3D(-0.5, -0.5, -0.5) * dimensions) + position);
