@@ -88,7 +88,7 @@ void AgentInstance::addInputChannel(BrainiacGlobals::BrainiacId id,
     //          << "Defaults: " << newChannel->defaults()->value;
 }
 
-void AgentInstance::addOutputChannel(BrainiacGlobals::BrainiacId id,
+void AgentInstance::addOutputChannel(const BrainiacGlobals::BrainiacId id,
                                      Channel::ChannelDefaults *defaults)
 {
     if(m_outputChannels.contains(id)){
