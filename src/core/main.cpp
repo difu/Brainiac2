@@ -101,8 +101,11 @@ int main(int argc, char *argv[]) {
         BoneBox *leftBone = agent->body()->addBoneBox(2, 1, "left");
         BoneBox *rightBone = agent->body()->addBoneBox(3, 1, "right");
         rootBone->setTranslation(QVector3D(0, 0, 0));
+        rootBone->setSize(QVector3D(10, 10, 10));
         leftBone->setTranslation(QVector3D(30, -20, 0));
+        leftBone->setSize(QVector3D(20, 10, 10));
         rightBone->setTranslation(QVector3D(-30, -20, 0));
+        rightBone->setSize(QVector3D(20, 10, 30));
         // qDebug().noquote() << "Body QML :" << agent->body()->skeletonQML();
     }
     {
@@ -111,8 +114,11 @@ int main(int argc, char *argv[]) {
         BoneBox *rightBone = agent2->body()->addBoneBox(3, 1, "right2");
         BoneBox *topBone = agent2->body()->addBoneBox(4, 1, "top");
         rootBone->setTranslation(QVector3D(0, 0, 0));
+        rootBone->setSize(QVector3D(40, 40, 40));
         leftBone->setTranslation(QVector3D(10, 30, 0));
+        leftBone->setSize(QVector3D(10, 10, 10));
         rightBone->setTranslation(QVector3D(-10, 30, 0));
+        rightBone->setSize(QVector3D(20, 10, 30));
         topBone->setTranslation(QVector3D(0, 50, 0));
         // qDebug().noquote() << "Body QML :" << agent2->body()->skeletonQML();
     } {
@@ -121,9 +127,13 @@ int main(int argc, char *argv[]) {
         BoneBox *rightBone = agent3->body()->addBoneBox(3, 1, "right3");
         BoneBox *topBone = agent3->body()->addBoneBox(4, 1, "top3");
         rootBone->setTranslation(QVector3D(0, -100, 0));
+        rootBone->setSize(QVector3D(10, 10, 10));
         leftBone->setTranslation(QVector3D(10, 30, 0));
+        leftBone->setSize(QVector3D(20, 10, 10));
         rightBone->setTranslation(QVector3D(-10, 30, 0));
+        rightBone->setSize(QVector3D(20, 10, 30));
         topBone->setTranslation(QVector3D(0, 50, 0));
+        topBone->setSize(QVector3D(10, 10, 10));
         // qDebug().noquote() << "Body QML :" << agent2->body()->skeletonQML();
     }
 

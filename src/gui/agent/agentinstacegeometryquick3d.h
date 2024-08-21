@@ -90,6 +90,8 @@ private:
      * This method adds a cube to the skin geometry with the specified position and dimensions.
      * The cube is associated with the specified joint.
      *
+     * @note the position is the absolute position in the agent space.
+     *
      * @param position The position of the cube.
      * @param dimensions The dimensions of the cube.
      * @param joint The joint associated with the cube.
