@@ -9,8 +9,7 @@
 #include "src/core/simulation.h"
 
 Scene::Scene(QObject *parent)
-    : QObject{parent}
-{
+    : QObject{parent}, m_uniqueAgentInstanceId(1) {
     m_sceneReaderWriter = new SceneReaderWriter(this);
     setObjectName("Scene");
     m_simulation=new Simulation(this);
@@ -35,6 +34,11 @@ void Scene::addAgentInstance(AgentInstance *newAgentInstance)
     QMetaObject::invokeMethod(m_agentInstanceSpawner, "addAgentInstance", Q_ARG(QVariant, qv_agentInstance),
                               Q_ARG(QVariant, qv_agentInstanceQML));
     m_agentInstances.append(newAgentInstance);
+}
+
+BrainiacGlobals::BrainiacId Scene::uniqueAgentInstanceId() const {
+    QMutexLocker locker(&m_instanceIdMutex); // Ensures thread safety
+    return ++m_uniqueAgentInstanceId;
 }
 
 QQmlApplicationEngine *Scene::qQmlApplicationEngine() const

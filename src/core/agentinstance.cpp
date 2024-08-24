@@ -23,6 +23,7 @@ AgentInstance::AgentInstance(Locator *locator, Agent *parent)
     m_geometryQuick3DNode = nullptr;
     m_instanceBrain = new AgentInstanceBrain(this);
     m_agentInstanceBody = new AgentInstanceBody(this);
+    m_id = m_agent->scene()->uniqueAgentInstanceId();
 
     /**
         Take care that @ref Locator and @ref AgentInstance know each other.

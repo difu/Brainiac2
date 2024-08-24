@@ -134,7 +134,7 @@ int main(int argc, char *argv[]) {
     generatorPoint->setColumns(20);
     generatorPoint->setRows(20);
     generatorPoint->setDistance(90);
-    generatorPoint->setNumTotalAgents(400);
+    generatorPoint->setNumTotalAgents(3);
     generatorPoint->addAgent(agent, 0);
     generatorPoint->addAgent(agent2, 1);
     generatorPoint->addAgent(agent3, 2);
@@ -147,7 +147,7 @@ int main(int argc, char *argv[]) {
     generatorPoint2->setColumns(20);
     generatorPoint2->setRows(20);
     generatorPoint2->setDistance(90);
-    generatorPoint2->setNumTotalAgents(400);
+    generatorPoint2->setNumTotalAgents(3);
     generatorPoint2->addAgent(agent, 0);
     generatorPoint2->addAgent(agent2, 1);
     generatorPoint2->addAgent(agent3, 2);
