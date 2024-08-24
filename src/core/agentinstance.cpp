@@ -123,7 +123,7 @@ AgentInstaceGeometryQuick3D *AgentInstance::geometryQuick3DNode() const
 QString AgentInstance::instanceQML() const {
     QFile file(":gui/AgentInstance.qml");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qFatal() << "Could not open gentInstance.qml";
+        qFatal() << "Could not open AgentInstance.qml";
     }
     QTextStream in(&file);
     QString qml = in.readAll();
