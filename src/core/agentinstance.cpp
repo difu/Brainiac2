@@ -23,7 +23,7 @@ AgentInstance::AgentInstance(Locator *locator, Agent *parent)
     m_geometryQuick3DNode = nullptr;
     m_instanceBrain = new AgentInstanceBrain(this);
     m_agentInstanceBody = new AgentInstanceBody(this);
-    m_id = m_agent->scene()->uniqueAgentInstanceId();
+    m_id = uniqueAgentInstanceId();
 
     /**
         Take care that @ref Locator and @ref AgentInstance know each other.
@@ -75,6 +75,14 @@ AgentInstance::AgentInstance(Locator *locator, Agent *parent)
     addOutputChannel(BrainiacGlobals::CO_COLOR, channeldefaults);
 
     reset();
+}
+
+BrainiacGlobals::BrainiacId AgentInstance::m_uniqueAgentInstanceId = 0;
+QMutex AgentInstance::m_instanceIdMutex;
+
+BrainiacGlobals::BrainiacId AgentInstance::uniqueAgentInstanceId() {
+    QMutexLocker locker(&AgentInstance::m_instanceIdMutex); // Ensures thread safety
+    return ++m_uniqueAgentInstanceId;
 }
 
 void AgentInstance::addInputChannel(BrainiacGlobals::BrainiacId id,
@@ -249,4 +257,8 @@ void AgentInstance::reset()
 
     m_newTranslation = m_translation;
     m_newRotation = m_rotation;
+}
+
+BrainiacGlobals::BrainiacId AgentInstance::id() const {
+    return m_id;
 }
