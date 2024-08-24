@@ -5,6 +5,8 @@
 
 #include <QHash>
 #include <QList>
+#include <QMutex>
+#include <QMutexLocker>
 #include <QVector3D>
 
 #include "brainiacglobals.h"
@@ -109,14 +111,20 @@ private:
     AgentInstanceBrain *m_instanceBrain;
     AgentInstanceBody *m_agentInstanceBody;
 
+    static QMutex m_instanceIdMutex;
+    static BrainiacGlobals::BrainiacId m_uniqueAgentInstanceId;
+
 public:
     [[nodiscard]] AgentInstanceBrain *instanceBrain() const { return m_instanceBrain; }
 
 private:
     BrainiacGlobals::BrainiacId m_id;
 
+    static BrainiacGlobals::BrainiacId uniqueAgentInstanceId();
+
 public:
-    BrainiacGlobals::BrainiacId id() const { return m_id; }
+    [[nodiscard]] BrainiacGlobals::BrainiacId id() const;
+
     AgentInstaceGeometryQuick3D *m_geometryQuick3DNode;
     Locator *m_locator;
     QVector3D m_translation;

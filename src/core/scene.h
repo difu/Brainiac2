@@ -63,8 +63,6 @@ public:
 
     void addAgentInstance(AgentInstance *newAgentInstance);
 
-    BrainiacGlobals::BrainiacId uniqueAgentInstanceId() const;
-
     [[nodiscard]] QQmlApplicationEngine *qQmlApplicationEngine() const;
 
     void setQQmlApplivationEngine(QQmlApplicationEngine *newQQmlApplivationEngine);
@@ -117,9 +115,6 @@ private:
                    setSelectedAgentInstances NOTIFY selectedAgentInstancesChanged FINAL)
     SceneReaderWriter *m_sceneReaderWriter;
     QString m_fileName;
-
-    mutable QMutex m_instanceIdMutex;
-    mutable BrainiacGlobals::BrainiacId m_uniqueAgentInstanceId;
 
 signals:
     void selectedAgentInstancesChanged();
