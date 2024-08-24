@@ -11,6 +11,7 @@
 #include "channel.h"
 
 #include "../../gui/agent/agentinstacegeometryquick3d.h"
+#include "brain/brain.h"
 
 class Agent;
 class AgentInstanceBody;
@@ -112,6 +113,10 @@ public:
     [[nodiscard]] AgentInstanceBrain *instanceBrain() const { return m_instanceBrain; }
 
 private:
+    BrainiacGlobals::BrainiacId m_id;
+
+public:
+    BrainiacGlobals::BrainiacId id() const { return m_id; }
     AgentInstaceGeometryQuick3D *m_geometryQuick3DNode;
     Locator *m_locator;
     QVector3D m_translation;
