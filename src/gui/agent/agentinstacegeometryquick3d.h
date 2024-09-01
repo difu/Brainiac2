@@ -112,12 +112,12 @@ private:
     /**
      * @brief Lookup table to map Bone objects to QObject objects.
      *
-     * The m_boneJointLookup variable is a QHash that represents a lookup table.
+     * The m_boneAgentInstanceBoneLookup variable is a QHash that represents a lookup table.
      * It is used to map Bone objects to QObject objects in the AgentInstaceGeometryQuick3D class.
      * The purpose of this lookup table is to associate each Bone object with its corresponding QObject object,
      * allowing for easy and efficient retrieval of joints associated with the bone.
      */
-    QHash<Bone *, QObject *> m_boneJointLookup;
+    QHash<Bone *, QObject *> m_boneAgentInstanceBoneLookup;
 
     // This section is for the marker geometry only
     void updateData();
