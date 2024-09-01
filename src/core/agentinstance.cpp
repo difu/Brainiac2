@@ -13,6 +13,7 @@
 #include <QDebug>
 #include <QMatrix4x4>
 
+#include "brainiaclogger.h"
 #include "body/agentinstancebody.h"
 #include "body/body.h"
 
@@ -138,8 +139,11 @@ QString AgentInstance::instanceQML() const {
     QString qml = in.readAll();
     QString afterReplaceSkeleton = qml.replace("// {{ skeleton }}", m_agent->body()->skeletonQML());
     QString afterReplaceSkin = afterReplaceSkeleton.replace("// {{ skin }}", m_agent->body()->skinQML());
+    QString afterReplaceMaterials = afterReplaceSkeleton.replace("// {{ materials }}",
+                                                                 m_agent->body()->materialsQML(this->id()));
 
-    return afterReplaceSkin;
+    qCDebug(bAgentInstance).noquote() << afterReplaceMaterials;
+    return afterReplaceMaterials;
 }
 
 void AgentInstance::setGeometryQuick3DNode(AgentInstaceGeometryQuick3D *newGeometryQuick3DNode)
@@ -207,7 +211,7 @@ void AgentInstance::setRotation(const QVector3D &newRotation)
     emit rotationChanged();
 }
 
-void AgentInstance::setRotationithForcedEmit(const QVector3D &newRotation) {
+void AgentInstance::setRotationWithForcedEmit(const QVector3D &newRotation) {
     m_rotation = newRotation;
     // TODO
     // Should not be necessary, assume the Quick3d node is ready!
@@ -250,10 +254,9 @@ void AgentInstance::advanceCommit()
     m_instanceBrain->invalidateAll();
 }
 
-void AgentInstance::reset()
-{
+void AgentInstance::reset() {
     setTranslationWithForcedEmit(m_locator->location());
-    setRotationithForcedEmit(m_locator->rotation());
+    setRotationWithForcedEmit(m_locator->rotation());
 
     m_newTranslation = m_translation;
     m_newRotation = m_rotation;

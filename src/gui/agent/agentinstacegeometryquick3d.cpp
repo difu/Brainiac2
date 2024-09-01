@@ -163,7 +163,7 @@ void AgentInstaceGeometryQuick3D::setAgentInstance(AgentInstance *newAgentInstan
         //     qDebug() << "Found QML: " << obj->objectName();
         //     QQuaternion q = QQuaternion::fromEulerAngles(10, 20, 40);
         //     obj->setProperty("rotation", QVariant(q));
-        // }
+
         QQmlApplicationEngine *engine = m_agentInstance->agent()->scene()->qQmlApplicationEngine();
         QObject *viewer = engine->rootObjects().constFirst();
         foreach(Bone *bone, m_agentInstance->agent()->body()->bones()) {
@@ -179,7 +179,18 @@ void AgentInstaceGeometryQuick3D::setAgentInstance(AgentInstance *newAgentInstan
                 qFatal() << "Joint with name " << bone->objectName() << "not found!";
             }
             m_boneJointLookup.insert(bone, joint);
+
+            auto materialName = QString("material.%1.%2").arg(m_agentInstance->id()).arg(bone->objectName());
+            auto *materialNode = viewer->findChild<QObject *>(materialName);
+            auto num = viewer->findChildren<QObject *>(materialName);
+            if (materialNode) {
+                materialNode->setProperty("baseColor", QVariant(QColor(Qt::red)));
+            } else {
+                qFatal() << "Could not find material node " << materialName << " !";
+            }
         }
+
+        // }
     }
 
     emit agentInstanceChanged();
