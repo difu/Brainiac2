@@ -174,11 +174,11 @@ void AgentInstaceGeometryQuick3D::setAgentInstance(AgentInstance *newAgentInstan
                 //         << " with boneIndex " << boneIndex;
             }
 
-            auto *joint = viewer->findChild<QObject *>(bone->objectName());
-            if (!joint) {
+            auto *agentInstanceBone = viewer->findChild<QObject *>(bone->objectName());
+            if (!agentInstanceBone) {
                 qFatal() << "Joint with name " << bone->objectName() << "not found!";
             }
-            m_boneJointLookup.insert(bone, joint);
+            m_boneAgentInstanceBoneLookup.insert(bone, agentInstanceBone);
 
             auto materialName = QString("material.%1.%2").arg(m_agentInstance->id()).arg(bone->objectName());
             auto *materialNode = viewer->findChild<QObject *>(materialName);
