@@ -107,6 +107,14 @@ QVector3D Bone::translation() const {
     return m_translation;
 }
 
+QVector3D Bone::translationAgentSpace() const {
+    if (m_parentId == 0) {
+        return m_translation;
+    } else {
+        return m_body->bones().value(m_parentId)->translationAgentSpace() + m_translation;
+    }
+}
+
 void Bone::setTranslation(const QVector3D &translation) {
     m_translation = translation;
 }
@@ -128,9 +136,10 @@ QMatrix4x4 Bone::inverseBindMatrix() const {
         qFatal() << "Cannot invert matrix for bone " << this->id();
     }
     if (m_parentId == 0) {
-        return local.inverted();
+        return localInverted;
     }
-    const QMatrix4x4 inverseBind = m_body->bones().value(m_parentId)->inverseBindMatrix() * local.inverted();
+    const QMatrix4x4 inverseBind = m_body->bones().value(m_parentId)->inverseBindMatrix()
+                                   * localInverted;
     return inverseBind;
 }
 

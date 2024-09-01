@@ -25,6 +25,8 @@ AgentInstance::AgentInstance(Locator *locator, Agent *parent)
     m_instanceBrain = new AgentInstanceBrain(this);
     m_agentInstanceBody = new AgentInstanceBody(this);
     m_id = uniqueAgentInstanceId();
+    const quint32 seed = 1 + m_agent->scene()->agents().indexOf(parent) * m_id;
+    locator->setSeed(seed);
 
     /**
         Take care that @ref Locator and @ref AgentInstance know each other.
@@ -139,8 +141,8 @@ QString AgentInstance::instanceQML() const {
     QString qml = in.readAll();
     QString afterReplaceSkeleton = qml.replace("// {{ skeleton }}", m_agent->body()->skeletonQML());
     QString afterReplaceSkin = afterReplaceSkeleton.replace("// {{ skin }}", m_agent->body()->skinQML());
-    QString afterReplaceMaterials = afterReplaceSkeleton.replace("// {{ materials }}",
-                                                                 m_agent->body()->materialsQML(this->id()));
+    QString afterReplaceMaterials = afterReplaceSkin.replace("// {{ materials }}",
+                                                             m_agent->body()->materialsQML(this->id()));
 
     qCDebug(bAgentInstance).noquote() << afterReplaceMaterials;
     return afterReplaceMaterials;

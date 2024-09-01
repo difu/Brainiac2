@@ -70,7 +70,27 @@ public:
      */
     QString setBoneName(const QString& newName);
 
+    /**
+     * @brief Retrieve the translation vector of the Bone.
+     *
+     * This method returns the translation vector of the Bone. The translation vector represents the position of
+     * the Bone in a three-dimensional space. The translation is represented as a QVector3D object.
+     * The method is marked as const, indicating that it doesn't modify the state of the Bone object.
+     *
+     * @return The translation vector of the Bone.
+     */
     [[nodiscard]] QVector3D translation() const;
+
+    /**
+     * @brief Returns the translation of the Bone in agent space.
+     *
+     * This method returns the translation of the Bone in agent space.
+     * If the parent id of the Bone is equal to 0, indicating that it's a root bone, then it simply returns the Bone's translation.
+     * Otherwise, it recursively calls the translationAgentSpace() method on the parent Bone and adds its own translation to it.
+     *
+     * @return The translation of the Bone in agent space.
+     */
+    [[nodiscard]] QVector3D translationAgentSpace() const;
 
     void setTranslation(const QVector3D &translation);
 

@@ -163,22 +163,22 @@ void AgentInstaceGeometryQuick3D::setAgentInstance(AgentInstance *newAgentInstan
         //     qDebug() << "Found QML: " << obj->objectName();
         //     QQuaternion q = QQuaternion::fromEulerAngles(10, 20, 40);
         //     obj->setProperty("rotation", QVariant(q));
-
+        // }
         QQmlApplicationEngine *engine = m_agentInstance->agent()->scene()->qQmlApplicationEngine();
         QObject *viewer = engine->rootObjects().constFirst();
         foreach(Bone *bone, m_agentInstance->agent()->body()->bones()) {
-            if (qobject_cast<BoneBox *>(bone)) {
+            if (BoneBox *boneBox = qobject_cast<BoneBox *>(bone)) {
                 quint32 boneIndex = m_agentInstance->agent()->body()->boneOrder().indexOf(bone->id());
-                addCube(bone->translation(), QVector3D(10, 10, 10), boneIndex);
+                addCube(bone->translationAgentSpace(), boneBox->size(), boneIndex);
                 // qDebug() << "Added Bone " << bone->objectName() << " Id " << bone->id()
                 //         << " with boneIndex " << boneIndex;
             }
 
-            auto *joint = viewer->findChild<QObject *>(bone->objectName());
-            if (!joint) {
+            auto *agentInstanceBone = viewer->findChild<QObject *>(bone->objectName());
+            if (!agentInstanceBone) {
                 qFatal() << "Joint with name " << bone->objectName() << "not found!";
             }
-            m_boneJointLookup.insert(bone, joint);
+            m_boneAgentInstanceBoneLookup.insert(bone, agentInstanceBone);
 
             auto materialName = QString("material.%1.%2").arg(m_agentInstance->id()).arg(bone->objectName());
             auto *materialNode = viewer->findChild<QObject *>(materialName);
