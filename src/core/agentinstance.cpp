@@ -25,7 +25,7 @@ AgentInstance::AgentInstance(Locator *locator, Agent *parent)
     m_instanceBrain = new AgentInstanceBrain(this);
     m_agentInstanceBody = new AgentInstanceBody(this);
     m_id = uniqueAgentInstanceId();
-    const quint32 seed=1+m_agent->scene()->agents().indexOf(parent)*m_id;
+    const quint32 seed = 1 + m_agent->scene()->agents().indexOf(parent) * m_id;
     locator->setSeed(seed);
 
     /**
