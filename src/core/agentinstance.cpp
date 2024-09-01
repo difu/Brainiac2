@@ -142,7 +142,7 @@ QString AgentInstance::instanceQML() const {
     QString afterReplaceSkeleton = qml.replace("// {{ skeleton }}", m_agent->body()->skeletonQML());
     QString afterReplaceSkin = afterReplaceSkeleton.replace("// {{ skin }}", m_agent->body()->skinQML());
     QString afterReplaceMaterials = afterReplaceSkin.replace("// {{ materials }}",
-                                                                 m_agent->body()->materialsQML(this->id()));
+                                                             m_agent->body()->materialsQML(this->id()));
 
     qCDebug(bAgentInstance).noquote() << afterReplaceMaterials;
     return afterReplaceMaterials;
