@@ -63,7 +63,7 @@ public:
     void advanceCommit();
     void reset();
 
-    Agent *agent() const;
+    [[nodiscard]] Agent *agent() const;
 
     [[nodiscard]] QHash<BrainiacGlobals::BrainiacId, Channel *> inputChannels() const;
 
@@ -96,15 +96,17 @@ public:
 
     [[nodiscard]] Locator *locator() const;
 
-    QVector3D translation() const;
+    [[nodiscard]] QVector3D translation() const;
+
     void setTranslation(const QVector3D &newTranslation);
 
     void setTranslationWithForcedEmit(const QVector3D &newTranslation);
 
-    QVector3D rotation() const;
+    [[nodiscard]] QVector3D rotation() const;
+
     void setRotation(const QVector3D &newRotation);
 
-    void setRotationithForcedEmit(const QVector3D &newRotation);
+    void setRotationWithForcedEmit(const QVector3D &newRotation);
 
 private:
     Agent *m_agent;
@@ -123,6 +125,16 @@ private:
     static BrainiacGlobals::BrainiacId uniqueAgentInstanceId();
 
 public:
+    /**
+     * @brief AgentInstance::id
+     *
+     * This method returns the id of the AgentInstance.
+     *
+     * The id represents the identifier for the specific instance of an Agent in the simulation.
+     * It is unique for instances across all their parent agents.
+     *
+     * @return The id of the AgentInstance.
+     */
     [[nodiscard]] BrainiacGlobals::BrainiacId id() const;
 
     AgentInstaceGeometryQuick3D *m_geometryQuick3DNode;
@@ -142,6 +154,8 @@ public:
 
     Q_PROPERTY(
         QVector3D translation READ translation WRITE setTranslation NOTIFY translationChanged FINAL)
+
+    Q_PROPERTY(BrainiacGlobals::BrainiacId id READ id CONSTANT FINAL)
 
 signals:
     void geometryQuick3DNodeChanged();

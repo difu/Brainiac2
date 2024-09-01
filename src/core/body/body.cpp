@@ -30,6 +30,36 @@ BrainiacGlobals::BrainiacId Body::newId() const {
     return newId;
 }
 
+QString Body::materialsQML(BrainiacGlobals::BrainiacId agentInstanceId) const {
+    //         materials: [
+    //              PrincipledMaterial {
+    //                  objectName: "material.[AgentInstanceId].[BoneName]"
+    //                  lineWidth: 1
+    //                  cullMode: DefaultMaterial.NoCulling
+    //                  lighting: DefaultMaterial.NoLighting
+    //              }
+    //          ]
+    QString tabs("\t");
+    constexpr int indent = 1;
+    tabs = tabs.repeated(indent);
+    QString materialsQML = tabs + QString("materials: [\n");
+    QStringList materials;
+    foreach(BrainiacGlobals::BrainiacId id, m_boneOrder) {
+        QString material;
+        material += tabs.repeated(3) + QString("PrincipledMaterial {\n");
+        material += tabs.repeated(4) + QString("objectName: \"material.%1.%2\"\n").arg(agentInstanceId).arg(
+            bones().value(id)->objectName());
+        material += tabs.repeated(4) + QString("lineWidth: 1\n");
+        material += tabs.repeated(4) + QString("cullMode: DefaultMaterial.NoCulling\n");
+        material += tabs.repeated(4) + QString("lighting: DefaultMaterial.NoLighting\n");
+        material += tabs.repeated(3) + QString("}");
+        materials.append(material);
+    }
+    materialsQML += materials.join(",\n");
+    materialsQML += tabs.repeated(3) + QString("]\n");
+    return materialsQML;
+}
+
 QString Body::skeletonQML() const {
     // The root bone is the bone that has parentId 0.
     Bone *rootBone = nullptr;

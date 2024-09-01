@@ -28,13 +28,9 @@ Node {
                 //agentInstanceModel.setEulerRotation(Qt.vector3d(0, 0, 100))
             }
         }
-        materials: [
-            PrincipledMaterial {
-                lineWidth: 1
-                cullMode: DefaultMaterial.NoCulling
-                lighting: DefaultMaterial.NoLighting
-            }
-        ]
+
+        // {{ materials }}
+
         // {{ skin }}
         AxisHelper {
             id: agentAxisHelper
