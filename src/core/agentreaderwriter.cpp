@@ -60,6 +60,11 @@ void AgentReaderWriter::parseFields(const QStringList &fields, ConfigBlock &conf
             }
         },
         {"endConnections", [&confBlock, this] { processConnections(confBlock); }},
+        {"agentName", [&fields, this] {
+            if (fields.count() >= 2) {
+                m_agent->setObjectName(fields.at(1));
+            }
+        }},
     };
 
     foreach (auto field, fields) {
@@ -130,6 +135,9 @@ bool AgentReaderWriter::saveAsBAF() const
     bool success = false;
     if (file.open(QIODevice::ReadWrite | QIODevice::Truncate)) {
         QTextStream stream(&file);
+        
+        // Save agent name
+        stream << "agentName " << m_agent->objectName() << Qt::endl;
 
         foreach (auto boneId, m_agent->body()->boneOrder()) {
             writeSegment(boneId, stream);
