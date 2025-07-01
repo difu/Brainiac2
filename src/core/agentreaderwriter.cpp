@@ -65,6 +65,14 @@ void AgentReaderWriter::parseFields(const QStringList &fields, ConfigBlock &conf
                 m_agent->setObjectName(fields.at(1));
             }
         }},
+        {"editorpos", [&fields, &confBlock, this] {
+            if (fields.count() >= 3 && confBlock.type == BaseReaderWriter::UNKNOWN) {
+                // Only set agent editorpos when not inside a block
+                qreal x = fields.at(1).toDouble();
+                qreal y = fields.at(2).toDouble();
+                m_agent->setEditorPos(x, y);
+            }
+        }},
     };
 
     foreach (auto field, fields) {
@@ -138,6 +146,9 @@ bool AgentReaderWriter::saveAsBAF() const
         
         // Save agent name
         stream << "agentName " << m_agent->objectName() << Qt::endl;
+        
+        // Save agent editor position
+        stream << "editorpos " << m_agent->editorPos().x() << " " << m_agent->editorPos().y() << Qt::endl;
 
         foreach (auto boneId, m_agent->body()->boneOrder()) {
             writeSegment(boneId, stream);

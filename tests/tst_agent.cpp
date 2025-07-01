@@ -15,7 +15,9 @@
 #include "src/core/brain/fuzzyoutput.h"
 #include "src/core/generator/generatorpoint.h"
 
-void createTestAgent1(Agent *agent) { {
+void createTestAgent1(Agent *agent) {
+    // Set agent editor position
+    agent->setEditorPos(50.0, 75.0); {
         BoneBox *rootBone = agent->body()->addBoneBox(1, 0, "root");
         BoneBox *leftBone = agent->body()->addBoneBox(2, 1, "left");
         BoneBox *rightBone = agent->body()->addBoneBox(3, 1, "right");
@@ -78,6 +80,8 @@ private slots:
 
     void test_loadSave();
 
+    void test_editorPos();
+
     // void test_outputChannels();
     // void test_inputChannels();
 };
@@ -130,6 +134,24 @@ void AgentTest::test_equal() { {
         if (!equal) {
             qInfo() << "This is expected: " << errors;
         }
+    } {
+        // Test editorPos differences
+        Scene myScene;
+        auto *agent1 = new Agent(&myScene);
+        auto *agent2 = new Agent(&myScene);
+        ::createTestAgent1(agent1);
+        ::createTestAgent1(agent2);
+
+        // Change editorPos of second agent
+        agent2->setEditorPos(100.0, 200.0);
+
+        QStringList errors;
+        bool equal = Agent::compare(agent1, agent2, errors);
+        QVERIFY2(!equal, "Agents with different editorPos should not be equal!");
+
+        if (!equal) {
+            qInfo() << "This is expected (editorPos difference): " << errors;
+        }
     }
 }
 
@@ -140,6 +162,7 @@ void AgentTest::test_loadSave()
 
     auto *agent = new Agent(&myScene);
     ::createTestAgent1(agent);
+    agent->setName("Agent1");
     agent->setFileName("/tmp/difu.baf");
     agent->save();
 
@@ -156,6 +179,32 @@ void AgentTest::test_loadSave()
         qInfo() << errors;
     }
     QVERIFY2(equal, "Agents are not the same!");
+}
+
+void AgentTest::test_editorPos() {
+    Scene myScene;
+    auto *agent1 = new Agent(&myScene);
+    auto *agent2 = new Agent(&myScene);
+
+    // Test initial editorPos (should be 0,0)
+    QCOMPARE(agent1->editorPos(), QPointF(0.0, 0.0));
+    QCOMPARE(agent2->editorPos(), QPointF(0.0, 0.0));
+
+    // Test setting editorPos
+    agent1->setEditorPos(123.45, 678.90);
+    QCOMPARE(agent1->editorPos(), QPointF(123.45, 678.90));
+
+    // Test that agents with different editorPos are not equal
+    QStringList errors;
+    bool equal = Agent::compare(agent1, agent2, errors);
+    QVERIFY2(!equal, "Agents with different editorPos should not be equal!");
+    QVERIFY2(errors.count() > 0, "Should report editorPos difference!");
+
+    // Test that setting same editorPos makes them equal again (excluding other differences)
+    agent2->setEditorPos(123.45, 678.90);
+    errors.clear();
+    equal = Agent::compare(agent1, agent2, errors);
+    QVERIFY2(equal, "Agents with same editorPos should be equal!");
 }
 
 // void AgentTest::test_outputChannels()

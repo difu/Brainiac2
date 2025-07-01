@@ -14,6 +14,7 @@ Agent::Agent(Scene *parent)
     m_scene = parent;
     m_scene->addAgent(this);
     m_defaultAgentInstance = nullptr;
+    m_editorPos = QPointF(0.0, 0.0);
 
     m_agentReaderWriter = new AgentReaderWriter(this);
     m_body = new Body(this);
@@ -324,6 +325,14 @@ bool Agent::compare(Agent *agent1, Agent *agent2, QStringList &differences) {
         equal = false;
         differences.append(QString("Name differs: %1 vs %2.").arg(agent1->name()).arg(agent2->name()));
     }
+    if (agent1->editorPos() != agent2->editorPos()) {
+        equal = false;
+        differences.append(QString("EditorPos differs: (%1, %2) vs (%3, %4)")
+            .arg(agent1->editorPos().x())
+            .arg(agent1->editorPos().y())
+            .arg(agent2->editorPos().x())
+            .arg(agent2->editorPos().y()));
+    }
     if (agent1->inputChannels() != agent2->inputChannels()) {
         equal = false;
         differences.append(QString("Different input channels"));
@@ -340,4 +349,13 @@ bool Agent::compare(Agent *agent1, Agent *agent2, QStringList &differences) {
 QHash<QString, BrainiacGlobals::BrainiacId> Agent::inputChannels() const
 {
     return m_inputChannels;
+}
+
+QPointF Agent::editorPos() const
+{
+    return m_editorPos;
+}
+
+void Agent::setEditorPos(qreal x, qreal y) {
+    m_editorPos = QPointF(x, y);
 }

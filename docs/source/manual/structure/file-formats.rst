@@ -6,17 +6,34 @@ Brainiac uses two main text-based file formats for storing configuration data:
 BAF (Brainiac Agent Format)
 ---------------------------
 
-BAF files store individual agent definitions including brain (fuzzy logic networks) and body (skeleton) structures.
+BAF files store individual agent definitions including agent metadata, brain (fuzzy logic networks) and body (skeleton) structures.
 
 File Structure
 ~~~~~~~~~~~~~~
 
 ::
 
+    agentName <agent_name>
+    editorpos <x> <y>
     <segment_blocks>
     <fuzzy_blocks>
     <connection_blocks>
     End
+
+Agent Properties
+~~~~~~~~~~~~~~~~
+
+Agent properties define metadata and editor information for the agent.
+
+::
+
+    agentName <agent_name>
+    editorpos <x> <y>
+
+**Fields:**
+
+- ``agent_name``: Unique name identifier for the agent
+- ``editorpos``: Position in visual editor (x, y coordinates)
 
 Segment Blocks (Body/Skeleton Definition)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -184,6 +201,38 @@ AgentInstance objects are runtime instances created from Agent templates and are
 **Unique ID**
     Thread-safe unique identifier for each agent instance
 
+BAF Example
+~~~~~~~~~~~
+
+Example BAF file structure:
+
+::
+
+    agentName TestAgent
+    editorpos 50 75
+    segment root
+        parent root
+        translation 0 0 0
+        rotation 0 0 0
+        primitive BOX
+        size 10 20 30
+        editorpos 100 100
+    endSegment
+    fuzz Output_Color
+        type OUTPUT
+        channel color
+        editorpos 400 225
+    endFuzz
+    fuzz Noise_1
+        type NOISE
+        rate 1.0
+        editorpos 100 100
+    endFuzz
+    connections Noise_1
+        child Output_Color 0
+    endConnections
+    End
+
 Format Characteristics
 ----------------------
 
@@ -192,6 +241,9 @@ Format Characteristics
 
 **Hierarchical Structure**
     Bones form parent-child relationships, fuzzy nodes connect in networks
+
+**Agent Metadata**
+    Agent name and editor position stored at file beginning
 
 **Indentation**
     4-space indentation used for nested properties within blocks

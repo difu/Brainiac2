@@ -6,6 +6,7 @@
 #include <QHash>
 #include <QJsonObject>
 #include <QList>
+#include <QPointF>
 #include <QString>
 
 #include "brainiacglobals.h"
@@ -143,6 +144,10 @@ public:
 
     [[nodiscard]] static bool compare(Agent *agent1, Agent *agent2, QStringList &differences);
 
+    [[nodiscard]] QPointF editorPos() const;
+
+    void setEditorPos(qreal x, qreal y);
+
     ~Agent() override;
 
 protected:
@@ -164,6 +169,7 @@ private:
     Body *m_body;
     Brain *m_brain;
     Scene *m_scene;
+    QPointF m_editorPos;
 
 signals:
 };
