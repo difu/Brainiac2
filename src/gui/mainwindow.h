@@ -4,8 +4,12 @@
 #include <QMainWindow>
 #include <QtWidgets>
 #include <QShortcut>
+#include <QMenuBar>
+#include <QMenu>
+#include <QAction>
 #include "src/core/scene.h"
 #include "src/gui/editorbase.h"
+#include "src/gui/agent/brain/braineditor.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,10 +26,16 @@ public:
     void setMainEditor(EditorBase *newEditor);
     ~MainWindow();
 
+private slots:
+    void selectBrainEditor();
+
 private:
     //    Ui::MainWindow *ui;
     QGraphicsView *m_graphicsView;
     EditorBase *m_currentEditor;
     Scene *m_scene;
+    QAction *m_brainEditorAction;
+
+    void setupMenus();
 };
 #endif // MAINWINDOW_H

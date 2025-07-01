@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include <QDebug>
+
+#include "src/core/agent.h"
 #include "src/core/simulation.h"
 
 MainWindow::MainWindow(Scene *scene, QWidget *parent)
@@ -20,6 +22,9 @@ MainWindow::MainWindow(Scene *scene, QWidget *parent)
 
     auto *quitShortcut = new QShortcut(QKeySequence::Quit, this);
     connect(quitShortcut, &QShortcut::activated, QApplication::instance(), &QApplication::quit);
+
+    // Setup menus
+    setupMenus();
 }
 
 void MainWindow::setMainEditor(EditorBase *newEditor)
@@ -42,6 +47,28 @@ void MainWindow::setMainEditor(EditorBase *newEditor)
         QObject::connect(sim, SIGNAL(advanced(quint32)), newEditor, SLOT(update()));
     }
     m_graphicsView->update();
+}
+
+void MainWindow::setupMenus() {
+    QMenuBar *menuBar = this->menuBar();
+    QMenu *editorMenu = menuBar->addMenu("&Editor");
+
+    m_brainEditorAction = editorMenu->addAction("&Brain Editor");
+    m_brainEditorAction->setCheckable(true);
+    connect(m_brainEditorAction, &QAction::triggered, this, &MainWindow::selectBrainEditor);
+}
+
+void MainWindow::selectBrainEditor() {
+    // Ensure only one editor is selected
+    m_brainEditorAction->setChecked(true);
+
+    // Get the first agent's brain editor (if available)
+    if (!m_scene->agents().isEmpty()) {
+        Agent *firstAgent = m_scene->agents().first();
+        if (firstAgent && firstAgent->brain()) {
+            setMainEditor(firstAgent->brain()->brainEditor());
+        }
+    }
 }
 
 MainWindow::~MainWindow()
