@@ -54,6 +54,8 @@ ApplicationWindow {
             }
             Action {
                 text: qsTr("&Quit")
+                shortcut: StandardKey.Quit
+                onTriggered: Qt.quit()
             }
         }
 

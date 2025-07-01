@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QtWidgets>
+#include <QShortcut>
 #include "src/core/scene.h"
 #include "src/gui/editorbase.h"
 

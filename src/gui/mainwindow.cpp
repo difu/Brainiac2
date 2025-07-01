@@ -17,6 +17,9 @@ MainWindow::MainWindow(Scene *scene, QWidget *parent)
     QWidget *widget = new QWidget;
     widget->setLayout(layout);
     setCentralWidget(widget);
+
+    auto *quitShortcut = new QShortcut(QKeySequence::Quit, this);
+    connect(quitShortcut, &QShortcut::activated, QApplication::instance(), &QApplication::quit);
 }
 
 void MainWindow::setMainEditor(EditorBase *newEditor)
