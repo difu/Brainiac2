@@ -1,0 +1,68 @@
+agentName Agent1_Body
+editorpos 0 0
+segment root
+    parent root
+    translation 0 0 0
+    rotation 0 0 0
+    primitive BOX
+    size 10 10 10
+    editorpos 0 0
+endSegment
+segment left
+    parent root
+    translation 30 -20 0
+    rotation 0 0 0
+    primitive BOX
+    size 20 10 10
+    editorpos 0 0
+endSegment
+segment right
+    parent root
+    translation -30 -20 0
+    rotation 0 0 0
+    primitive BOX
+    size 20 10 30
+    editorpos 0 0
+endSegment
+fuzz Noise 1
+    type NOISE
+    rate 1
+    editorpos 100 100
+endFuzz
+fuzz Noise 2
+    type NOISE
+    rate 1
+    editorpos 100 150
+endFuzz
+fuzz And 1
+    type AND
+    mode MIN
+    editorpos 400 75
+endFuzz
+fuzz Or 1
+    type OR
+    mode MAX
+    editorpos 400 175
+endFuzz
+fuzz Output 1 (color)
+    type OUTPUT
+    channel color
+    editorpos 400 225
+endFuzz
+fuzz Color Noise
+    type NOISE
+    rate 1
+    editorpos 100 225
+endFuzz
+connections Noise 1
+    child And 1 0
+    child Or 1 0
+endConnections
+connections Noise 2
+    child And 1 0
+    child Or 1 0
+endConnections
+connections Color Noise
+    child Output 1 (color) 0
+endConnections
+End

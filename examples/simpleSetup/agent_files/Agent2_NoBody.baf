@@ -1,0 +1,35 @@
+agentName Agent2_NoBody
+editorpos 0 0
+segment root2
+    parent root2
+    translation 0 0 0
+    rotation 0 0 0
+    primitive BOX
+    size 40 40 40
+    editorpos 0 0
+endSegment
+segment left2
+    parent root2
+    translation 10 30 0
+    rotation 0 0 0
+    primitive BOX
+    size 10 10 10
+    editorpos 0 0
+endSegment
+segment right2
+    parent root2
+    translation -10 30 0
+    rotation 0 0 0
+    primitive BOX
+    size 20 10 30
+    editorpos 0 0
+endSegment
+segment top
+    parent root2
+    translation 0 50 0
+    rotation 0 0 0
+    primitive BOX
+    size 0 0 0
+    editorpos 0 0
+endSegment
+End

@@ -1,0 +1,44 @@
+agent Agent1_Body
+    fileName agent_files/Agent1_Body.baf
+endAgent
+agent Agent2_NoBody
+    fileName agent_files/Agent2_NoBody.baf
+endAgent
+agent Agent3_NoBody
+    fileName agent_files/Agent3_NoBody.baf
+endAgent
+generator
+    type GENERATORPOINT
+    agentName Agent1_Body 0
+    agentName Agent2_NoBody 1
+    agentName Agent3_NoBody 2
+    centerPoint -1100 0 200
+    gap 0
+    numAgents 400
+    distance 90
+    rows 20
+    columns 20
+    angle 0
+    angleVariation 0
+    height 0
+    heightVariation 0
+    noise 0
+endGenerator
+generator
+    type GENERATORPOINT
+    agentName Agent1_Body 0
+    agentName Agent2_NoBody 1
+    agentName Agent3_NoBody 2
+    centerPoint 2500 0 -200
+    gap 0
+    numAgents 400
+    distance 90
+    rows 20
+    columns 20
+    angle 0
+    angleVariation 0
+    height 0
+    heightVariation 0
+    noise 0
+endGenerator
+End

@@ -1,6 +1,8 @@
 //#include "../gui/mainwindow.h"
 
 #include <QApplication>
+#include <QCommandLineParser>
+#include <QCommandLineOption>
 #include <QMetaObject>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
@@ -20,10 +22,30 @@
 #include "generator/generatorpoint.h"
 #include "src/gui/mainwindow.h"
 
+// Function to create the hardcoded scene setup
+void createHardcodedScene(Scene *scene);
+
 int main(int argc, char *argv[]) {
     qSetMessagePattern("%{file}:%{line} %{type} %{function} -> %{if-category}%{category}: %{endif}%{message}");
 
     QApplication app(argc, argv);
+    app.setApplicationName("Brainiac");
+    app.setApplicationVersion("1.0");
+
+    // Parse command line arguments
+    QCommandLineParser parser;
+    parser.setApplicationDescription("Brainiac - Agent-based simulation and visualization application");
+    parser.addHelpOption();
+    parser.addVersionOption();
+
+    QCommandLineOption bsfOption(QStringList() << "bsf",
+                                 "Load scene from BSF file",
+                                 "filename");
+    parser.addOption(bsfOption);
+
+    parser.process(app);
+
+    QString bsfFileName = parser.value(bsfOption);
 
     QSurfaceFormat::setDefaultFormat(QQuick3D::idealSurfaceFormat());
 
@@ -38,15 +60,48 @@ int main(int argc, char *argv[]) {
     Q_UNUSED(connection);
     engine.loadFromModule("BrainiacViewer", "MainViewer");
 
-    //QWidget widget;
-    //widget.show();
-
     auto *scene = new Scene;
     MainWindow mainWindow(scene);
     mainWindow.setGeometry(100, 100, 800, 500);
     mainWindow.show();
     scene->setQQmlApplivationEngine(&engine);
+    
+    // Load scene from file or create hardcoded scene
+    if (!bsfFileName.isEmpty()) {
+        qDebug() << "Loading scene from BSF file:" << bsfFileName;
+        scene->setFileName(bsfFileName);
+        if (!scene->load()) {
+            qFatal("Failed to load scene file: %s", qPrintable(bsfFileName));
+        }
+        qDebug() << "Successfully loaded scene with" << scene->agents().count() << "agents and" << scene->generators().
+                count() << "generators";
 
+        // Generate agent instances from loaded generators
+        foreach(auto *generator, scene->generators()) {
+            generator->instanciateAgentInstances();
+        }
+    } else {
+        qDebug() << "Creating hardcoded scene setup";
+        createHardcodedScene(scene);
+    }
+
+    // Set default agent for brain editor (use first agent if available)
+    Agent *defaultAgent = nullptr;
+    if (!scene->agents().isEmpty()) {
+        defaultAgent = scene->agents().first();
+    }
+
+    if (defaultAgent && defaultAgent->brain()) {
+        mainWindow.setMainEditor(defaultAgent->brain()->brainEditor());
+    }
+
+    scene->simulation()->setEndFrame(1600);
+    scene->simulation()->startSimulation();
+
+    return app.exec();
+}
+
+void createHardcodedScene(Scene *scene) {
     auto *agent = new Agent(scene);
     if (!agent->setName("Agent1_Body")) {
         qFatal("Agent with the same name exists");
@@ -144,7 +199,7 @@ int main(int argc, char *argv[]) {
     generatorPoint->setColumns(20);
     generatorPoint->setRows(20);
     generatorPoint->setDistance(90);
-    generatorPoint->setNumTotalAgents(3);
+    generatorPoint->setNumTotalAgents(400);
     generatorPoint->addAgent(agent, 0);
     generatorPoint->addAgent(agent2, 1);
     generatorPoint->addAgent(agent3, 2);
@@ -157,7 +212,7 @@ int main(int argc, char *argv[]) {
     generatorPoint2->setColumns(20);
     generatorPoint2->setRows(20);
     generatorPoint2->setDistance(90);
-    generatorPoint2->setNumTotalAgents(3);
+    generatorPoint2->setNumTotalAgents(400);
     generatorPoint2->addAgent(agent, 0);
     generatorPoint2->addAgent(agent2, 1);
     generatorPoint2->addAgent(agent3, 2);
@@ -201,13 +256,4 @@ int main(int argc, char *argv[]) {
     myInstance2->outputChannels().value(BrainiacGlobals::CO_TZ)->setValue(3);
     myInstance2->outputChannels().value(BrainiacGlobals::CO_RY)->setValue(-1);
     agent->setDefaultAgentInstance(myInstance);
-
-    mainWindow.setMainEditor(agent->brain()->brainEditor());
-
-    scene->simulation()->setEndFrame(1600);
-    scene->simulation()->startSimulation();
-
-    // Debug
-
-    return app.exec();
 }
