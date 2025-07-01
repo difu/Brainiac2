@@ -24,10 +24,12 @@ void BrainEditorItem::paint(QPainter *painter,
         const Brain *brain = fuzzy->brain();
         const Agent *agent = brain->agent();
         AgentInstance *agentInstance = agent->defaultAgentInstance();
-        if (fuzzy->minValue() < 0) {
-            tmpResult = -30 * ((fuzzy->result(agentInstance)) / (fuzzy->minValue()));
-        } else {
-            tmpResult = +30 * ((fuzzy->result(agentInstance)) / (fuzzy->maxValue()));
+        if (agentInstance) {
+            if (fuzzy->minValue() < 0) {
+                tmpResult = -30 * ((fuzzy->result(agentInstance)) / (fuzzy->minValue()));
+            } else {
+                tmpResult = +30 * ((fuzzy->result(agentInstance)) / (fuzzy->maxValue()));
+            }
         }
 
         if (tmpResult > 0) {
