@@ -45,6 +45,6 @@ It includes links to action files (.bad), agent geometry (.obj), shaders and tex
     :maxdepth: 2
     :glob:
 
-    *
+    file-formats
     brain/index
     body/index
