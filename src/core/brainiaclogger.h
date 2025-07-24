@@ -6,5 +6,6 @@
 #include <QLoggingCategory>
 Q_DECLARE_LOGGING_CATEGORY(bGenerator)
 Q_DECLARE_LOGGING_CATEGORY(bAgentInstance)
+Q_DECLARE_LOGGING_CATEGORY(bAgentBrain)
 
 #endif //BRAINIACLOGGER_H
