@@ -30,14 +30,14 @@ bool AgentReaderWriter::loadFromBAF()
         while (!stream.atEnd()) {
             QString line = stream.readLine().simplified();
             QStringList fields = line.split(" ");
-            
+
             // Parse the fields first to determine the block type
             parseFields(fields, confBlock);
-            
+
             // Only add line to block if we're inside a block (not UNKNOWN) and it's not an end marker
-            if (confBlock.type != BaseReaderWriter::UNKNOWN && 
-                !fields.contains("endSegment") && 
-                !fields.contains("endFuzz") && 
+            if (confBlock.type != BaseReaderWriter::UNKNOWN &&
+                !fields.contains("endSegment") &&
+                !fields.contains("endFuzz") &&
                 !fields.contains("endConnections")) {
                 confBlock.lines.append(line);
             }
@@ -126,7 +126,7 @@ void AgentReaderWriter::processConnections(ConfigBlock &confBlock) const {
                 QString fuzzyName = line.mid(12); // "connections ".length() = 12
                 // Convert spaces to underscores to match the naming convention in FuzzyBase::setName
                 fuzzyName.replace(" ", "_");
-                
+
                 parentFuzz = m_agent->brain()->fuzzyByName(fuzzyName);
                 if (!parentFuzz) {
                     qCritical() << "Parent fuzzy not found:" << fuzzyName;
@@ -143,7 +143,7 @@ void AgentReaderWriter::processConnections(ConfigBlock &confBlock) const {
                     childName = childName.left(lastSpaceIndex);
                     // Convert spaces to underscores to match the naming convention in FuzzyBase::setName
                     childName.replace(" ", "_");
-                    
+
                     if (!parentFuzz) {
                         qCritical() << "No parent found for child:" << childName;
                         continue;

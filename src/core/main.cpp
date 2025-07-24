@@ -78,6 +78,7 @@ int main(int argc, char *argv[]) {
 
         // Generate agent instances from loaded generators
         foreach(auto *generator, scene->generators()) {
+            generator->updateLocators();
             generator->instanciateAgentInstances();
         }
     } else {
@@ -97,6 +98,25 @@ int main(int argc, char *argv[]) {
 
     scene->simulation()->setEndFrame(1600);
     scene->simulation()->startSimulation();
+
+    if (!scene->generators().isEmpty()) {
+        float i = 0.0;
+        foreach(auto *generator, scene->generators()) {
+            foreach(auto *locator, generator->locators()) {
+                if (locator->agentInstance()) {
+                    locator->agentInstance()
+                            ->outputChannels()
+                            .value(BrainiacGlobals::CO_TZ)
+                            ->setValue(4 + i / 10);
+                    locator->agentInstance()
+                            ->outputChannels()
+                            .value(BrainiacGlobals::CO_RY)
+                            ->setValue(2 + i / 10);
+                }
+            }
+            i += 1.0;
+        }
+    }
 
     return app.exec();
 }
