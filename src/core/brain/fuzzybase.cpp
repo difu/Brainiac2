@@ -1,6 +1,7 @@
 #include "fuzzybase.h"
 #include <QGraphicsItem>
 #include "brain.h"
+#include "src/core/brainiaclogger.h"
 #include "src/gui/editoritem.h"
 #include "src/gui/editoritemconnector.h"
 
@@ -59,7 +60,9 @@ void FuzzyBase::connectFuzzies(FuzzyBase *parent, FuzzyBase *child, const bool i
         parent->editorItem(),
         child->editorItem()
     };
+    connector->setInverted(isInverted);
     brain->brainEditor()->addItem(connector);
+    qCDebug(bAgentBrain) << "FuzzyBase::connectFuzzies: " << parent->id() << " -> " << child->id();
 }
 
 void FuzzyBase::addParent(FuzzyBase *parent, bool isInverted)

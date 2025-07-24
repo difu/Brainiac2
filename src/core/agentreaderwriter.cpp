@@ -23,15 +23,29 @@ bool AgentReaderWriter::loadFromBAF()
     checkAgentEmpty();
     bool success = false;
     QFile file(m_agent->fileName());
+    qDebug() << "AgentReaderWriter::loadFromBAF: Loading agent from" << m_agent->fileName();
     if (file.open(QIODevice::ReadOnly)) {
         QTextStream stream(&file);
         ConfigBlock confBlock;
         while (!stream.atEnd()) {
             QString line = stream.readLine().simplified();
             QStringList fields = line.split(" ");
+            
+            // Parse the fields first to determine the block type
             parseFields(fields, confBlock);
-            confBlock.lines.append(line);
+            
+            // Only add line to block if we're inside a block (not UNKNOWN) and it's not an end marker
+            if (confBlock.type != BaseReaderWriter::UNKNOWN && 
+                !fields.contains("endSegment") && 
+                !fields.contains("endFuzz") && 
+                !fields.contains("endConnections")) {
+                confBlock.lines.append(line);
+            }
         }
+        success = true;
+        qDebug() << "AgentReaderWriter::loadFromBAF: Successfully loaded agent" << m_agent->name();
+    } else {
+        qDebug() << "AgentReaderWriter::loadFromBAF: Failed to open file" << m_agent->fileName();
     }
     file.close();
     return success;
@@ -107,21 +121,38 @@ void AgentReaderWriter::processConnections(ConfigBlock &confBlock) const {
         FuzzyBase *parentFuzz = nullptr;
         foreach(auto line, confBlock.lines) {
             QStringList fields = line.split(" ");
-            if (fields.count() == 2) {
-                if (fields.at(0) == "connections") {
-                    parentFuzz = m_agent->brain()->fuzzyByName(fields.at(1));
+            if (fields.count() >= 2 && fields.at(0) == "connections") {
+                // Extract fuzzy name (everything after "connections")
+                QString fuzzyName = line.mid(12); // "connections ".length() = 12
+                // Convert spaces to underscores to match the naming convention in FuzzyBase::setName
+                fuzzyName.replace(" ", "_");
+                
+                parentFuzz = m_agent->brain()->fuzzyByName(fuzzyName);
+                if (!parentFuzz) {
+                    qCritical() << "Parent fuzzy not found:" << fuzzyName;
                 }
             }
-            if (fields.count() == 3) {
-                if (fields.at(0) == "child") {
+            if (fields.count() >= 3 && fields.at(0) == "child") {
+                // Extract child name (everything except first and last field)
+                // "child FuzzyName inverted" -> extract FuzzyName
+                QString childName = line.mid(6); // "child ".length() = 6
+                // Remove the last field (inverted flag)
+                int lastSpaceIndex = childName.lastIndexOf(' ');
+                if (lastSpaceIndex != -1) {
+                    bool inverted = childName.mid(lastSpaceIndex + 1).toInt() == 1;
+                    childName = childName.left(lastSpaceIndex);
+                    // Convert spaces to underscores to match the naming convention in FuzzyBase::setName
+                    childName.replace(" ", "_");
+                    
                     if (!parentFuzz) {
-                        qCritical("No parent found!");
+                        qCritical() << "No parent found for child:" << childName;
+                        continue;
                     }
-                    FuzzyBase *childFuzz = m_agent->brain()->fuzzyByName(fields.at(1));
+                    FuzzyBase *childFuzz = m_agent->brain()->fuzzyByName(childName);
                     if (!childFuzz) {
-                        qCritical("No child found!");
+                        qCritical() << "Child fuzzy not found:" << childName;
+                        continue;
                     }
-                    bool inverted = fields.at(2).toInt() == 1;
                     FuzzyBase::connectFuzzies(parentFuzz, childFuzz, inverted);
                 }
             }
@@ -311,7 +342,7 @@ void AgentReaderWriter::handleTwoFields(const QStringList &fields,
         newBone->setBoneName(new_name);
     } else if (fields.at(0) == "parent") {
         QString parentName = fields.at(1);
-        if (segmentName == parentName) {
+        if (newBone->objectName() == parentName) {
             newBone->setParentId(0);
         } else {
             BrainiacGlobals::BrainiacId parentId = m_agent->body()->boneIdbyName(parentName);
@@ -458,12 +489,11 @@ void AgentReaderWriter::addFuzz(ConfigBlock &confBlock) const
     foreach (auto line, confBlock.lines) {
         QStringList fields = line.split(" ");
 
-        if (fields.count() == 2) {
-            if (fields.at(0) == "fuzz") {
-                const QString &fuzzName = fields.at(1);
-                fuzz->setName(fuzzName);
-                continue;
-            }
+        if (fields.count() >= 2 && fields.at(0) == "fuzz") {
+            // Extract fuzzy name (everything after "fuzz ")
+            QString fuzzName = line.mid(5); // "fuzz ".length() = 5
+            fuzz->setName(fuzzName);
+            continue;
         }
 
         if (fields.count() == 2) {
