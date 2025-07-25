@@ -30,6 +30,8 @@ void BrainEditorItem::paint(QPainter *painter,
             } else {
                 tmpResult = +30 * ((fuzzy->result(agentInstance)) / (fuzzy->maxValue()));
             }
+        } else {
+            qDebug() << "AgentInstance is null!";
         }
 
         if (tmpResult > 0) {

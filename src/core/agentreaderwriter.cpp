@@ -4,6 +4,8 @@
 #include "brain/brain.h"
 #include "brain/fuzzyand.h"
 #include "brain/fuzzyor.h"
+#include "brain/noise.h"
+#include "brain/fuzzyoutput.h"
 
 AgentReaderWriter::AgentReaderWriter(Agent *parent)
     : BaseReaderWriter(static_cast<QObject *>(parent))

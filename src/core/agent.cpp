@@ -93,7 +93,14 @@ bool Agent::setName(const QString &newName) {
 }
 
 AgentInstance *Agent::defaultAgentInstance() const {
-    return m_defaultAgentInstance;
+    if (m_defaultAgentInstance) {
+        return m_defaultAgentInstance;
+    }
+    AgentInstance *ret = nullptr;
+    if (m_agentInstances.count() > 0) {
+        ret = m_agentInstances.first();
+    }
+    return ret;
 }
 
 void Agent::setDefaultAgentInstance(AgentInstance *newDefaultAgentInstance) {
